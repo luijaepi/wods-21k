@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="21K Plan">
+<meta name="theme-color" content="#090909">
+<title>21K · Media Maratón</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #090909;
+  --s1: #111;
+  --s2: #181818;
+  --s3: #202020;
+  --border: #242424;
+  --text: #f0f0f0;
+  --muted: #4a4a4a;
+  --muted2: #777;
+  --lun: #ff6b9d;
+  --mar: #ff4560;
+  --mie: #6ee7b7;
+  --jue: #b97cff;
+  --vie: #47c9ff;
+  --sab: #e8ff47;
+  --dom: #6a6a6a;
+  --race: #ffc247;
+  --mov: #ff9f47;
+  --sit: env(safe-area-inset-top, 0px);
+  --sib: env(safe-area-inset-bottom, 0px);
+  --sil: env(safe-area-inset-left, 0px);
+  --sir: env(safe-area-inset-right, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { background: var(--bg); background-attachment: fixed; }
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── HEADER ── */
+.hdr {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  padding-top: var(--sit);
+  border-bottom: 1px solid var(--border);
+  margin-top: calc(-1 * var(--sit));
+  padding-top: calc(var(--sit) + 0px);
+}
+.hdr-inner { padding: 8px 18px 0; }
+.hdr-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.logo { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+.logo span { opacity: 0.3; }
+.logo-sub {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--muted); margin-top: 1px;
+}
+.hdr-right { display: flex; gap: 6px; }
+.nav-pill {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  min-height: 32px; padding: 0 11px; border-radius: 16px;
+  border: 1px solid var(--border); background: var(--s2); color: var(--muted2);
+  cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; white-space: nowrap;
+}
+.nav-pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+/* ── PHASE PILLS ── */
+.phase-row {
+  display: flex; gap: 6px; padding: 10px 18px 10px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.phase-row::-webkit-scrollbar { display: none; }
+.phase-pill {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.09em;
+  padding: 0 13px; min-height: 34px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--s2); color: var(--muted2);
+  cursor: pointer; white-space: nowrap; transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.phase-pill .pdot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .5; }
+.phase-pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.phase-pill.active .pdot { background: var(--bg); opacity: 1; }
+.phase-pill.iscurrent:not(.active) { border-color: var(--sab); color: var(--sab); }
+
+/* ── TABS ── */
+.tabs { display: flex; overflow-x: auto; scrollbar-width: none; gap: 0; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex: 1; min-width: 0;
+  font-family: 'Syne', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em;
+  min-height: 38px; padding: 0 2px; border: none; background: transparent;
+  color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s; text-align: center;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; animation: up 0.18s ease both; }
+@keyframes up { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── PAGE PADDING ── */
+.page { padding: 0 18px 150px; }
+.log-page { padding: 0 18px 150px; }
+
+/* ── DAY HERO ── */
+.hero { padding: 20px 0 16px; border-bottom: 1px solid var(--border); }
+.hero-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  opacity: 0.45; margin-bottom: 6px;
+}
+.hero-title {
+  font-size: 48px; font-weight: 800; letter-spacing: -0.03em; line-height: 0.92;
+  text-transform: uppercase; white-space: nowrap; overflow: hidden;
+}
+.hero-sub { font-size: 12px; color: var(--muted2); margin-top: 8px; font-weight: 600; letter-spacing: 0.04em; line-height: 1.4; }
+.hero-tags { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+.htag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; padding: 5px 10px; border-radius: 4px;
+  border: 1px solid currentColor; min-height: 28px; display: flex; align-items: center;
+}
+
+/* ── PHASE INFO CARD ── */
+.phase-info { background: var(--s1); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin: 16px 0; }
+.phase-info-title { font-size: 13px; font-weight: 800; letter-spacing: .05em; margin-bottom: 3px; }
+.phase-info-range { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); margin-bottom: 9px; }
+.phase-info-obj { font-size: 12.5px; color: var(--muted2); line-height: 1.65; margin-bottom: 11px; }
+.phase-info-obj b { color: #ccc; font-weight: 600; }
+.phase-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+.phase-stat { background: var(--s3); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; flex: 1; min-width: 100px; }
+.phase-stat b { display: block; font-family: 'Syne'; font-size: 9px; font-weight: 700; letter-spacing: .09em; color: var(--muted2); margin-bottom: 3px; text-transform: uppercase; }
+.phase-stat span { font-family: 'DM Mono', monospace; font-size: 13px; }
+
+/* ── PROGRESSION TABLE ── */
+.prog-wrap { background: var(--s1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.prog-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.prog-table th {
+  text-align: left; font-size: 9px; font-weight: 700; letter-spacing: .09em; color: var(--muted2);
+  text-transform: uppercase; padding: 10px 12px 8px; border-bottom: 1px solid var(--border);
+}
+.prog-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.prog-table tr:last-child td { border-bottom: none; }
+.prog-wk { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); white-space: nowrap; }
+.prog-km { font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 500; white-space: nowrap; }
+.prog-note { font-size: 11.5px; color: var(--muted2); line-height: 1.5; }
+
+/* ── SECTION LABEL ── */
+.sl {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em; color: var(--muted);
+  text-transform: uppercase; margin: 20px 0 11px; display: flex; align-items: center; gap: 10px;
+}
+.sl::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── COLLAPSIBLE ── */
+.coll { background: var(--s1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 8px; }
+.coll-hd { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; cursor: pointer; user-select: none; }
+.coll-lbl { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px; }
+.coll-ico { color: var(--muted2); font-size: 18px; transition: transform 0.2s; line-height: 1; }
+.coll-ico.open { transform: rotate(45deg); }
+.coll-bd { display: none; border-top: 1px solid var(--border); padding: 6px 16px 14px; }
+.coll-bd.open { display: block; }
+.ci { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.5; font-weight: 400; align-items: flex-start; }
+.ci:last-child { border-bottom: none; }
+.ci b { color: #ccc; font-weight: 600; }
+.ci-dot { flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; margin-top: 7px; }
+
+/* ── WOD/SESSION CARD ── */
+.wod { border-radius: 14px; border: 1px solid; overflow: hidden; }
+.wod-top { padding: 14px 16px 10px; display: flex; justify-content: space-between; align-items: flex-start; }
+.wod-fmt { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; opacity: 0.6; margin-bottom: 2px; }
+.wod-nm { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.05; }
+.wod-clk { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; opacity: 0.85; text-align: right; white-space: nowrap; }
+.wod-div { height: 1px; background: rgba(255,255,255,0.07); }
+.wod-moves { padding: 10px 16px; }
+.wod-mv { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13.5px; font-weight: 400; line-height: 1.4; align-items: flex-start; }
+.wod-mv:last-child { border-bottom: none; }
+.wod-n { font-size: 10px; font-weight: 700; opacity: 0.4; flex-shrink: 0; margin-top: 3px; min-width: 14px; font-family: 'DM Mono', monospace; }
+.wod-tip { margin: 0 16px 14px; padding: 10px 13px; background: rgba(0,0,0,0.35); border-radius: 9px; font-size: 12px; font-weight: 400; color: var(--muted2); line-height: 1.6; }
+.wod-tip b { color: #ccc; font-weight: 600; }
+
+/* ── EXERCISE CARD ── */
+.ex { background: var(--s1); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px 13px 19px; margin-bottom: 8px; position: relative; }
+.ex-bar { position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; }
+.ex-r1 { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+.ex-nm { font-size: 15px; font-weight: 700; letter-spacing: 0.01em; line-height: 1.2; flex: 1; }
+.ex-kg { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; flex-shrink: 0; font-family: 'DM Mono', monospace; text-align: right; }
+.ex-chips { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+.chip { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: var(--s3); color: var(--muted2); letter-spacing: 0.06em; border: 1px solid var(--border); font-family: 'DM Mono', monospace; }
+.ex-note { font-size: 12px; font-weight: 400; color: var(--muted2); line-height: 1.6; }
+.ex-note.warn { color: #f59e0b; }
+
+/* ── LOG VIEW ── */
+.log-week { background: var(--s1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-top: 16px; }
+.log-week-hd { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.log-week-title { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; }
+.log-week-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); }
+.log-day-row { padding: 13px 16px; border-bottom: 1px solid var(--border); }
+.log-day-row:last-child { border-bottom: none; }
+.log-day-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.log-day-name { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; }
+.log-feel { display: flex; gap: 4px; }
+.feel-btn {
+  width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: var(--s2);
+  color: var(--muted2); font-size: 12px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; transition: all 0.1s;
+}
+.feel-btn.sel { border-color: currentColor; }
+.log-checks { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.chk-btn {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; padding: 6px 12px; border-radius: 7px;
+  border: 1px solid var(--border); background: var(--s2); color: var(--muted2); cursor: pointer; transition: all 0.12s;
+}
+.chk-btn.on { background: var(--s3); }
+.log-inputs { display: flex; flex-direction: column; gap: 6px; }
+.log-input-row { display: flex; align-items: center; gap: 8px; }
+.log-input-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted2); min-width: 78px; text-transform: uppercase; }
+.log-input { flex: 1; background: var(--s3); border: 1px solid var(--border); border-radius: 7px; padding: 7px 10px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px; outline: none; }
+.log-input:focus { border-color: var(--muted2); }
+.log-textarea {
+  width: 100%; background: var(--s3); border: 1px solid var(--border); border-radius: 7px; padding: 9px 10px;
+  color: var(--text); font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 400; outline: none;
+  resize: none; line-height: 1.5; min-height: 50px;
+}
+.log-textarea:focus { border-color: var(--muted2); }
+.log-week-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; }
+.log-sleep-row { display: flex; gap: 8px; align-items: center; flex: 1; flex-wrap: wrap; }
+.sleep-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted2); text-transform: uppercase; white-space: nowrap; }
+.saved-weeks { margin-top: 20px; }
+.saved-week-card { background: var(--s1); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
+.saved-hd { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; cursor: pointer; }
+.saved-title { font-size: 13px; font-weight: 700; }
+.saved-summary { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); }
+.saved-body { display: none; border-top: 1px solid var(--border); padding: 12px 16px; }
+.saved-body.open { display: block; }
+.saved-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 400; gap: 10px; }
+.saved-row:last-child { border-bottom: none; }
+.saved-key { color: var(--muted2); font-weight: 600; flex-shrink: 0; }
+.saved-val { font-family: 'DM Mono', monospace; font-size: 11px; text-align: right; max-width: 66%; word-break: break-word; }
+.empty-log { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13px; font-weight: 400; line-height: 1.6; }
+.log-baseline {
+  background: rgba(232,255,71,0.06); border: 1px solid rgba(232,255,71,0.25); border-radius: 12px;
+  padding: 12px 14px; font-size: 12px; color: var(--muted2); line-height: 1.7; margin-bottom: 14px;
+}
+.log-baseline b { color: var(--sab); font-weight: 700; }
+
+/* ── MOVILIDAD VIEW ── */
+.mov-hero { padding: 20px 0 16px; border-bottom: 1px solid var(--border); }
+.mov-day-tabs { display: flex; gap: 6px; margin-top: 14px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.mov-day-tabs::-webkit-scrollbar { display: none; }
+.mov-dtab {
+  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; padding: 0 14px;
+  min-height: 36px; border-radius: 8px; border: 1px solid var(--border); background: var(--s2); color: var(--muted2);
+  cursor: pointer; white-space: nowrap; transition: all 0.15s; display: flex; align-items: center;
+}
+.mov-dtab.active { background: var(--mov); color: #111; border-color: var(--mov); }
+.mov-block { background: var(--s1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 8px; }
+.mov-block-hd { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; cursor: pointer; user-select: none; }
+.mov-block-title { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; display: flex; align-items: center; gap: 8px; }
+.mov-block-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); }
+.mov-block-body { display: none; border-top: 1px solid var(--border); }
+.mov-block-body.open { display: block; }
+.mov-ex { padding: 13px 16px 12px 20px; border-bottom: 1px solid var(--border); position: relative; }
+.mov-ex:last-child { border-bottom: none; }
+.mov-ex-bar { position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--mov); }
+.mov-ex-name { font-size: 14px; font-weight: 700; margin-bottom: 5px; line-height: 1.2; }
+.mov-ex-chips { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 7px; }
+.mov-ex-note { font-size: 12px; font-weight: 400; color: var(--muted2); line-height: 1.6; }
+.mov-ex-note b { color: #ccc; }
+.mov-fr-tag { background: #ff9f4722; border: 1px solid #ff9f4744; color: var(--mov); }
+.mov-insight {
+  margin: 0 18px 14px; padding: 12px 14px; background: rgba(255,159,71,0.07); border: 1px solid rgba(255,159,71,0.2);
+  border-radius: 10px; font-size: 12px; color: var(--muted2); line-height: 1.65;
+}
+.mov-insight b { color: var(--mov); font-weight: 600; }
+
+/* ── TIMER BAR ── */
+.tbar {
+  position: fixed; bottom: 0; left: 0; right: 0; background: rgba(9,9,9,0.97);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border);
+  padding-top: 10px; padding-left: max(18px, var(--sil)); padding-right: max(18px, var(--sir));
+  padding-bottom: max(14px, calc(var(--sib) + 6px)); z-index: 100;
+}
+.tbar-inner { display: flex; gap: 10px; align-items: center; }
+.tbar-left { flex-shrink: 0; }
+.tnum { font-family: 'DM Mono', monospace; font-size: 30px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--text); transition: color 0.2s; min-width: 68px; }
+.tnum.go { color: var(--sab); }
+.tnum.warn { color: var(--mar); }
+.tpres { display: flex; gap: 4px; margin-top: 5px; }
+.tpre {
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; min-height: 30px; padding: 0 8px;
+  border-radius: 7px; border: 1px solid var(--border); background: var(--s2); color: var(--muted2); cursor: pointer;
+  transition: all 0.1s; display: flex; align-items: center;
+}
+.tpre:active { opacity: 0.7; transform: scale(0.95); }
+.tpre.sel { background: var(--s3); color: var(--text); border-color: var(--muted2); }
+.tbtns { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.tbtn {
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; min-height: 36px;
+  border-radius: 10px; border: none; cursor: pointer; width: 100%; transition: transform 0.08s, opacity 0.1s;
+  display: flex; align-items: center; justify-content: center;
+}
+.tbtn:active { transform: scale(0.97); opacity: 0.85; }
+.t-go   { background: var(--sab); color: #090909; }
+.t-stop { background: var(--mar); color: #090909; }
+.t-rst  { background: var(--s2); color: var(--muted2); border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-top">
+      <div class="logo">21K<span> · 2027</span></div>
+      <div class="hdr-right">
+        <button class="nav-pill active" id="pill-train" onclick="switchView('train')">RUTINA</button>
+        <button class="nav-pill" id="pill-mov" onclick="switchView('mov')">MOV</button>
+        <button class="nav-pill" id="pill-log" onclick="switchView('log')">LOG</button>
+      </div>
+    </div>
+  </div>
+  <div class="phase-row" id="phase-row"></div>
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<!-- RUTINA VIEW -->
+<div class="view active" id="view-train">
+  <div class="page" id="page"></div>
+</div>
+
+<!-- MOVILIDAD VIEW -->
+<div class="view" id="view-mov">
+  <div class="page" id="mov-page"></div>
+</div>
+
+<!-- LOG VIEW -->
+<div class="view" id="view-log">
+  <div class="log-page" id="log-page"></div>
+</div>
+
+<div class="tbar">
+  <div class="tbar-inner">
+    <div class="tbar-left">
+      <div class="tnum" id="tnum">0:00</div>
+      <div class="tpres">
+        <button class="tpre" onclick="tSet(60,this)">1'</button>
+        <button class="tpre" onclick="tSet(90,this)">1'30</button>
+        <button class="tpre" onclick="tSet(120,this)">2'</button>
+        <button class="tpre" onclick="tSet(240,this)">4'</button>
+      </div>
+    </div>
+    <div class="tbtns">
+      <button class="tbtn t-go" id="tgo" onclick="tToggle()">INICIAR</button>
+      <button class="tbtn t-rst" onclick="tReset()">RESET</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════ REUSABLE BLOCKS
+const WARM_EASY = [
+  '5-8 min andando rápido o trote muy suave — sube pulsaciones gradual',
+  'Movilidad articular: rotación tobillos, cadera, hombros ×10',
+  'Skipping bajo ×15m + talón-glúteo ×15m',
+  '3-4 progresiones de 20m — de trote a ritmo fácil, sin forzar',
+];
+const WARM_INTERVAL = [
+  '10 min trote muy suave — activa sin fatigar',
+  'Movilidad dinámica: zancada con giro ×5/lado, skipping alto ×15m',
+  'Talón-glúteo ×15m + Botes de tobillo ×15m',
+  '4 progresiones de 60-80m subiendo de suave a casi-rápido, recupera andando',
+];
+const WARM_LONG = [
+  '5 min andando + 10 min trote muy suave — no tengas prisa',
+  'Movilidad articular completa: tobillo, cadera, columna',
+  'Revisa avituallamiento: agua/gel si la tirada pasa de 75 min',
+  'Empieza deliberadamente lento — los primeros km marcan el resto',
+];
+const COOL_RUN = [
+  '5 min andando para bajar pulsaciones antes de parar del todo',
+  'Estiramiento suave gemelo + isquio — 20-30\'\'/pierna, sin rebotar',
+  'Hidrata y, si la sesión ha pasado de 60 min, algo de proteína+carbo en 30 min',
+];
+const COOL_RUN_LONG = [
+  '5-10 min andando — no te sientes de golpe',
+  'Estiramiento gemelo, isquio, cuádriceps y glúteo — 30\'\'/lado cada uno',
+  'Rehidrata en las 2h siguientes, prioriza sueño esta noche',
+  'Piernas en alto 10 min si tienes donde — ayuda al retorno venoso',
+];
+const WARM_STRENGTH = [
+  '3-4 min bici o cuerda — activa sin fatigar piernas',
+  'Glute bridge ×12 + Bird-dog ×8/lado — despierta el core y el glúteo',
+  'Movilidad de cadera: hip circle ×10/lado',
+];
+const COOL_STRENGTH = [
+  'Estiramiento flexor de cadera — 30\'\'/lado',
+  'Foam roller cuádriceps + IT band — 45\'\'/lado si tienes rodillo',
+  'Child\'s Pose — 40\'\'',
+];
+
+// ══════════════════════════════════════════════════════════════ DATA — 4 FASES
+const PHASES = [
+  {
+    id:'base', label:'BASE', short:'FASE 1',
+    range:'24 ago 2026 → 3 ene 2027 · ~19 semanas',
+    start:'2026-08-24', end:'2027-01-03',
+    objetivo:'Crear el hábito de correr sin lesionarte. Todo aeróbico puro (Z2, conversacional), técnica de carrera y fuerza de base. <b>Punto de partida real:</b> tu rodaje del 24 ago fue 3,15 km a 7\'42"/km con FC media 158 (RPE 6/10) y cadencia 152 spm — eso es tu cero, no tu techo.',
+    volKm:'15 → 28 km/sem', longKm:'4 → 11 km', cadencia:'152 → 165 spm',
+    progression:[
+      {wk:'Sem 1-4', larga:'4-5 km', semanal:'15-18 km', nota:'Adaptación. Usa run-walk (4\' trote / 1\' andar) si lo necesitas — sumar tiempo de pie manda más que correr sin parar.'},
+      {wk:'Sem 5-9', larga:'5-7 km', semanal:'18-21 km', nota:'Empiezas a encadenar los 4 días de carrera sin molestias. Cadencia sube a 158-162.'},
+      {wk:'Sem 10-14', larga:'7-9 km', semanal:'21-25 km', nota:'Primeras cuestas suaves de verdad. El cuerpo ya reconoce el gesto de correr.'},
+      {wk:'Sem 15-19', larga:'9-11 km', semanal:'25-28 km', nota:'Cierre de base — primera tirada larga sin cortar a andar. Test de esfuerzo al final de fase para recalibrar ritmos.'},
+    ],
+    days:[
+      { id:'lun', tab:'LUN', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Lunes · Fuerza · Fase Base', title:'CORE / GLÚTEO', sub:'Activación glútea · Core anti-rotación · Base para correr sano',
+        tags:['30 MIN','FUERZA','SIN IMPACTO'], warmup:WARM_STRENGTH,
+        strength:[
+          { nm:'Glute Bridge a una pierna', kg:'Peso corporal', sets:'3×10/lado', rpe:'6', rest:'45\'\'', opt:false, note:'Aprieta el glúteo arriba 1\'\'. Si sientes más lumbar que glúteo, acorta el recorrido.' },
+          { nm:'Bird-dog', kg:'Peso corporal', sets:'3×8/lado', rpe:'5', rest:'45\'\'', opt:false, note:'Brazo y pierna contraria a la vez, cadera no rota. Va lento, no busca velocidad.' },
+          { nm:'Plancha lateral', kg:'Peso corporal', sets:'3×20-30\'\'/lado', rpe:'6', rest:'45\'\'', opt:false, note:'Cadera arriba, línea recta hombro-cadera-tobillo. Este es tu seguro anti-dolor-lateral-de-rodilla.' },
+          { nm:'Clamshell con banda', kg:'Banda ligera', sets:'3×15/lado', rpe:'6', rest:'45\'\'', opt:true, note:'Glúteo medio — el estabilizador que más se apaga en corredores de oficina. Si no tienes banda, hazlo sin ella igualmente.' },
+        ],
+        cooldown:COOL_STRENGTH },
+      { id:'mar', tab:'MAR', color:'#ff4560', kind:'run',
+        eyebrow:'Martes · Técnica · Fase Base', title:'TÉCNICA / CUESTAS', sub:'Cuestas suaves · Trabajo de cadencia · Sin reloj de por medio',
+        tags:['30-35 MIN','TÉCNICA','SUAVE'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'CUESTAS', nm:'CADENCIA + CUESTA SUAVE', clk:'~30\'',
+          moves:[
+            '10 min trote muy suave de activación',
+            '6-8 × cuesta suave (4-6% pendiente), 20\'\' subiendo a esfuerzo moderado, bajada trotando muy suave',
+            '4 × 100 m técnica: pasos cortos y rápidos, mirada al frente',
+            '10 min vuelta a la calma trotando muy suave',
+          ],
+          tip:'<b>Cadencia objetivo:</b> 165-170 pasos/min (partes de 152). Cuenta tus pasos 15\'\' y multiplica ×4 — no alargues la zancada, acorta y acelera el apoyo.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'mie', tab:'MIÉ', color:'#6ee7b7', kind:'run',
+        eyebrow:'Miércoles · Rodaje · Fase Base', title:'RODAJE SUAVE', sub:'Z2 conversacional · El día que más veces vas a repetir',
+        tags:['20-45 MIN','Z2','FÁCIL'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'CONTINUO SUAVE', clk:'20→45\'',
+          moves:[
+            'Sem 1-4: 20-25 min continuos (o run-walk si aún no llegas)',
+            'Sem 5-9: 28-32 min continuos',
+            'Sem 10-14: 35-40 min continuos',
+            'Sem 15-19: 40-45 min continuos',
+          ],
+          tip:'<b>Test del habla:</b> si no puedes mantener una conversación con frases completas, vas demasiado rápido. Este día NO se acelera aunque te sientas bien — el aeróbico se construye con paciencia, no con orgullo.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'jue', tab:'JUE', color:'#b97cff', kind:'run',
+        eyebrow:'Jueves · Rodaje + Progresión · Fase Base', title:'RODAJE + PROGRESIÓN', sub:'Fácil con un cierre animado los últimos minutos',
+        tags:['25-35 MIN','Z2→Z3','PROGRESIVO'], warmup:WARM_EASY,
+        wod:{ fmt:'PROGRESIVO', nm:'FÁCIL + CIERRE', clk:'25→35\'',
+          moves:[
+            '80% del tiempo total a ritmo fácil (igual que el miércoles)',
+            'Últimos 5-8 min: sube a esfuerzo moderado (RPE 6-7), sin llegar a sprintar',
+            'Los últimos 100 m, si el cuerpo lo pide, algo más vivo',
+          ],
+          tip:'Este es tu primer contacto con "correr cansado y controlado" — la habilidad que más vas a necesitar el día de la carrera.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'vie', tab:'VIE', color:'#47c9ff', kind:'fuerza',
+        eyebrow:'Viernes · Fuerza · Fase Base', title:'PIERNA / ESTABILIDAD', sub:'Sentadilla · Zancada · Gemelo — construir el chasis',
+        tags:['30 MIN','FUERZA','UNILATERAL'], warmup:WARM_STRENGTH,
+        strength:[
+          { nm:'Sentadilla goblet (o sin peso)', kg:'0-12 kg', sets:'3×10', rpe:'6', rest:'60\'\'', opt:false, note:'Rodilla en línea con el pie, profundidad cómoda. Es técnica, no carga — todavía.' },
+          { nm:'Zancada estática', kg:'Peso corporal', sets:'3×8/lado', rpe:'6', rest:'60\'\'', opt:false, note:'Rodilla trasera roza el suelo, torso vertical. Fuerza unilateral = menos asimetrías al correr.' },
+          { nm:'Elevación de talón (gemelo)', kg:'Peso corporal', sets:'3×15', rpe:'6', rest:'45\'\'', opt:false, note:'Sube lento, baja más lento aún (3\'\'). El gemelo/sóleo absorbe la mayor parte del impacto al correr — no lo saltes nunca.' },
+          { nm:'Equilibrio a una pierna', kg:'Peso corporal', sets:'3×30\'\'/lado', rpe:'5', rest:'30\'\'', opt:true, note:'Ojos cerrados si te ves capaz. Propiocepción de tobillo = menos esguinces en terreno irregular.' },
+        ],
+        cooldown:COOL_STRENGTH },
+      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
+        eyebrow:'Sábado · Tirada Larga · Fase Base', title:'TIRADA LARGA', sub:'El entreno más importante de la semana, sin excepción',
+        tags:['4→11 KM','Z2','LA CLAVE'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'RODAJE LARGO', clk:'ver progresión',
+          moves:[
+            'Distancia según la tabla de progresión de esta fase (arriba)',
+            'Ritmo: 30-45\'\'/km más lento que tu rodaje entre semana — aquí sobra prudencia',
+            'Si aún no aguantas la distancia corriendo todo el rato: run-walk 4\'/1\' sin complejos',
+            'Bebe agua si pasas de 45 min corriendo',
+          ],
+          tip:'<b>No se trata de velocidad, se trata de tiempo en pie.</b> Esta sesión enseña a tendones, huesos y cabeza a aguantar — es la que de verdad te prepara para los 21,1K.' },
+        strength:[], cooldown:COOL_RUN_LONG },
+      { id:'dom', tab:'DOM', color:'#6a6a6a', kind:'descanso',
+        eyebrow:'Domingo · Descanso · Fase Base', title:'DESCANSO', sub:'El entreno que no se ve pero que más rinde',
+        tags:['0 MIN','RECUPERACIÓN'], warmup:[],
+        strength:[], cooldown:[],
+        rest:[
+          'Descanso total de piernas — nada de carrera ni fuerza',
+          'Opcional: paseo suave 20-30 min si el cuerpo lo pide, sin ritmo',
+          'Prioriza el sueño esta noche — es cuando se produce la adaptación real',
+          'Foam roller general 5-10 min si tienes en casa',
+        ] },
+    ],
+  },
+  {
+    id:'desarrollo', label:'DESARROLLO', short:'FASE 2',
+    range:'4 ene → 2 may 2027 · ~17 semanas',
+    start:'2027-01-04', end:'2027-05-02',
+    objetivo:'Sube el volumen y aparece la velocidad de verdad: series en pista y tempo run a ritmo umbral. Empiezas a tocar el ritmo objetivo de carrera en los últimos km de la tirada larga.',
+    volKm:'28 → 42 km/sem', longKm:'11 → 16 km', cadencia:'165 → 172 spm',
+    progression:[
+      {wk:'Sem 20-24', larga:'11-12 km', semanal:'28-32 km', nota:'Primeros intervalos reales. Deja que las piernas se adapten a la carga de velocidad, no fuerces el ritmo del tempo.'},
+      {wk:'Sem 25-29', larga:'12-13,5 km', semanal:'32-36 km', nota:'El tempo run empieza a sentirse "cómodo-duro" en vez de "duro-duro" — buena señal de mejora aeróbica.'},
+      {wk:'Sem 30-33', larga:'13,5-15 km', semanal:'36-39 km', nota:'Semana de descarga cada 4ª: reduce volumen un 25-30% para asimilar. No la saltes.'},
+      {wk:'Sem 34-37', larga:'15-16 km', semanal:'39-42 km', nota:'Primer contacto con ritmo objetivo de carrera en los últimos 3-4 km de la tirada. Test de esfuerzo de cierre para recalibrar.'},
+    ],
+    days:[
+      { id:'lun', tab:'LUN', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Lunes · Fuerza · Fase Desarrollo', title:'CORE / GLÚTEO+', sub:'Misma base, ahora con carga y más control unilateral',
+        tags:['35 MIN','FUERZA','CARGA LIGERA'], warmup:WARM_STRENGTH,
+        strength:[
+          { nm:'RDL a una pierna con mancuerna', kg:'6-10 kg', sets:'3×8/lado', rpe:'7', rest:'60\'\'', opt:false, note:'Cadera bisagra, espalda plana, tobillo estable. El ejercicio nº1 para isquios sanos de corredor.' },
+          { nm:'Pallof Press (banda o polea)', kg:'Banda media', sets:'3×10/lado', rpe:'6', rest:'45\'\'', opt:false, note:'Anti-rotación de core — control de tronco cuando llegas fatigado en el km 18.' },
+          { nm:'Step-up con mancuernas', kg:'8-12 kg', sets:'3×8/lado', rpe:'7', rest:'60\'\'', opt:false, note:'Banco a altura de rodilla. Empuja con el talón, no con la puntera.' },
+          { nm:'Plancha con toque de hombro', kg:'Peso corporal', sets:'3×12 toques', rpe:'6', rest:'45\'\'', opt:true, note:'Cadera lo más quieta posible — controla la rotación, no la velocidad.' },
+        ],
+        cooldown:COOL_STRENGTH },
+      { id:'mar', tab:'MAR', color:'#ff4560', kind:'run',
+        eyebrow:'Martes · Series · Fase Desarrollo', title:'SERIES / VELOCIDAD', sub:'Intervalos reales — aquí se construye el motor',
+        tags:['40-45 MIN','VO2/5K','INTERVALOS'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'INTERVALOS', nm:'400s Y 1000s', clk:'40-45\'',
+          moves:[
+            'Sem 20-24: 6-8 × 400 m a ritmo 5K, recuperación 200 m trote',
+            'Sem 25-29: 5 × 800 m a ritmo 5K, recuperación 2\' trote suave',
+            'Sem 30-33 (descarga): 5 × 400 m suave-moderado, recuperación completa',
+            'Sem 34-37: 4-5 × 1000 m a ritmo 10K, recuperación 2-3\' trote',
+          ],
+          tip:'<b>Ritmo 5K</b> = el más rápido que aguantarías 20-25 min seguidos. Si la última repetición sale más rápida que la primera, empezaste demasiado conservador — perfecto, así debe ser.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'mie', tab:'MIÉ', color:'#6ee7b7', kind:'run',
+        eyebrow:'Miércoles · Rodaje · Fase Desarrollo', title:'RODAJE SUAVE', sub:'Z2 conversacional · Más minutos que en la fase Base',
+        tags:['40-55 MIN','Z2','FÁCIL'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'CONTINUO SUAVE', clk:'40→55\'',
+          moves:[
+            'Ritmo fácil de siempre, conversacional de principio a fin',
+            'Si te apetece, cambia de terreno (tierra, parque) — menos impacto, más variedad',
+            'Cadencia objetivo ya en 168-172 spm de forma natural',
+          ],
+          tip:'Este rodaje crece en minutos, no en velocidad. Sigues construyendo la base aeróbica sobre la que se apoya toda la velocidad del martes.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'jue', tab:'JUE', color:'#b97cff', kind:'run',
+        eyebrow:'Jueves · Tempo · Fase Desarrollo', title:'TEMPO RUN', sub:'Ritmo umbral — cómodamente incómodo',
+        tags:['35-45 MIN','UMBRAL','CONTINUO'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'TEMPO', nm:'RITMO UMBRAL', clk:'35-45\'',
+          moves:[
+            '10-12 min trote de calentamiento (incluido en warm-up)',
+            'Sem 20-24: 15 min continuos a ritmo umbral (RPE 7-8, "cómodo-duro")',
+            'Sem 25-29: 20 min continuos a ritmo umbral',
+            'Sem 30-37: 25-30 min continuos, o 2×12 min con 3\' trote entre medias',
+          ],
+          tip:'<b>Ritmo umbral</b> = el que podrías mantener 1 hora en competición si te apretaran. Se siente controlado los primeros minutos y exigente al final — si te falta el aire para hablar en frases cortas, vas bien.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'vie', tab:'VIE', color:'#47c9ff', kind:'fuerza',
+        eyebrow:'Viernes · Fuerza · Fase Desarrollo', title:'PIERNA + PLIOMETRÍA LIGERA', sub:'Potencia y tobillo — economía de carrera',
+        tags:['35 MIN','FUERZA','POTENCIA'], warmup:WARM_STRENGTH,
+        strength:[
+          { nm:'Sentadilla búlgara', kg:'8-14 kg', sets:'3×8/lado', rpe:'7-8', rest:'75\'\'', opt:false, note:'Rodilla trasera roza el suelo, torso ligeramente adelantado. Fuerza unilateral máxima.' },
+          { nm:'Salto a la comba', kg:'—', sets:'3×40\'\'', rpe:'6', rest:'45\'\'', opt:false, note:'Contacto breve y rápido con el suelo — entrena la rigidez de tobillo que necesitas para correr eficiente.' },
+          { nm:'Elevación de talón a una pierna', kg:'Peso corporal', sets:'3×12/lado', rpe:'7', rest:'45\'\'', opt:false, note:'Sube explosivo, baja en 3\'\'. El gemelo ya soporta más volumen de carrera — dale la carga que le corresponde.' },
+          { nm:'Copenhagen plank (rodilla)', kg:'Peso corporal', sets:'3×15-20\'\'/lado', rpe:'7', rest:'45\'\'', opt:true, note:'Aductor — la zona que más se resiente cuando sube el volumen de carrera. Progresión: rodilla apoyada primero.' },
+        ],
+        cooldown:COOL_STRENGTH },
+      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
+        eyebrow:'Sábado · Tirada Larga · Fase Desarrollo', title:'TIRADA LARGA', sub:'Con toques de ritmo objetivo al final',
+        tags:['11→16 KM','Z2+RITMO','LA CLAVE'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'RODAJE LARGO + RITMO', clk:'ver progresión',
+          moves:[
+            'Distancia según tabla de progresión de esta fase',
+            '80-90% a ritmo fácil de siempre',
+            'Sem 30-37: últimos 3-4 km a ritmo objetivo de carrera (el que estimamos abajo, en LOG)',
+            'Lleva agua o planifica una fuente si pasas de 75 min',
+          ],
+          tip:'Aprender a acelerar con las piernas cansadas es la habilidad que decide tu carrera en el km 15-18. Empieza a entrenarla ya, aquí, sin presión de dorsal.' },
+        strength:[], cooldown:COOL_RUN_LONG },
+      { id:'dom', tab:'DOM', color:'#6a6a6a', kind:'descanso',
+        eyebrow:'Domingo · Descanso · Fase Desarrollo', title:'DESCANSO', sub:'O trote de recuperación muy suave, opcional',
+        tags:['0-25 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
+        rest:[
+          'Opción A: descanso total, piernas arriba, foam roller',
+          'Opción B: shakeout de 20-25 min a ritmo MUY suave (más lento que el miércoles) si el cuerpo pide moverse',
+          'Nunca los dos días de fin de semana a intensidad — esto es lo que evita la lesión por sobreuso',
+          'Buen momento para lavar/revisar zapatillas de entreno vs. las de carrera',
+        ] },
+    ],
+  },
+  {
+    id:'especifico', label:'ESPECÍFICO', short:'FASE 3',
+    range:'3 may → 22 ago 2027 · ~16 semanas',
+    start:'2027-05-03', end:'2027-08-22',
+    objetivo:'Especificidad total: entrenas las sensaciones exactas de la media maratón. Tiradas largas con bloques largos a ritmo objetivo, simulacros con avituallamiento real y, si quieres, una carrera de 10-15K como test de forma.',
+    volKm:'38 → 50 km/sem', longKm:'16 → 19 km (pico)', cadencia:'170-175 spm',
+    progression:[
+      {wk:'Sem 38-41', larga:'16-17 km', semanal:'38-42 km', nota:'Entras en volumen de pico. El cuerpo ya sabe absorber esta carga gracias a las 2 fases anteriores.'},
+      {wk:'Sem 42-45', larga:'17-18 km', semanal:'42-46 km', nota:'Tiradas con 6-8 km finales a ritmo objetivo — el ensayo más fiel de la carrera real.'},
+      {wk:'Sem 46-49', larga:'18-19 km (pico)', semanal:'46-50 km', nota:'Semana pico del plan entero. Simulacro completo: zapatillas de carrera, gel cada 45 min, ropa que estrenarás el día D.'},
+      {wk:'Sem 50-52', larga:'14-16 km', semanal:'36-40 km', nota:'Empiezas a bajar volumen suavemente antes de entrar en la fase de afine — el cuerpo empieza a "guardar" la forma.'},
+    ],
+    days:[
+      { id:'lun', tab:'LUN', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Lunes · Fuerza · Fase Específico', title:'FUERZA DE MANTENIMIENTO', sub:'Menos volumen, misma calidad — las piernas priorizan el rodaje',
+        tags:['25 MIN','FUERZA','MANTENIMIENTO'], warmup:WARM_STRENGTH,
+        strength:[
+          { nm:'RDL a una pierna con mancuerna', kg:'8-12 kg', sets:'2×8/lado', rpe:'7', rest:'60\'\'', opt:false, note:'Mismo movimiento, menos series — en esta fase el rodaje es la prioridad, la fuerza es mantenimiento.' },
+          { nm:'Sentadilla búlgara', kg:'10-14 kg', sets:'2×8/lado', rpe:'7', rest:'75\'\'', opt:false, note:'Si las piernas están muy cargadas de la semana, baja el peso — nunca canceles el movimiento entero.' },
+          { nm:'Plancha lateral + Pallof', kg:'Peso corporal/banda', sets:'2×20-30\'\' / 2×10', rpe:'6', rest:'45\'\'', opt:false, note:'Core que aguanta la postura cuando llegas fatigado — el trabajo silencioso que se nota en el km 17.' },
+        ],
+        cooldown:COOL_STRENGTH },
+      { id:'mar', tab:'MAR', color:'#ff4560', kind:'run',
+        eyebrow:'Martes · Series específicas · Fase Específico', title:'SERIES A RITMO CARRERA', sub:'Repeticiones más largas, más parecidas al día D',
+        tags:['45-50 MIN','RITMO 10K/OBJ','INTERVALOS LARGOS'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'INTERVALOS', nm:'1000s-2000s A RITMO', clk:'45-50\'',
+          moves:[
+            'Sem 38-41: 5 × 1000 m a ritmo 10K, recuperación 2\' trote',
+            'Sem 42-45: 3-4 × 1600 m a ritmo objetivo de carrera, recuperación 2-3\' trote',
+            'Sem 46-49: 3 × 2000 m a ritmo objetivo, recuperación 3\' trote',
+            'Sem 50-52: 4 × 1000 m soltando — mantén contacto con la velocidad sin acumular fatiga',
+          ],
+          tip:'Cuanto más se acerca la carrera, más se parece el entreno a la carrera: repeticiones más largas, ritmo más cercano al objetivo, menos recuperación relativa.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'mie', tab:'MIÉ', color:'#6ee7b7', kind:'run',
+        eyebrow:'Miércoles · Rodaje + técnica · Fase Específico', title:'RODAJE SUAVE', sub:'Z2 conversacional · Volumen alto, mente descansada',
+        tags:['45-60 MIN','Z2','FÁCIL'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'CONTINUO + TÉCNICA', clk:'45→60\'',
+          moves:[
+            'Ritmo fácil de siempre — con este volumen, la disciplina de ir lento es más importante que nunca',
+            'Cada 10 min, 20-30\'\' de foco consciente en cadencia y postura',
+            'Termina con 4-6 progresiones de 80 m si las piernas están frescas',
+          ],
+          tip:'Es tentador acelerar este día porque "te sientes fuerte" — resístete. El volumen alto solo funciona si el 80% es de verdad suave.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'jue', tab:'JUE', color:'#b97cff', kind:'run',
+        eyebrow:'Jueves · Tempo largo · Fase Específico', title:'TEMPO / PROGRESIVO LARGO', sub:'El día que más se parece a "correr cansado y aguantar"',
+        tags:['40-50 MIN','UMBRAL','LARGO'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'TEMPO', nm:'PROGRESIVO A RITMO', clk:'40-50\'',
+          moves:[
+            '10 min calentamiento (incluido en warm-up)',
+            'Sem 38-45: 25-30 min continuos, últimos 10 min a ritmo umbral',
+            'Sem 46-49: 30-35 min con progresión: fácil → umbral → ritmo objetivo en el tramo final',
+            'Sem 50-52: 20-25 min a ritmo umbral, volumen algo menor',
+          ],
+          tip:'Esto entrena exactamente la sensación de los km 15-21: piernas cargadas, cabeza que tiene que decidir mantener el ritmo. Practícalo aquí, no el día de la carrera.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'vie', tab:'VIE', color:'#47c9ff', kind:'fuerza',
+        eyebrow:'Viernes · Activación · Fase Específico', title:'FUERZA CORTA + ACTIVACIÓN', sub:'Preparar el cuerpo para la tirada del sábado, no fatigarlo',
+        tags:['20 MIN','ACTIVACIÓN','LIGERO'], warmup:WARM_STRENGTH,
+        strength:[
+          { nm:'Glute bridge + Clamshell', kg:'Peso corporal', sets:'2×12', rpe:'5', rest:'40\'\'', opt:false, note:'Activación, no fuerza pesada — mañana toca tirada larga y las piernas tienen que llegar frescas.' },
+          { nm:'Zancada caminando', kg:'Peso corporal', sets:'2×10/lado', rpe:'5', rest:'40\'\'', opt:false, note:'Controlada, sin buscar quemazón. Es un recordatorio del patrón, no un estímulo de fuerza nuevo.' },
+          { nm:'Plancha frontal', kg:'Peso corporal', sets:'2×30-40\'\'', rpe:'5', rest:'40\'\'', opt:true, note:'Solo si te sobran ganas. Si notas las piernas cargadas del martes/jueves, sáltatelo sin culpa.' },
+        ],
+        cooldown:COOL_STRENGTH },
+      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
+        eyebrow:'Sábado · Tirada Larga específica · Fase Específico', title:'TIRADA LARGA', sub:'Simulacro de carrera — la sesión que más te va a decir',
+        tags:['16→19 KM','ESPECÍFICA','SIMULACRO'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'SIMULACRO DE CARRERA', clk:'ver progresión',
+          moves:[
+            'Distancia según tabla de progresión de esta fase',
+            'Sem 42 en adelante: los últimos 6-8 km a ritmo objetivo de carrera',
+            'Usa las zapatillas, el gel y la ropa que llevarás el día de la carrera — nada nuevo el día D',
+            'Practica avituallamiento: gel cada 40-45 min, agua en los puntos que simules',
+          ],
+          tip:'<b>Semana pico (46-49):</b> este es el ensayo general completo. Toma nota de qué gel te sienta bien, qué zapatilla rinde mejor, a qué ritmo se te empiezan a cargar las piernas — esa información vale oro el día de la carrera.' },
+        strength:[], cooldown:COOL_RUN_LONG },
+      { id:'dom', tab:'DOM', color:'#6a6a6a', kind:'descanso',
+        eyebrow:'Domingo · Descanso · Fase Específico', title:'DESCANSO', sub:'Recuperación real tras el volumen más alto del plan',
+        tags:['0-25 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
+        rest:[
+          'Con este volumen semanal, el descanso total pesa más que nunca — respétalo',
+          'Opcional: trote muy suave 20-25 min si las piernas piden movimiento, nunca por obligación',
+          'Nutrición: esta es la fase de mayor gasto calórico del plan — no restrinjas, repón',
+          'Si has hecho una carrera de test este fin de semana, hoy es 100% recuperación pasiva',
+        ] },
+    ],
+  },
+  {
+    id:'afine', label:'AFINE', short:'FASE 4',
+    range:'23 ago → 17 oct 2027 · ~8 semanas + carrera',
+    start:'2027-08-23', end:'2027-10-17',
+    objetivo:'Bajas volumen sin perder chispa. El cuerpo ya tiene la forma hecha — ahora se trata de llegar fresco, afilado y con confianza a la línea de salida del domingo 17 de octubre de 2027.',
+    volKm:'38 → 12-15 km/sem', longKm:'14 km → shakeout', cadencia:'175 spm objetivo',
+    progression:[
+      {wk:'Sem 53-55', larga:'12-14 km', semanal:'30-38 km', nota:'Primer recorte de volumen (~20%). La intensidad se mantiene — solo baja el volumen.'},
+      {wk:'Sem 56-57', larga:'8-10 km', semanal:'24-28 km', nota:'Taper real. Vas a sentir las piernas "raras" de frescas — es normal, es la supercompensación funcionando.'},
+      {wk:'Sem 58', larga:'5-6 km con toques de ritmo', semanal:'18-22 km', nota:'Última semana completa antes de la semana de carrera. Confía en el trabajo hecho, no metas entrenos de última hora.'},
+      {wk:'Sem 59 · Semana de carrera', larga:'—', semanal:'12-15 km + 21,1K domingo', nota:'Lun/Mar sesiones muy cortas con toques de ritmo, Mié-Vie descanso casi total, Sáb descanso completo, Dom: carrera.'},
+    ],
+    days:[
+      { id:'lun', tab:'LUN', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Lunes · Fuerza ligera · Fase Afine', title:'FUERZA DE MANTENIMIENTO', sub:'Carga a la mitad — mantener el patrón, no generar fatiga',
+        tags:['15-20 MIN','FUERZA','MUY LIGERO'], warmup:WARM_STRENGTH,
+        strength:[
+          { nm:'Glute bridge + Clamshell', kg:'Peso corporal', sets:'2×10', rpe:'5', rest:'40\'\'', opt:false, note:'Solo activación. El objetivo de esta fase es no perder el patrón motor, no ganar fuerza nueva.' },
+          { nm:'Zancada estática', kg:'Peso corporal', sets:'2×8/lado', rpe:'5', rest:'40\'\'', opt:false, note:'Sin carga externa. Técnica limpia, cero fatiga residual para mañana.' },
+        ],
+        cooldown:COOL_STRENGTH },
+      { id:'mar', tab:'MAR', color:'#ff4560', kind:'run',
+        eyebrow:'Martes · Series cortas · Fase Afine', title:'SERIES CORTAS Y RÁPIDAS', sub:'Mantener el contacto con la velocidad, sin fatiga',
+        tags:['25-30 MIN','AFILADO','POCO VOLUMEN'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'INTERVALOS', nm:'AFILADO', clk:'25-30\'',
+          moves:[
+            '6 × 200 m a ritmo rápido (más rápido que ritmo 5K), recuperación completa 2\' andando/trote',
+            'Sensación: rápido, ligero, controlado — nunca al límite',
+            'Si algo tira o molesta, para. Esta semana no se gana forma, solo se puede perder por lesión tonta',
+          ],
+          tip:'El objetivo de este día es que las piernas "recuerden" la sensación de velocidad, no fatigarlas. Menos es más a partir de ahora.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'mie', tab:'MIÉ', color:'#6ee7b7', kind:'run',
+        eyebrow:'Miércoles · Rodaje corto · Fase Afine', title:'RODAJE MUY SUAVE', sub:'Corto, fácil, sin ambición',
+        tags:['20-30 MIN','Z2','MUY SUAVE'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'CONTINUO CORTO', clk:'20-30\'',
+          moves:[
+            'Ritmo fácil, más lento de lo normal si acaso',
+            'Disfruta correr sin la presión del volumen — esto es descarga, no descanso total',
+          ],
+          tip:'La tentación en el taper es "meter algo más" porque te sobra energía. No lo hagas — esa energía es exactamente la que necesitas guardar para el 17 de octubre.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'jue', tab:'JUE', color:'#b97cff', kind:'run',
+        eyebrow:'Jueves · Tempo corto · Fase Afine', title:'TEMPO A RITMO CARRERA', sub:'Último contacto real con tu ritmo objetivo',
+        tags:['20-25 MIN','RITMO OBJETIVO','CORTO'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'TEMPO', nm:'RITMO DE CARRERA', clk:'20-25\'',
+          moves:[
+            '8-10 min calentamiento (incluido en warm-up)',
+            '12-15 min continuos exactamente al ritmo objetivo de carrera',
+            'Vuelta a la calma trotando muy suave',
+          ],
+          tip:'Debe sentirse manejable, casi fácil. Si a este volumen de taper el ritmo objetivo ya no cuesta, vas exactamente donde tienes que ir.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'vie', tab:'VIE', color:'#47c9ff', kind:'descanso',
+        eyebrow:'Viernes · Descanso · Fase Afine', title:'DESCANSO / MOVILIDAD', sub:'Nada de fuerza pesada esta última semana',
+        tags:['0-15 MIN','MOVILIDAD LIGERA'], warmup:[], strength:[], cooldown:[],
+        rest:[
+          'Descanso de piernas — ni fuerza con carga ni carrera',
+          'Movilidad suave 10-15 min (ver pestaña MOV) si te apetece moverte',
+          'Buen día para preparar mentalmente: repasa tu estrategia de ritmo, revisa el pronóstico del tiempo',
+        ] },
+      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
+        eyebrow:'Sábado · Tirada decreciente · Fase Afine', title:'TIRADA LARGA (BAJANDO)', sub:'Cada semana más corta — así debe ser',
+        tags:['5→14 KM','TAPER','DECRECIENTE'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'RODAJE LARGO DECRECIENTE', clk:'ver progresión',
+          moves:[
+            'Distancia según tabla de progresión de esta fase — va bajando semana a semana',
+            'Ritmo fácil, con 2-3 toques de 3-4 min a ritmo objetivo en las semanas 56-58 (no en la semana de carrera)',
+            'En la semana de carrera, este día NO se corre — descanso total el sábado antes de la carrera',
+          ],
+          tip:'Bajar volumen no es perder forma, es permitir que aflore. La forma física de las últimas 16 semanas no desaparece en 3 semanas de taper — se libera.' },
+        strength:[], cooldown:COOL_RUN_LONG },
+      { id:'dom', tab:'DOM', color:'#6a6a6a', kind:'descanso',
+        eyebrow:'Domingo · Descanso · Fase Afine', title:'DESCANSO', sub:'Fuera de la semana de carrera',
+        tags:['0-20 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
+        rest:[
+          'Descanso total o paseo muy suave',
+          'Sueño y nutrición son ahora el entreno más importante que puedes hacer',
+          'Si sientes ansiedad de "estoy perdiendo forma", es normal — es la cabeza, no el cuerpo. El cuerpo está exactamente donde debe estar.',
+        ] },
+      { id:'race', tab:'🏁', color:'#ffc247', kind:'race',
+        eyebrow:'Domingo 17 oct 2027 · Día D', title:'MEDIA MARATÓN', sub:'21,1 km — todo el trabajo de 59 semanas converge aquí',
+        tags:['21,1 KM','NEGATIVE SPLIT','DISFRUTA'],
+        warmLabel:'🎒 Días antes (72h-24h)',
+        warmup:[
+          'Carga de carbohidratos suave los 2-3 días previos — no es un atracón, es mantener glucógeno alto',
+          'Hidrátate bien toda la semana, no solo el día antes',
+          'Duerme lo mejor que puedas 2 noches antes (la noche justo antes casi nunca se duerme bien, y no pasa nada)',
+          'Prepara el kit la noche anterior: dorsal, zapatillas ya probadas, geles, ropa según el tiempo que haga',
+          'Desayuno del día D: lo mismo que has probado en tus tiradas largas — nada nuevo, nunca',
+        ],
+        wod:{ fmt:'RITMO', nm:'ESTRATEGIA NEGATIVE SPLIT', clk:'21,1K',
+          moves:[
+            '0-5 km — Ritmo fácil, 10-15"/km MÁS LENTO que tu ritmo objetivo. La euforia de salida mata más carreras que el cansancio.',
+            '5-15 km — Ritmo objetivo, el que has entrenado en las tiradas específicas. Aquí es donde compites de verdad.',
+            '15-18 km — Aquí aprieta. Mantén el ritmo objetivo aunque cueste — esto lo entrenaste en el tempo largo del jueves de la fase Específico.',
+            '18-21,1 km — Todo lo que te quede. Si has hecho negative split, este es el tramo en el que adelantas gente, no al revés.',
+          ],
+          tip:'<b>Mentalidad:</b> el km 16 es el que decide la carrera, no el km 5. Si a los 5K vas sobrado de energía, vas bien. Si vas sobrado de energía a los 15K, has ido demasiado lento — ajusta la próxima vez, hoy corre lo entrenado.' },
+        strength:[],
+        coolLabel:'🍌 Avituallamiento y después',
+        cooldown:[
+          'Gel o similar cada 40-45 min a partir del km 8-10 aprox., agua en cada punto — practica esto exacto en tus tiradas largas antes del día D',
+          'Cruzada la meta: sigue caminando 5-10 min, no te sientes de golpe',
+          'Come algo con carbohidrato + proteína en los primeros 30-60 min',
+          'Las siguientes 48-72h: caminar suave, mucha hidratación, sueño — el cuerpo necesita esos días para empezar a recuperar de verdad',
+          'Guarda esta cifra: sea cual sea tu tiempo, veniste de 3,15 km el 24 de agosto de 2026. Eso ya lo has ganado.',
+        ] },
+    ],
+  },
+];
+
+// ══════════════════════════════════════════════════════════════ STATE
+function getCurrentPhaseId() {
+  const now = new Date();
+  for (const p of PHASES) {
+    if (now >= new Date(p.start) && now <= new Date(p.end + 'T23:59:59')) return p.id;
+  }
+  return now < new Date(PHASES[0].start) ? PHASES[0].id : PHASES[PHASES.length-1].id;
+}
+const CURRENT_PHASE_ID = getCurrentPhaseId();
+let curPhase = PHASES.find(p=>p.id===CURRENT_PHASE_ID) || PHASES[0];
+let curDay = curPhase.days[0];
+let curView = 'train';
+
+// ══════════════════════════════════════════════════════════════ VIEW SWITCH
+function switchView(v) {
+  curView = v;
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  document.querySelectorAll('.nav-pill').forEach(el => el.classList.remove('active'));
+  document.getElementById('pill-' + v).classList.add('active');
+  document.getElementById('tabs').style.display = v === 'mov' ? 'none' : '';
+  document.getElementById('phase-row').style.display = v === 'mov' ? 'none' : '';
+  if (v === 'log') renderLog();
+  if (v === 'mov') renderMov();
+}
+
+// ══════════════════════════════════════════════════════════════ PHASE PILLS + TABS
+function renderPhasePills() {
+  document.getElementById('phase-row').innerHTML = PHASES.map(p => `
+    <button class="phase-pill ${p.id===curPhase.id?'active':''} ${p.id===CURRENT_PHASE_ID?'iscurrent':''}"
+      onclick="selPhase('${p.id}')">
+      <span class="pdot"></span>${p.short}
+    </button>
+  `).join('');
+}
+
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = curPhase.days.map(d => `
+    <button class="tab ${d.id===curDay.id?'active':''}"
+      style="${d.id===curDay.id?`color:${d.color};border-bottom:2px solid ${d.color}`:'border-bottom:2px solid transparent'}"
+      onclick="selDay('${d.id}')">
+      ${d.tab}
+    </button>
+  `).join('');
+}
+
+function fitTitleEl(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let size = 52;
+  el.style.fontSize = size + 'px';
+  const maxW = el.parentElement.clientWidth;
+  while (el.scrollWidth > maxW && size > 20) {
+    size -= 1;
+    el.style.fontSize = size + 'px';
+  }
+}
+function fitHeroTitle() { fitTitleEl('hero-title'); }
+
+function selPhase(id) {
+  curPhase = PHASES.find(p=>p.id===id);
+  curDay = curPhase.days[0];
+  renderPhasePills();
+  renderTabs();
+  renderPage();
+  window.scrollTo({top:0,behavior:'instant'});
+  requestAnimationFrame(fitHeroTitle);
+}
+
+function selDay(id) {
+  curDay = curPhase.days.find(d=>d.id===id);
+  renderTabs();
+  renderPage();
+  window.scrollTo({top:0,behavior:'instant'});
+  requestAnimationFrame(fitHeroTitle);
+}
+
+// ══════════════════════════════════════════════════════════════ COLLAPSIBLE
+function tog(id) {
+  document.getElementById('bd'+id).classList.toggle('open');
+  document.getElementById('ic'+id).classList.toggle('open');
+}
+
+// ══════════════════════════════════════════════════════════════ RENDER PAGE
+function renderPage() {
+  const d = curDay;
+  const p = curPhase;
+  const col = d.color;
+
+  const progHTML = `
+    <div class="sl">📈 Progresión — ${p.label}</div>
+    <div class="prog-wrap">
+      <table class="prog-table">
+        <thead><tr><th>Semanas</th><th>Tirada larga</th><th>Volumen</th></tr></thead>
+        <tbody>
+          ${p.progression.map(r=>`
+            <tr>
+              <td class="prog-wk">${r.wk}</td>
+              <td class="prog-km">${r.larga}</td>
+              <td class="prog-km">${r.semanal}</td>
+            </tr>
+            <tr><td colspan="3" class="prog-note" style="padding-top:0">${r.nota}</td></tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>`;
+
+  const phaseInfoHTML = `
+    <div class="phase-info">
+      <div class="phase-info-title">${p.label} <span style="color:var(--muted2);font-weight:600">— ${p.short}</span></div>
+      <div class="phase-info-range">${p.range}</div>
+      <div class="phase-info-obj">${p.objetivo}</div>
+      <div class="phase-stats">
+        <div class="phase-stat"><b>Volumen</b><span>${p.volKm}</span></div>
+        <div class="phase-stat"><b>Tirada larga</b><span>${p.longKm}</span></div>
+        <div class="phase-stat"><b>Cadencia</b><span>${p.cadencia}</span></div>
+      </div>
+    </div>
+    ${progHTML}`;
+
+  const warmHTML = (d.warmup||[]).map(w=>`
+    <div class="ci"><div class="ci-dot" style="background:${col}"></div><div>${w}</div></div>`).join('');
+  const coolHTML = (d.cooldown||[]).map(w=>`
+    <div class="ci"><div class="ci-dot" style="background:${col}"></div><div>${w}</div></div>`).join('');
+  const restHTML = (d.rest||[]).map(w=>`
+    <div class="ci"><div class="ci-dot" style="background:${col}"></div><div>${w}</div></div>`).join('');
+
+  const mandatory = (d.strength||[]).filter(e=>!e.opt);
+  const optional  = (d.strength||[]).filter(e=>e.opt);
+
+  const exHTML = (arr) => arr.map(ex=>`
+    <div class="ex">
+      <div class="ex-bar" style="background:${col}"></div>
+      <div class="ex-r1">
+        <div class="ex-nm">${ex.nm}</div>
+        <div class="ex-kg" style="color:${col}">${ex.kg}</div>
+      </div>
+      <div class="ex-chips">
+        <span class="chip">${ex.sets}</span>
+        <span class="chip">RPE ${ex.rpe}</span>
+        <span class="chip">⏱ ${ex.rest}</span>
+      </div>
+      <div class="ex-note ${ex.warn?'warn':''}">${ex.note}</div>
+    </div>`).join('');
+
+  const wodHTML = d.wod ? `
+    <div class="sl">⚡ ${d.kind==='race'?'Estrategia de ritmo':'Sesión'} — ${d.wod.clk}</div>
+    <div class="wod" style="border-color:${col}44;background:${col}09">
+      <div class="wod-top">
+        <div>
+          <div class="wod-fmt" style="color:${col}">${d.wod.fmt}</div>
+          <div class="wod-nm">${d.wod.nm}</div>
+        </div>
+        <div class="wod-clk">${d.wod.clk}</div>
+      </div>
+      <div class="wod-div"></div>
+      <div class="wod-moves">${d.wod.moves.map((m,i)=>`
+        <div class="wod-mv"><div class="wod-n">${String(i+1).padStart(2,'0')}</div><div>${m}</div></div>`).join('')}</div>
+      <div class="wod-tip">💡 ${d.wod.tip}</div>
+    </div>` : '';
+
+  const optHTML = optional.length ? `
+    <div class="sl">🎯 Accesorio — si queda tiempo</div>
+    ${exHTML(optional)}` : '';
+  const mandHTML = mandatory.length ? `
+    <div class="sl">💪 ${d.kind==='fuerza'?'Fuerza obligatoria':'Fuerza'}</div>
+    ${exHTML(mandatory)}` : '';
+
+  const warmLbl = d.warmLabel || '🔆 Calentamiento';
+  const coolLbl = d.coolLabel || '🧊 Cooldown';
+
+  const warmBlock = (d.warmup||[]).length ? `
+    <div class="sl">${warmLbl}</div>
+    <div class="coll">
+      <div class="coll-hd" onclick="tog('w')">
+        <div class="coll-lbl">${d.kind==='race'?'Checklist':'Warm-up'}</div>
+        <div class="coll-ico" id="icw">+</div>
+      </div>
+      <div class="coll-bd" id="bdw">${warmHTML}</div>
+    </div>` : '';
+
+  const coolBlock = (d.cooldown||[]).length ? `
+    <div class="sl">${coolLbl}</div>
+    <div class="coll">
+      <div class="coll-hd" onclick="tog('c')">
+        <div class="coll-lbl">${d.kind==='race'?'Después de meta':'Cool-down'}</div>
+        <div class="coll-ico" id="icc">+</div>
+      </div>
+      <div class="coll-bd" id="bdc">${coolHTML}</div>
+    </div>` : '';
+
+  const restBlock = (d.rest||[]).length ? `
+    <div class="sl">🛌 Descanso</div>
+    <div class="coll">
+      <div class="coll-hd" onclick="tog('r')">
+        <div class="coll-lbl">Qué hacer hoy</div>
+        <div class="coll-ico" id="icr">+</div>
+      </div>
+      <div class="coll-bd" id="bdr">${restHTML}</div>
+    </div>` : '';
+
+  const tagsHTML = d.tags.map(t=>`<span class="htag" style="color:${col};border-color:${col}44">${t}</span>`).join('');
+
+  document.getElementById('page').innerHTML = `
+    <div class="hero">
+      <div class="hero-eyebrow">${d.eyebrow}</div>
+      <div class="hero-title" id="hero-title" style="color:${col}">${d.titleShort||d.title}</div>
+      <div class="hero-sub">${d.sub}</div>
+      <div class="hero-tags">${tagsHTML}</div>
+    </div>
+
+    ${d.id==='lun' || d.kind==='race' ? phaseInfoHTML : ''}
+
+    ${warmBlock}
+    ${wodHTML}
+    ${mandHTML}
+    ${optHTML}
+    ${restBlock}
+    ${coolBlock}
+  `;
+}
+
+// ══════════════════════════════════════════════════════════════ LOG
+const LOG_KEY = 'mm21k_log';
+
+function getWeekKey() {
+  const now = new Date();
+  const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+  const day = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  const wn = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return `${d.getUTCFullYear()}-W${String(wn).padStart(2,'0')}`;
+}
+
+let _mem = {};
+function loadLog() {
+  try { return JSON.parse(localStorage.getItem(LOG_KEY) || '{}'); }
+  catch(e) { return _mem[LOG_KEY] ? JSON.parse(_mem[LOG_KEY]) : {}; }
+}
+function saveLog(data) {
+  const s = JSON.stringify(data);
+  try { localStorage.setItem(LOG_KEY, s); } catch(e) {}
+  _mem[LOG_KEY] = s;
+}
+
+function renderLog() {
+  const wk = getWeekKey();
+  const allLog = loadLog();
+  const cur = allLog[wk] || {};
+  const days = curPhase.days;
+
+  const dayRows = days.map(d => {
+    const dk = d.id;
+    const dc = cur[dk] || {};
+    const feelBtns = [1,2,3,4,5].map(n=>`
+      <button class="feel-btn ${dc.feel==n?'sel':''}"
+        style="${dc.feel==n?`color:${d.color};background:${d.color}22`:'color:var(--muted2)'}"
+        onclick="setFeel('${wk}','${dk}',${n},this,'${d.color}')">${n}</button>`).join('');
+
+    const checkDefs = d.kind==='fuerza' ? [{k:'done',l:'Fuerza ✓'},{k:'molestia',l:'Molestia'}]
+      : d.kind==='descanso' ? [{k:'done',l:'Descanso real ✓'}]
+      : [{k:'done',l:'Sesión ✓'},{k:'buena',l:'Buenas sensaciones'}];
+    const checks = checkDefs.map(c=>`
+      <button class="chk-btn ${dc[c.k]?'on':''}"
+        style="${dc[c.k]?`color:${d.color};border-color:${d.color}66`:''}"
+        onclick="toggleChk('${wk}','${dk}','${c.k}',this,'${d.color}')">${c.l}</button>`).join('');
+
+    const isRun = d.kind==='run' || d.kind==='race';
+    const runInputs = isRun ? `
+      <div class="log-input-row">
+        <div class="log-input-lbl">Km</div>
+        <input class="log-input" type="text" placeholder="ej: 6.2" value="${dc.km||''}" oninput="setField('${wk}','${dk}','km',this.value)">
+        <div class="log-input-lbl">Ritmo</div>
+        <input class="log-input" type="text" placeholder="ej: 7'20&quot;" value="${dc.ritmo||''}" oninput="setField('${wk}','${dk}','ritmo',this.value)">
+      </div>
+      <div class="log-input-row">
+        <div class="log-input-lbl">FC media</div>
+        <input class="log-input" type="text" placeholder="ej: 155" value="${dc.fc||''}" oninput="setField('${wk}','${dk}','fc',this.value)">
+      </div>` : '';
+
+    return `
+      <div class="log-day-row">
+        <div class="log-day-hd">
+          <div class="log-day-name" style="color:${d.color}">${d.tab} — ${d.title}</div>
+          <div class="log-feel">${feelBtns}</div>
+        </div>
+        <div class="log-checks">${checks}</div>
+        <div class="log-inputs">
+          ${runInputs}
+          <div class="log-input-row">
+            <div class="log-input-lbl">Nota</div>
+            <textarea class="log-textarea" placeholder="libre..." oninput="setField('${wk}','${dk}','nota',this.value)">${dc.nota||''}</textarea>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  const saved = Object.entries(allLog)
+    .filter(([k])=>k!==wk)
+    .sort((a,b)=>b[0].localeCompare(a[0]))
+    .slice(0,10)
+    .map(([k,v])=>{
+      const rows = days.map(d=>{
+        const dd = v[d.id]||{};
+        const parts = [];
+        if(dd.done) parts.push('✓');
+        if(dd.km) parts.push(`${dd.km}km`);
+        if(dd.ritmo) parts.push(dd.ritmo);
+        if(dd.fc) parts.push(`❤️${dd.fc}`);
+        if(dd.feel) parts.push(`😤${dd.feel}`);
+        return `<div class="saved-row">
+          <div class="saved-key" style="color:${d.color}">${d.tab}</div>
+          <div class="saved-val">${parts.join(' · ')||'—'}</div>
+        </div>`;
+      }).join('');
+      const sueño = v.sueño ? `<div class="saved-row"><div class="saved-key">Sueño</div><div class="saved-val">${v.sueño}h · energía ${v.energia||'?'}</div></div>` : '';
+      const totalKm = v.km_semana ? `<div class="saved-row"><div class="saved-key">Total semana</div><div class="saved-val">${v.km_semana} km</div></div>` : '';
+      const nota = v.nota_semana ? `<div class="saved-row"><div class="saved-key">Nota</div><div class="saved-val">${v.nota_semana}</div></div>` : '';
+      return `
+        <div class="saved-week-card">
+          <div class="saved-hd" onclick="togSaved('${k}')">
+            <div class="saved-title">${k}</div>
+            <div class="saved-summary">${Object.keys(v).length} campos</div>
+          </div>
+          <div class="saved-body" id="saved-${k}">${totalKm}${rows}${sueño}${nota}</div>
+        </div>`;
+    }).join('');
+
+  document.getElementById('log-page').innerHTML = `
+    <div class="log-baseline">
+      🏁 <b>Punto de partida (24 ago 2026):</b> 3,15 km · 24:17 · ritmo 7'42"/km · FC media 158 · cadencia 152 spm · esfuerzo 6/10 moderado. Vuelve aquí en cada test de fase para ver cuánto has movido esta cifra.
+    </div>
+    <div class="sl">📋 Semana actual — ${wk} · ${curPhase.label}</div>
+    <div class="log-week">
+      <div class="log-week-hd">
+        <div class="log-week-title">Registro semanal</div>
+        <div class="log-week-num">${wk}</div>
+      </div>
+      ${dayRows}
+      <div class="log-week-footer">
+        <div class="log-sleep-row">
+          <div class="sleep-lbl">Km semana</div>
+          <input class="log-input" type="number" min="0" step="0.5" placeholder="0" style="max-width:70px"
+            value="${cur.km_semana||''}" oninput="setRootField('${wk}','km_semana',this.value)">
+          <div class="sleep-lbl">Sueño (h)</div>
+          <input class="log-input" type="number" min="3" max="12" step="0.5" placeholder="7.5" style="max-width:70px"
+            value="${cur.sueño||''}" oninput="setRootField('${wk}','sueño',this.value)">
+          <div class="sleep-lbl">Energía</div>
+          <input class="log-input" type="number" min="1" max="5" placeholder="3" style="max-width:55px"
+            value="${cur.energia||''}" oninput="setRootField('${wk}','energia',this.value)">
+        </div>
+      </div>
+      <div style="padding:0 16px 14px">
+        <textarea class="log-textarea" placeholder="Nota de la semana — lo que sea..." oninput="setRootField('${wk}','nota_semana',this.value)">${cur.nota_semana||''}</textarea>
+      </div>
+    </div>
+
+    <div class="saved-weeks">
+      <div class="sl">🗂 Historial</div>
+      ${saved || '<div class="empty-log">Aquí aparecerán tus semanas anteriores.<br>Empieza a registrar hoy.</div>'}
+    </div>
+  `;
+}
+
+function setFeel(wk, dk, n, btn, col) {
+  const log = loadLog();
+  if(!log[wk]) log[wk]={};
+  if(!log[wk][dk]) log[wk][dk]={};
+  log[wk][dk].feel = n;
+  saveLog(log);
+  btn.closest('.log-feel').querySelectorAll('.feel-btn').forEach((b,i)=>{
+    const v = i+1;
+    if(v===n){ b.classList.add('sel'); b.style.color=col; b.style.background=col+'22'; }
+    else { b.classList.remove('sel'); b.style.color=''; b.style.background=''; }
+  });
+}
+function toggleChk(wk, dk, field, btn, col) {
+  const log = loadLog();
+  if(!log[wk]) log[wk]={};
+  if(!log[wk][dk]) log[wk][dk]={};
+  log[wk][dk][field] = !log[wk][dk][field];
+  saveLog(log);
+  const on = log[wk][dk][field];
+  btn.classList.toggle('on', on);
+  btn.style.color = on ? col : '';
+  btn.style.borderColor = on ? col+'66' : '';
+}
+function setField(wk, dk, field, val) {
+  const log = loadLog();
+  if(!log[wk]) log[wk]={};
+  if(!log[wk][dk]) log[wk][dk]={};
+  log[wk][dk][field] = val;
+  saveLog(log);
+}
+function setRootField(wk, field, val) {
+  const log = loadLog();
+  if(!log[wk]) log[wk]={};
+  log[wk][field] = val;
+  saveLog(log);
+}
+function togSaved(k) {
+  document.getElementById('saved-'+k).classList.toggle('open');
+}
+
+// ══════════════════════════════════════════════════════════════ TIMER
+let tSec=0,tTarget=0,tRun=false,tDown=false,tIv=null,tSelBtn=null;
+function fmt(s){const m=Math.floor(Math.abs(s)/60);return `${m}:${(Math.abs(s)%60).toString().padStart(2,'0')}`;}
+function updT(){
+  const el=document.getElementById('tnum');
+  el.textContent=fmt(tSec);
+  el.classList.remove('go','warn');
+  if(tRun){ el.classList.add(tDown&&tSec<=10?'warn':'go'); }
+}
+function tSet(s,btn){
+  tReset();
+  if(tSelBtn) tSelBtn.classList.remove('sel');
+  tSelBtn=btn; btn.classList.add('sel');
+  tTarget=s; tSec=s; tDown=true; updT();
+}
+function tToggle(){
+  if(tRun){
+    clearInterval(tIv); tRun=false;
+    document.getElementById('tgo').textContent='INICIAR';
+    document.getElementById('tgo').className='tbtn t-go';
+    updT(); return;
+  }
+  tRun=true;
+  document.getElementById('tgo').textContent='PAUSA';
+  document.getElementById('tgo').className='tbtn t-stop';
+  tIv=setInterval(()=>{
+    if(tDown){ tSec--;
+      if(tSec<=0){
+        tSec=0; clearInterval(tIv); tRun=false;
+        document.getElementById('tgo').textContent='INICIAR';
+        document.getElementById('tgo').className='tbtn t-go';
+        try{navigator.vibrate&&navigator.vibrate([200,100,200,100,400]);}catch(e){}
+        if(tSelBtn){tSelBtn.classList.remove('sel');tSelBtn=null;}
+        document.getElementById('tnum').classList.add('warn');
+        return;
+      }
+    } else { tSec++; }
+    updT();
+  },1000);
+}
+function tReset(){
+  clearInterval(tIv); tRun=false; tDown=false; tSec=0;
+  document.getElementById('tgo').textContent='INICIAR';
+  document.getElementById('tgo').className='tbtn t-go';
+  if(tSelBtn){tSelBtn.classList.remove('sel');tSelBtn=null;}
+  updT();
+}
+
+// ══════════════════════════════════════════════════════════════ MOVILIDAD DATA — runner-specific
+const MOV_DAYS = [
+  {
+    id:'lun', label:'LUN', sublabel:'Psoas + Cadera',
+    focus:'Flexor de cadera · Glúteo · Activación',
+    insight:'<b>Por qué importa antes de correr fuerte:</b> horas sentado acortan el psoas y "apagan" el glúteo. Un glúteo dormido obliga a la cadena posterior e IT band a compensar en cada zancada — la causa nº1 de dolor lateral de rodilla en corredores.',
+    blocks:[
+      { emoji:'🦵', title:'Psoas — Liberación', duration:'4 min',
+        exs:[
+          { nm:'Couch Stretch', dur:'60-90\'\'/pierna', sets:'—', note:'Rodilla trasera en el suelo, pie apoyado en pared/sofá. Pelvis neutra, contrae el glúteo del lado trasero. El estiramiento más rentable para un corredor.' },
+          { nm:'Half-kneeling Hip Flexor Stretch', dur:'45\'\'/lado', sets:'—', note:'Empuja la cadera hacia delante sin arquear la lumbar. Brazo del mismo lado arriba para intensificar.' },
+        ] },
+      { emoji:'🍑', title:'Glúteo — Activación', duration:'4 min',
+        exs:[
+          { nm:'Glute Bridge isométrico', dur:'3×10\'\' hold', sets:'3 series', note:'Aprieta glúteo al máximo arriba. Objetivo: que el glúteo "se despierte" antes de correr o hacer fuerza.' },
+          { nm:'Clamshell', dur:'15/lado', sets:'2 series', note:'Glúteo medio — estabiliza la pelvis en cada apoyo. Añade banda sobre las rodillas si es fácil.' },
+          { nm:'Monster Walk con banda', dur:'10 pasos/lado', sets:'2 series', note:'Banda sobre tobillos, rodillas ligeramente flexionadas. Activa justo lo que necesitas para el rodaje de hoy.' },
+        ] },
+    ] },
+  {
+    id:'mar', label:'MAR', sublabel:'Tobillo + Pantorrilla',
+    focus:'Dorsiflexión · Gemelo/sóleo · Fascia plantar',
+    insight:'<b>El tobillo que no perdona:</b> cada zancada carga 2-3× tu peso corporal sobre el tren inferior. Un tobillo rígido en dorsiflexión fuerza al gemelo a sobretrabajar y es la antesala de la tendinopatía de Aquiles y la fascitis plantar.',
+    blocks:[
+      { emoji:'🦿', title:'Foam roller — Pantorrilla', duration:'3 min',
+        exs:[
+          { nm:'FR Gemelo + Sóleo', dur:'45\'\'/pierna', sets:'—', note:'Cruza la otra pierna encima para más presión. Busca el punto tenso y aguanta 20-30\'\' en vez de rodar rápido.' },
+          { nm:'FR Fascia plantar (pelota)', dur:'45\'\'/pie', sets:'—', note:'Rueda el arco del pie sobre una pelota de tenis. Especialmente útil tras las tiradas largas.' },
+        ] },
+      { emoji:'🦶', title:'Dorsiflexión + Fuerza de tobillo', duration:'5 min',
+        exs:[
+          { nm:'Dorsiflexión con pared', dur:'45\'\'/tobillo', sets:'2 series', note:'Pie a ~10 cm de la pared, lleva la rodilla hacia la pared sin levantar el talón. Mide tu progreso semana a semana.' },
+          { nm:'Elevación de talón excéntrica', dur:'12 reps/pierna', sets:'2 series', note:'Sube con las dos piernas, baja solo con una en 3\'\'. La mejor prevención de Aquiles que existe.' },
+          { nm:'Equilibrio a una pierna sobre superficie inestable', dur:'30\'\'/lado', sets:'2 series', note:'Cojín o toalla enrollada. Propiocepción de tobillo = menos esguinces en terreno irregular.' },
+        ] },
+    ] },
+  {
+    id:'mie', label:'MIÉ', sublabel:'Glúteo medio + Rotadores',
+    focus:'Estabilidad de cadera · IT Band · Piriforme',
+    insight:'<b>La rodilla del corredor casi nunca es la rodilla:</b> el dolor lateral (ITBS) casi siempre nace en un glúteo medio débil que deja caer la cadera contraria en cada apoyo. Fortalecer aquí es más eficaz que estirar el IT Band en sí (que es fascia, no se elonga bien).',
+    blocks:[
+      { emoji:'🫁', title:'Foam roller — Lateral', duration:'3 min',
+        exs:[
+          { nm:'FR Glúteo medio + TFL', dur:'45\'\'/lado', sets:'—', note:'De lado, FR bajo la cadera lateral. Pierna de encima cruzada por delante para más presión.' },
+          { nm:'FR Cuádriceps proximal', dur:'45\'\'/pierna', sets:'—', note:'Boca abajo, cerca de la cadera. Efecto directo sobre el recto femoral, muy activo al final de la tirada larga.' },
+        ] },
+      { emoji:'🔄', title:'Estabilidad de cadera', duration:'5 min',
+        exs:[
+          { nm:'Single-leg RDL sin peso', dur:'8/lado', sets:'3 series', note:'Control total, cadera nivelada. Entrena exactamente la estabilidad que necesitas en el apoyo unipodal de cada zancada.' },
+          { nm:'Estiramiento "figura 4" — Piriforme', dur:'45\'\'/lado', sets:'—', note:'Tumbado, cruza el tobillo sobre la rodilla contraria, lleva ambas piernas al pecho. El piriforme tenso puede comprimir el ciático.' },
+          { nm:'Side plank con abducción de cadera', dur:'10/lado', sets:'2 series', note:'Desde plancha lateral, eleva la pierna de arriba. Glúteo medio bajo carga real.' },
+        ] },
+    ] },
+  {
+    id:'jue', label:'JUE', sublabel:'Isquios + Cadena posterior',
+    focus:'Isquiotibiales · Lumbar · Flexibilidad activa',
+    insight:'<b>Isquios cortos, zancada corta:</b> la flexibilidad de isquios determina cuánto puedes extender la cadera en la fase de impulso. Trabajarlo con PNF (contracción-relajación) gana 2-3× más rango que el estiramiento pasivo puro.',
+    blocks:[
+      { emoji:'🦿', title:'Isquios — PNF', duration:'4 min',
+        exs:[
+          { nm:'Estiramiento isquio activo (PNF)', dur:'8 reps/pierna', sets:'2 series', note:'Pierna estirada en el aire, empuja el talón hacia el techo 5\'\', relaja 2\'\', gana un poco más de rango.' },
+          { nm:'Seated Good Morning (suelo)', dur:'45\'\'', sets:'—', note:'Sentado, espalda larga (no redonda), inclínate hacia delante hasta sentir tensión, no dolor.' },
+        ] },
+      { emoji:'🌀', title:'Lumbar + Core', duration:'4 min',
+        exs:[
+          { nm:'Cat-Cow', dur:'10 reps', sets:'—', note:'Moviliza la columna segmento a segmento — libera la lumbar que compensa cuando el glúteo se apaga en el km final.' },
+          { nm:'Dead bug', dur:'8/lado', sets:'2 series', note:'Espalda pegada al suelo todo el rato. Control de core sin cargar la lumbar — ideal como cierre del día.' },
+        ] },
+    ] },
+  {
+    id:'vie', label:'VIE', sublabel:'IT Band + Cuádriceps',
+    focus:'Cadena anterior · Core anti-rotación · Activación pre-tirada',
+    insight:'<b>Preparar el terreno para la tirada larga del sábado:</b> hoy es activación, no fatiga. El objetivo es que la cadera y el core lleguen listos para las horas de impacto repetitivo de mañana.',
+    blocks:[
+      { emoji:'🦵', title:'Cuádriceps + IT Band', duration:'4 min',
+        exs:[
+          { nm:'FR Cuádriceps completo', dur:'60\'\'/pierna', sets:'—', note:'De arriba a abajo del muslo, presión estática en los puntos tensos.' },
+          { nm:'FR IT Band', dur:'45\'\'/pierna', sets:'—', note:'Lateral del muslo, de cadera a rodilla. Si duele mucho, trabaja alrededor — es fascia densa, no músculo.' },
+        ] },
+      { emoji:'🧘', title:'Activación final', duration:'4 min',
+        exs:[
+          { nm:'Bird-dog', dur:'8/lado', sets:'2 series', note:'Control de tronco sin rotar la cadera — lo que sostiene tu postura en el km 15.' },
+          { nm:'Pallof Press', dur:'10/lado', sets:'2 series', note:'Anti-rotación con banda o mancuerna. Corto e intenso, no busca fatigar.' },
+        ] },
+    ] },
+  {
+    id:'sab', label:'SÁB', sublabel:'Post-tirada larga',
+    focus:'Recuperación profunda · Cuerpo completo',
+    insight:'<b>Después del esfuerzo más largo de la semana:</b> el objetivo hoy es puramente recuperación — bajar la inflamación y devolver longitud a los tejidos que más has usado.',
+    blocks:[
+      { emoji:'🦵', title:'Cuerpo completo — Foam roller', duration:'5 min',
+        exs:[
+          { nm:'FR Cuádriceps + Isquios + Gemelo', dur:'45\'\'/zona', sets:'—', note:'Recorrido lento, sin prisa. Hoy no se busca liberar rango, se busca bajar tensión.' },
+          { nm:'FR IT Band', dur:'45\'\'/lado', sets:'—', note:'Zona que más trabaja en tiradas largas — dale su tiempo.' },
+        ] },
+      { emoji:'🧘', title:'Estiramiento pasivo largo', duration:'6 min',
+        exs:[
+          { nm:'Couch Stretch', dur:'90\'\'/pierna', sets:'—', note:'Después de kilómetros de cadera en flexión repetida, esto devuelve extensión de cadera.' },
+          { nm:'Estiramiento isquio + gemelo de pie', dur:'45\'\'/lado', sets:'—', note:'Sin rebotar, respiración larga. Piernas en alto 10 min después si puedes.' },
+        ] },
+    ] },
+  {
+    id:'dom', label:'DOM', sublabel:'Descanso + Respiración',
+    focus:'Relajación general · Movilidad muy suave',
+    insight:'<b>El día que no se entrena pero sí se cuida:</b> movilidad general suave, sin buscar rango nuevo — solo mantener el cuerpo despierto para la semana que empieza mañana.',
+    blocks:[
+      { emoji:'🧘', title:'Movilidad suave general', duration:'6 min',
+        exs:[
+          { nm:'Cat-Cow + World\'s Greatest Stretch', dur:'8 reps + 3/lado', sets:'—', note:'Movimiento fluido, sin forzar ningún rango. Despierta articulaciones sin generar fatiga.' },
+          { nm:'Child\'s Pose + respiración', dur:'60\'\'', sets:'—', note:'Respiración diafragmática lenta — activa el sistema nervioso parasimpático, clave para recuperar de verdad.' },
+        ] },
+    ] },
+];
+
+let curMovDay = MOV_DAYS[0];
+
+function renderMov() {
+  const d = curMovDay;
+  const tabsHTML = MOV_DAYS.map(md=>`
+    <button class="mov-dtab ${md.id===d.id?'active':''}" onclick="selMovDay('${md.id}')">${md.label}</button>
+  `).join('');
+
+  const blocksHTML = d.blocks.map((bl,bi)=>{
+    const bid = 'mb'+d.id+bi;
+    const exsHTML = bl.exs.map(ex=>`
+      <div class="mov-ex">
+        <div class="mov-ex-bar"></div>
+        <div class="mov-ex-name">${ex.nm}</div>
+        <div class="mov-ex-chips">
+          <span class="chip">${ex.dur}</span>
+          ${ex.sets!=='—'?`<span class="chip">${ex.sets}</span>`:''}
+          ${ex.nm.toLowerCase().includes('foam') || ex.nm.toLowerCase().includes('fr ')?'<span class="chip mov-fr-tag">FOAM ROLLER</span>':''}
+        </div>
+        <div class="mov-ex-note">${ex.note}</div>
+      </div>`).join('');
+    return `
+      <div class="mov-block">
+        <div class="mov-block-hd" onclick="togMovBlock('${bid}','${bid}ico')">
+          <div class="mov-block-title">${bl.emoji} ${bl.title}</div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div class="mov-block-meta">${bl.duration}</div>
+            <div class="coll-ico" id="${bid}ico">+</div>
+          </div>
+        </div>
+        <div class="mov-block-body" id="${bid}">${exsHTML}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('mov-page').innerHTML = `
+    <div class="mov-hero">
+      <div class="hero-eyebrow">Diaria · 10-20 min · Prevención de lesiones</div>
+      <div class="hero-title" id="mov-hero-title" style="color:var(--mov)">MOVILIDAD</div>
+      <div class="hero-sub">${d.focus}</div>
+      <div class="mov-day-tabs">${tabsHTML}</div>
+    </div>
+
+    <div class="mov-insight">${d.insight}</div>
+
+    ${blocksHTML}
+  `;
+  requestAnimationFrame(() => fitTitleEl('mov-hero-title'));
+}
+
+function selMovDay(id) {
+  curMovDay = MOV_DAYS.find(d=>d.id===id);
+  renderMov();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function togMovBlock(bodyId, icoId) {
+  document.getElementById(bodyId).classList.toggle('open');
+  document.getElementById(icoId).classList.toggle('open');
+}
+
+// ══════════════════════════════════════════════════════════════ INIT
+(function(){
+  const wd = new Date().getDay(); // 0=sun,1=mon,2=tue,3=wed,4=thu,5=fri,6=sat
+  const map = {0:'dom',1:'lun',2:'mar',3:'mie',4:'jue',5:'vie',6:'sab'};
+  if(map[wd]) curMovDay = MOV_DAYS.find(d=>d.id===map[wd]) || MOV_DAYS[0];
+  if(map[wd]) { const dd = curPhase.days.find(d=>d.id===map[wd]); if(dd) curDay = dd; }
+})();
+renderPhasePills();
+renderTabs();
+renderPage();
+requestAnimationFrame(fitHeroTitle);
+</script>
+</body>
+</html>
