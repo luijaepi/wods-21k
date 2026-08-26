@@ -124,6 +124,9 @@ body {
 .prog-wk { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); white-space: nowrap; }
 .prog-km { font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 500; white-space: nowrap; }
 .prog-note { font-size: 11.5px; color: var(--muted2); line-height: 1.5; }
+.prog-now { background: rgba(232,255,71,0.07); }
+.prog-now .prog-wk, .prog-now .prog-km { color: var(--sab); }
+.prog-now-tag { font-family: 'Syne', sans-serif; font-size: 8.5px; font-weight: 800; letter-spacing: .08em; background: var(--sab); color: #090909; border-radius: 4px; padding: 2px 5px; margin-left: 4px; white-space: nowrap; }
 
 /* ── SECTION LABEL ── */
 .sl { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; color: var(--muted); text-transform: uppercase; margin: 20px 0 11px; display: flex; align-items: center; gap: 10px; }
@@ -425,10 +428,10 @@ const PHASES = [
     objetivo:'Base aeróbica pura en Z2 — sin excepciones. 3 carreras + 3 sesiones de tu WODS por semana, 1 descanso total. Con 85 kg / 1,70 m el impacto por zancada es mayor que el de un corredor ligero: progresión conservadora, sin subir distancia ni carga de golpe. <b>Punto de partida real (24 ago):</b> 3,15 km en 24:17 (7\'42"/km), FC media 158 (pico 167), RPE percibido 7-8/10.',
     volKm:'3 carreras · 15 → 45 min c/u', longKm:'sin tirada larga todavía', zona:'Z2 125-140 lpm',
     progression:[
-      {wk:'Sem 1-3', larga:'15-20 min', semanal:'3× por semana', nota:'Adaptación pura. RPE 3-4, si hace falta corta a andar sin complejos — esto es hábito, no rendimiento.'},
-      {wk:'Sem 4-6', larga:'20-28 min', semanal:'3× por semana', nota:'El cuerpo empieza a reconocer el gesto. Cadencia sube de forma natural con la confianza.'},
-      {wk:'Sem 7-10', larga:'28-36 min', semanal:'3× por semana', nota:'Notarás que el CrossFit de Mar/Jue/Sáb ya no te dificulta tanto correr al día siguiente.'},
-      {wk:'Sem 11-14', larga:'36-45 min', semanal:'3× por semana', nota:'Cierre de fase. Test de esfuerzo controlado al final para recalibrar zonas antes de Fase 2.'},
+      {wk:'Sem 1-3', ws:1, we:3, larga:'15-20 min', semanal:'3× por semana', nota:'Adaptación pura. RPE 3-4, si hace falta corta a andar sin complejos — esto es hábito, no rendimiento.'},
+      {wk:'Sem 4-6', ws:4, we:6, larga:'20-28 min', semanal:'3× por semana', nota:'El cuerpo empieza a reconocer el gesto. Cadencia sube de forma natural con la confianza.'},
+      {wk:'Sem 7-10', ws:7, we:10, larga:'28-36 min', semanal:'3× por semana', nota:'Notarás que el CrossFit de Mar/Jue/Sáb ya no te dificulta tanto correr al día siguiente.'},
+      {wk:'Sem 11-14', ws:11, we:14, larga:'36-45 min', semanal:'3× por semana', nota:'Cierre de fase. Test de esfuerzo controlado al final para recalibrar zonas antes de Fase 2.'},
     ],
     days:[
       { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
@@ -487,10 +490,10 @@ const PHASES = [
     objetivo:'80/20 polarizado: el 80% del volumen de carrera se queda en Z2, con 1 sola sesión de calidad a la semana (fartlek/progresivo suave en Z3-Z4). El CrossFit baja a 2-3 días para dejar sitio a la carrera, pero se mantiene con foco en fuerza específica de pierna/cadera y el trabajo anti-lumbar.',
     volKm:'4 carreras/semana · 25-55 min', longKm:'la del sábado empieza a estirarse (hasta 60 min)', zona:'Z2 125-140 + 1× Z3-Z4 146-166',
     progression:[
-      {wk:'Sem 15-18', larga:'25-35 min', semanal:'4 carreras + 2-3 CrossFit', nota:'Primera semana con día de calidad — no lo confundas con serie máxima, es fartlek suave, controlado.'},
-      {wk:'Sem 19-22', larga:'35-45 min', semanal:'4 carreras + 2-3 CrossFit', nota:'El sábado ya es sensiblemente más largo que el resto — empieza a sentirse como "la carrera de la semana".'},
-      {wk:'Sem 23-26', larga:'45-55 min', semanal:'4 carreras + 2-3 CrossFit', nota:'Semana de descarga cada 4ª: baja el volumen un 25-30% para asimilar. No la saltes por sentirte bien.'},
-      {wk:'Sem 27-29', larga:'50-60 min', semanal:'4 carreras + 2-3 CrossFit', nota:'Cierre de fase. Test de esfuerzo de nuevo — probablemente tus zonas ya se hayan movido, ajustamos si hace falta.'},
+      {wk:'Sem 15-18', ws:15, we:18, larga:'25-35 min', semanal:'4 carreras + 2-3 CrossFit', nota:'Primera semana con día de calidad — no lo confundas con serie máxima, es fartlek suave, controlado.'},
+      {wk:'Sem 19-22', ws:19, we:22, larga:'35-45 min', semanal:'4 carreras + 2-3 CrossFit', nota:'El sábado ya es sensiblemente más largo que el resto — empieza a sentirse como "la carrera de la semana".'},
+      {wk:'Sem 23-26', ws:23, we:26, larga:'45-55 min', semanal:'4 carreras + 2-3 CrossFit', nota:'Semana de descarga cada 4ª: baja el volumen un 25-30% para asimilar. No la saltes por sentirte bien.'},
+      {wk:'Sem 27-29', ws:27, we:29, larga:'50-60 min', semanal:'4 carreras + 2-3 CrossFit', nota:'Cierre de fase. Test de esfuerzo de nuevo — probablemente tus zonas ya se hayan movido, ajustamos si hace falta.'},
     ],
     days:[
       { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
@@ -539,10 +542,10 @@ const PHASES = [
     objetivo:'Tirada larga semanal creciendo hasta 16-18 km, series a ritmo umbral, descarga cada 4ª semana. <b>Nota sobre el calendario:</b> tu carrera está a ~14,5 meses vista, no a 12 exactos — he alargado esta fase respecto al esquema original de "meses 7-10" para que la construcción de kilometraje sea más gradual, cuidando rodillas y lumbar con tu peso actual. La idea no cambia, solo el tiempo que le dedicamos.',
     volKm:'35-50 km/semana', longKm:'10 → 18 km', zona:'Z2 base + Z3-Z4 umbral',
     progression:[
-      {wk:'Bloque 1', larga:'10-12 km', semanal:'35-38 km', nota:'Primera tirada larga "de verdad" medida en km, no en minutos. El resto de la semana sigue igual.'},
-      {wk:'Bloque 2', larga:'12-14 km', semanal:'38-42 km', nota:'Las series del jueves ya son a ritmo umbral real, no fartlek suave.'},
-      {wk:'Bloque 3', larga:'14-16 km', semanal:'42-46 km', nota:'Descarga cada 4ª semana: -25/30% de volumen. Si notas la lumbar o la rodilla resentida, esa semana de descarga se respeta al 100%.'},
-      {wk:'Bloque 4 (pico)', larga:'16-18 km', semanal:'46-50 km', nota:'Semana pico. Simulacro con zapatillas y avituallamiento reales — nada nuevo el día de la carrera de Valencia.'},
+      {wk:'Bloque 1', ws:30, we:35, larga:'10-12 km', semanal:'35-38 km', nota:'Primera tirada larga "de verdad" medida en km, no en minutos. El resto de la semana sigue igual.'},
+      {wk:'Bloque 2', ws:36, we:42, larga:'12-14 km', semanal:'38-42 km', nota:'Las series del jueves ya son a ritmo umbral real, no fartlek suave.'},
+      {wk:'Bloque 3', ws:43, we:49, larga:'14-16 km', semanal:'42-46 km', nota:'Descarga cada 4ª semana: -25/30% de volumen. Si notas la lumbar o la rodilla resentida, esa semana de descarga se respeta al 100%.'},
+      {wk:'Bloque 4 (pico)', ws:50, we:54, larga:'16-18 km', semanal:'46-50 km', nota:'Semana pico. Simulacro con zapatillas y avituallamiento reales — nada nuevo el día de la carrera de Valencia.'},
     ],
     days:[
       { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
@@ -591,10 +594,10 @@ const PHASES = [
     objetivo:'Bajas volumen sin perder chispa. El cuerpo ya tiene la forma hecha — toca llegar fresco, afilado y con confianza a la línea de salida del Medio Maratón de Valencia. <b>Ojo:</b> la fecha exacta (17 oct 2027, domingo) es una suposición razonable — en cuanto tengas la fecha oficial de inscripción, ajustamos el taper a los días exactos.',
     volKm:'38 → 12-15 km/sem', longKm:'14 km → shakeout', zona:'Z2 mantenimiento + toques de ritmo objetivo',
     progression:[
-      {wk:'Sem -5/-4', larga:'12-14 km', semanal:'30-38 km', nota:'Primer recorte de volumen (~20%). La intensidad se mantiene — solo baja el volumen.'},
-      {wk:'Sem -3/-2', larga:'8-10 km', semanal:'24-28 km', nota:'Taper real. Vas a sentir las piernas "raras" de frescas — es normal, es la supercompensación funcionando.'},
-      {wk:'Sem -1', larga:'5-6 km con toques de ritmo', semanal:'18-22 km', nota:'Última semana completa antes de la semana de carrera. Confía en el trabajo hecho.'},
-      {wk:'Semana de carrera', larga:'—', semanal:'12-15 km + 21,1K domingo', nota:'Lun/Mar sesiones cortas con toques de ritmo, Mié-Vie descanso casi total, Sáb descanso completo, Dom: carrera.'},
+      {wk:'Sem -5/-4', ws:55, we:56, larga:'12-14 km', semanal:'30-38 km', nota:'Primer recorte de volumen (~20%). La intensidad se mantiene — solo baja el volumen.'},
+      {wk:'Sem -3/-2', ws:57, we:58, larga:'8-10 km', semanal:'24-28 km', nota:'Taper real. Vas a sentir las piernas "raras" de frescas — es normal, es la supercompensación funcionando.'},
+      {wk:'Sem -1', ws:59, we:59, larga:'5-6 km con toques de ritmo', semanal:'18-22 km', nota:'Última semana completa antes de la semana de carrera. Confía en el trabajo hecho.'},
+      {wk:'Semana de carrera', ws:60, we:60, larga:'—', semanal:'12-15 km + 21,1K domingo', nota:'Lun/Mar sesiones cortas con toques de ritmo, Mié-Vie descanso casi total, Sáb descanso completo, Dom: carrera.'},
     ],
     days:[
       { id:'lun', tab:'LUN', color:'#ff4560', kind:'fuerza',
@@ -788,20 +791,25 @@ function renderPage() {
       ${caution ? `<div class="wod-caution">⚠️ ${caution}</div>` : ''}`;
   }
 
+  const planWeekNow = weeksSincePhaseStart(PHASES[0]) + 1;
+  const isCurPhaseNow = p.id === CURRENT_PHASE_ID;
   const progHTML = `
     <div class="sl">📈 Progresión — ${p.label}</div>
     <div class="prog-wrap">
       <table class="prog-table">
         <thead><tr><th>Bloque</th><th>Sesión clave</th><th>Volumen</th></tr></thead>
         <tbody>
-          ${p.progression.map(r=>`
-            <tr><td class="prog-wk">${r.wk}</td><td class="prog-km">${r.larga}</td><td class="prog-km">${r.semanal}</td></tr>
-            <tr><td colspan="3" class="prog-note" style="padding-top:0">${r.nota}</td></tr>`).join('')}
+          ${p.progression.map(r=>{
+            const isNow = isCurPhaseNow && r.ws!=null && planWeekNow>=r.ws && planWeekNow<=r.we;
+            return `
+            <tr class="${isNow?'prog-now':''}"><td class="prog-wk">${r.wk}${isNow?' <span class="prog-now-tag">AHORA</span>':''}</td><td class="prog-km">${r.larga}</td><td class="prog-km">${r.semanal}</td></tr>
+            <tr class="${isNow?'prog-now':''}"><td colspan="3" class="prog-note" style="padding-top:0">${r.nota}</td></tr>`;
+          }).join('')}
         </tbody>
       </table>
     </div>`;
 
-  const phaseInfoHTML = `
+  const phaseObjHTML = `
     <div class="phase-info">
       <div class="phase-info-title">${p.label} <span style="color:var(--muted2);font-weight:600">— ${p.short}</span></div>
       <div class="phase-info-range">${p.range}</div>
@@ -811,8 +819,9 @@ function renderPage() {
         <div class="phase-stat"><b>Sesión clave</b><span>${p.longKm}</span></div>
         <div class="phase-stat"><b>Zona</b><span>${p.zona}</span></div>
       </div>
-    </div>
-    ${progHTML}`;
+    </div>`;
+  const showObj = d.id==='lun' || d.kind==='race';
+  const showProg = showObj || d.kind==='run';
 
   const notesHTML = d.notes ? `
     <div class="sl">${d.notes.label}</div>
@@ -874,7 +883,8 @@ function renderPage() {
       <div class="hero-sub">${sub}</div>
       <div class="hero-tags">${tagsHTML}</div>
     </div>
-    ${d.id==='lun' || d.kind==='race' ? phaseInfoHTML : ''}
+    ${showObj ? phaseObjHTML : ''}
+    ${showProg ? progHTML : ''}
     ${notesHTML}
     ${warmBlock}
     ${pickHTML}
