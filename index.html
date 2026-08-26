@@ -142,15 +142,13 @@ body {
 .ci b { color: #ccc; font-weight: 600; }
 .ci-dot { flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; margin-top: 7px; }
 
-/* ── WOD PICKER ── */
+/* ── WOD PRESCRITO ── */
 .wod-pick-lbl { font-size: 10px; font-weight: 700; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; margin: 14px 0 8px; }
 .wod-pick-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
-.wod-pick {
-  font-family: 'Syne', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; padding: 0 12px;
-  min-height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--s2); color: var(--muted2);
-  cursor: pointer; transition: all 0.15s;
+.wod-rx {
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: .03em; padding: 0 14px;
+  min-height: 36px; border-radius: 9px; color: #090909; display: flex; align-items: center;
 }
-.wod-pick.active { color: #090909; border-color: transparent; }
 .wod-caution {
   margin: 4px 0 4px; padding: 10px 13px; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25);
   border-radius: 10px; font-size: 12px; color: #f0b656; line-height: 1.6;
@@ -353,7 +351,7 @@ const COOL_STRENGTH = [
 const WODS_SESSIONS = [
   {
     id:'cuadriceps', label:'CUÁDRICEPS', color:'#6ee7b7',
-    caution:'Es tu día de más carga de pierna. Si mañana toca tirada larga, mejor elige otra sesión hoy.',
+    caution:'Tu día de más carga de pierna del rotativo — la programación lo mantiene siempre lejos del día antes de tu carrera larga de la semana.',
     wod:{ fmt:'AMRAP', nm:'AL LÍMITE', clk:'10\'',
       moves:['10 KB Swings rusos — 24 kg','10 Box Step-ups alternos','150m Remo — sprint, no pace','→ cuenta rondas, anota tu récord'],
       tip:'<b>Estrategia:</b> primera ronda al 85%, de ahí todo. El remo en sprint real — si mantienes conversación no estás trabajando.' },
@@ -366,7 +364,7 @@ const WODS_SESSIONS = [
     ] },
   {
     id:'pecho', label:'PECHO', color:'#ff4560',
-    caution:'⚠️ Hombro: Dips y Landmine/Arnold son las variantes ya adaptadas a tu limitación — si algo cruje o duele, omite sin negociar.',
+    caution:'Hombro: Dips y Landmine/Arnold son las variantes ya adaptadas a tu limitación — si algo cruje o duele, omite sin negociar.',
     wod:{ fmt:'EMOM', nm:'CON CARGA', clk:'12\'',
       moves:['Min 1 — 10 DB Floor Press (18-20 kg)','Min 2 — 10 Burpees','Min 3 — 12 cal Assault Bike sprint','Min 4 — Descanso activo','→ 3 rondas completas'],
       tip:'<b>Floor Press:</b> pausa 1\'\' en el suelo en cada rep. <b>Assault Bike:</b> sprint real, no paseo.' },
@@ -392,7 +390,7 @@ const WODS_SESSIONS = [
     ] },
   {
     id:'gluteo', label:'GLÚTEO / ISQUIOS', color:'#b97cff',
-    caution:'RDL + Hip Thrust = la sesión de mayor exigencia lumbar-adyacente del plan (aunque sin flexión de columna cargada). Evítala el día antes de tu tirada larga si puedes elegir.',
+    caution:'RDL + Hip Thrust: la sesión de mayor exigencia lumbar-adyacente del plan (sin flexión de columna cargada). La programación la mantiene siempre lejos del día antes de tu carrera larga.',
     wod:{ fmt:'CHIPPER', nm:'SIN VUELTA ATRÁS', clk:'cap 14\'',
       moves:['20 cal Assault Bike — sprint de salida','15 KB Swings rusos — 24 kg','12 Jumping Lunges','10 Devil\'s Press hasta hombros — 8 kg','150m SkiErg','8 Burpee Step-ups','→ un solo paso por cada bloque'],
       tip:'<b>Estrategia:</b> Assault Bike fuerte para entrar en ritmo. Devil\'s Press cuando ya estás fundido — ahí se define.' },
@@ -441,6 +439,7 @@ const PHASES = [
           'Tus zonas manuales: <b>Z1 &lt;134 · Z2 125-140 · Z3 146-156 · Z4 157-166 · Z5 167+</b> — hay un pequeño solape Z1/Z2 (125-134) en tu configuración actual; lo dejamos tal cual salvo que quieras afinarlo',
           'La alerta de "FC alta" a 140 solo salta en reposo (10 min sin actividad) — NO te avisa corriendo. Para eso necesitas activar la <b>alerta de zona dentro del propio entreno</b>: abre la app Entrenamiento en el reloj, desliza a "Alertas" antes de pulsar Iniciar, y activa "Zona de FC" seleccionando tu Z2. Si no aparece exactamente así en tu pantalla (puede variar con watchOS 26.6), pruébalo también desde la app Fitness del iPhone creando un entrenamiento personalizado con objetivo de zona — dime qué ves y lo afinamos.',
           'Mientras tanto: chequeo visual a la pantalla de "Zona" cada 3-4 min + test del habla como respaldo',
+          'Sobre el CrossFit: ya no eliges sesión — cada día de fuerza tiene la suya fija (verás "Hoy toca: X" al entrar). Rota para que las 5 se trabajen con la frecuencia justa, con Hombro/Brazo cada semana por tu limitación, y sin poner nunca pierna pesada (Cuádriceps/Glúteo-Isquios) el día antes de tu carrera más larga de la semana.',
           'Nombre del repo: ya está creado como <b>wods-21k</b> — es una de tus opciones (RUN-WOD, half-wod, wods-21k, aerowod, wods-half-marathon), lo doy por elegido salvo que prefieras otro',
         ]},
         wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑',
@@ -448,7 +447,7 @@ const PHASES = [
           tip:'<b>Test del habla:</b> si no puedes mantener una conversación con frases completas, vas demasiado rápido. Con tu peso actual, ir "ridículamente lento" al principio es la decisión más inteligente que puedes tomar — el aeróbico y las articulaciones lo agradecen igual.' },
         strength:[], cooldown:COOL_RUN },
       { id:'mar', tab:'MAR', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Martes · CrossFit · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Elige qué sesión de tu rutina toca hoy',
+        eyebrow:'Martes · CrossFit · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Alterna Pecho/Espalda cada 2 semanas — hoy toca la que ves abajo, sin darle más vueltas',
         tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'mie', tab:'MIÉ', color:'#47c9ff', kind:'run',
         eyebrow:'Miércoles · Carrera · Fase Cimentación', title:'CARRERA Z2', sub:'Mismo Z2 — nota cómo responden las piernas tras el CrossFit de ayer',
@@ -458,7 +457,7 @@ const PHASES = [
           tip:'Este día enseña algo distinto al lunes: correr con piernas que ya han trabajado. Esa sensación es exactamente la que necesitarás gestionar en la media maratón.' },
         strength:[], cooldown:COOL_RUN },
       { id:'jue', tab:'JUE', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Jueves · CrossFit · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Elige qué sesión de tu rutina toca hoy',
+        eyebrow:'Jueves · CrossFit · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — por tu limitación, este trabajo va cada semana sin excepción',
         tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'vie', tab:'VIE', color:'#6ee7b7', kind:'run',
         eyebrow:'Viernes · Carrera · Fase Cimentación', title:'CARRERA Z2 — LA MÁS LARGA', sub:'La carrera de la semana que más se estira — la semilla de tu futura tirada larga',
@@ -468,8 +467,8 @@ const PHASES = [
           tip:'Mañana toca tu CrossFit más intenso de la semana — corre hoy dejando margen, no exprimas el depósito.' },
         strength:[], cooldown:COOL_RUN },
       { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'fuerza',
-        eyebrow:'Sábado · CrossFit · Fase Cimentación', title:'CROSSFIT — EL MÁS INTENSO', titleShort:'CROSSFIT', sub:'Tu sesión más exigente de la semana — mañana descansas completo',
-        tags:['45 MIN','EL MÁS DURO','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, suggestId:'gluteo', cooldown:COOL_STRENGTH },
+        eyebrow:'Sábado · CrossFit · Fase Cimentación', title:'CROSSFIT — EL MÁS INTENSO', titleShort:'CROSSFIT', sub:'Alterna Cuádriceps/Glúteo-Isquios — tu día de pierna más duro, con descanso total detrás',
+        tags:['45 MIN','EL MÁS DURO','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'dom', tab:'DOM', color:'#6a6a6a', kind:'descanso',
         eyebrow:'Domingo · Descanso · Fase Cimentación', title:'DESCANSO', sub:'El entreno que no se ve pero que más rinde',
         tags:['0 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
@@ -502,7 +501,7 @@ const PHASES = [
           tip:'La regla 80/20 falla más por exceso de ganas en los días fáciles que por falta de esfuerzo en el día de calidad. Este día se corre lento aunque te sobren fuerzas.' },
         strength:[], cooldown:COOL_RUN },
       { id:'mar', tab:'MAR', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Martes · CrossFit · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Elige qué sesión toca hoy — foco en pierna/cadera y core anti-lumbar',
+        eyebrow:'Martes · CrossFit · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Rota Cuádriceps→Pecho→Glúteo-Isquios→Espalda cada 4 semanas — foco en pierna/cadera y core anti-lumbar',
         tags:['40 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'mie', tab:'MIÉ', color:'#47c9ff', kind:'run',
         eyebrow:'Miércoles · Carrera · Fase Desarrollo', title:'CARRERA Z2', sub:'Z2 conversacional, de relleno entre los dos días fuertes',
@@ -518,8 +517,8 @@ const PHASES = [
           tip:'Esta es la única sesión de la semana donde subes de Z2 corriendo — con tu peso actual, controla la técnica bajo fatiga: si la zancada se descontrola, corta el bloque en vez de forzar.' },
         strength:[], cooldown:COOL_RUN },
       { id:'vie', tab:'VIE', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Viernes · CrossFit · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Segunda sesión de fuerza — opcional una 3ª si el cuerpo responde bien',
-        tags:['40 MIN','FUERZA','2-3 / SEM'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+        eyebrow:'Viernes · CrossFit · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — ligero a propósito, mañana toca tu carrera más larga de la semana',
+        tags:['40 MIN','FUERZA','2 FIJAS/SEM'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
         eyebrow:'Sábado · Carrera · Fase Desarrollo', title:'CARRERA Z2 — LA MÁS LARGA', sub:'Empieza a ser tu "tirada de la semana", sin presión todavía',
         tags:['30→60 MIN','Z2 125-140','LA MÁS LARGA'], warmup:WARM_LONG,
@@ -553,7 +552,7 @@ const PHASES = [
           tip:'El volumen alto solo funciona si el 80% es de verdad suave — resiste la tentación de acelerar porque "te sientes fuerte".' },
         strength:[], cooldown:COOL_RUN },
       { id:'mar', tab:'MAR', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Martes · CrossFit mantenimiento · Fase Específico', title:'CROSSFIT — MANTENIMIENTO', titleShort:'CROSSFIT', sub:'1x/semana — la carrera manda ahora, la fuerza se mantiene',
+        eyebrow:'Martes · CrossFit mantenimiento · Fase Específico', title:'CROSSFIT — MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Rotativo de las 5 sesiones, una por semana — la carrera manda ahora, la fuerza se mantiene',
         tags:['30-35 MIN','MANTENIMIENTO','1× SEM'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'mie', tab:'MIÉ', color:'#47c9ff', kind:'run',
         eyebrow:'Miércoles · Carrera · Fase Específico', title:'CARRERA Z2', sub:'Z2 conversacional, volumen alto, mente descansada',
@@ -568,11 +567,10 @@ const PHASES = [
           moves:['10-12 min calentamiento (incluido en warm-up)','4-6 × 1000-1600m a Z3-Z4 (146-166 lpm), recuperación 2-3\' trote suave','10 min vuelta a la calma'],
           tip:'<b>Ritmo umbral</b> = el que podrías mantener 1 hora en competición si te apretaran. Controla la técnica bajo fatiga — con tu peso actual, la forma se degrada antes que la voluntad.' },
         strength:[], cooldown:COOL_RUN },
-      { id:'vie', tab:'VIE', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Viernes · Descanso o CrossFit ligero · Fase Específico', title:'DESCANSO / CROSSFIT LIGERO', sub:'Opcional — prioriza llegar fresco a la tirada larga del sábado',
-        tags:['0-30 MIN','OPCIONAL','LIGERO'], warmup:WARM_STRENGTH, wodOptions:true,
-        rest:['Si las piernas están cargadas de la semana, hoy es descanso puro — sin culpa','Si el cuerpo pide moverse, elige la sesión de HOMBRO/BRAZO (abajo) — es la más ligera de las 5 y no compromete la tirada larga de mañana'],
-        cooldown:COOL_STRENGTH },
+      { id:'vie', tab:'VIE', color:'#6a6a6a', kind:'descanso',
+        eyebrow:'Viernes · Descanso · Fase Específico', title:'DESCANSO', sub:'Sin CrossFit — mañana es la sesión más importante del plan, llegas fresco sí o sí',
+        tags:['0 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
+        rest:['Nada de CrossFit hoy, ni ligero — con el volumen de carrera de esta fase, la tirada larga de mañana pesa más que cualquier accesorio','Movilidad suave 10-15 min si te apetece (pestaña MOV), nada más','Hidrátate y duerme bien esta noche pensando en la tirada de mañana'] },
       { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
         eyebrow:'Sábado · Tirada Larga · Fase Específico', title:'TIRADA LARGA', sub:'La sesión más importante de la semana, sin excepción',
         tags:['10→18 KM','Z2 + RITMO','LA CLAVE'], warmup:WARM_LONG,
@@ -600,10 +598,8 @@ const PHASES = [
     ],
     days:[
       { id:'lun', tab:'LUN', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Lunes · CrossFit muy ligero · Fase Afine', title:'CROSSFIT DE MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Carga a la mitad — mantener el patrón, no generar fatiga',
-        tags:['20 MIN','MUY LIGERO','OPCIONAL'], warmup:WARM_STRENGTH, wodOptions:true,
-        rest:['Prioriza la sesión de HOMBRO/BRAZO (abajo) si tienes dudas — es la más segura para esta fase'],
-        cooldown:COOL_STRENGTH },
+        eyebrow:'Lunes · CrossFit muy ligero · Fase Afine', title:'CROSSFIT DE MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — la única sesión con carga externa que queda en el plan',
+        tags:['20 MIN','MUY LIGERO'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'mar', tab:'MAR', color:'#6ee7b7', kind:'run',
         eyebrow:'Martes · Series cortas · Fase Afine', title:'SERIES CORTAS Y RÁPIDAS', sub:'Mantener el contacto con la velocidad, sin fatiga',
         tags:['25-30 MIN','AFILADO','POCO VOLUMEN'], warmup:WARM_INTERVAL,
@@ -683,7 +679,6 @@ const CURRENT_PHASE_ID = getCurrentPhaseId();
 let curPhase = PHASES.find(p=>p.id===CURRENT_PHASE_ID) || PHASES[0];
 let curDay = curPhase.days[0];
 let curView = 'train';
-let wodSel = {};
 
 // ══════════════════════════════════════════════════════════════ VIEW SWITCH
 function switchView(v) {
@@ -738,29 +733,38 @@ function tog(id) {
   document.getElementById('ic'+id).classList.toggle('open');
 }
 
-// ══════════════════════════════════════════════════════════════ WOD PICKER
-function isoWeekNum() {
+// ══════════════════════════════════════════════════════════════ WOD PRESCRITO
+// Nada de elegir: cada slot de CrossFit tiene una sesión fija asignada, rotando
+// por semanas donde hace falta reparto. Reglas de diseño (evitar pierna pesada
+// justo antes de la tirada más larga de la semana; Hombro/Brazo semanal por tu
+// limitación de hombro; Sábado siempre el día de pierna más exigente porque
+// detrás viene el descanso total del domingo):
+function mod(n, m) { return ((n % m) + m) % m; }
+function weeksSincePhaseStart(phase) {
+  const start = new Date(phase.start + 'T00:00:00Z');
   const now = new Date();
-  const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-  const day = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - day);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return Math.floor((now - start) / (7*24*3600*1000));
 }
-const WOD_DAY_OFFSET = {lun:0,mar:0,mie:1,jue:1,vie:2,sab:3,dom:4};
-function defaultWodIdx(d) {
-  if (d.suggestId) { const fi = WODS_SESSIONS.findIndex(s=>s.id===d.suggestId); if (fi>=0) return fi; }
-  const wn = isoWeekNum();
-  return (wn + (WOD_DAY_OFFSET[d.id]||0)) % WODS_SESSIONS.length;
-}
-function currentWodIdx(d) {
-  const key = curPhase.id+'_'+d.id;
-  return wodSel[key]!==undefined ? wodSel[key] : defaultWodIdx(d);
-}
-function selWod(dayId, idx) {
-  wodSel[curPhase.id+'_'+dayId] = idx;
-  renderPage();
-  requestAnimationFrame(fitHeroTitle);
+function prescribedWodId(phase, day) {
+  const wk = weeksSincePhaseStart(phase);
+  if (phase.id === 'cimentacion') {
+    const parity = mod(wk, 2); // 0='A', 1='B'
+    if (day.id === 'mar') return parity===0 ? 'pecho' : 'espalda';
+    if (day.id === 'jue') return 'hombro';
+    if (day.id === 'sab') return parity===0 ? 'cuadriceps' : 'gluteo';
+  }
+  if (phase.id === 'desarrollo') {
+    if (day.id === 'mar') { const order=['cuadriceps','pecho','gluteo','espalda']; return order[mod(wk,4)]; }
+    if (day.id === 'vie') return 'hombro';
+  }
+  if (phase.id === 'especifico') {
+    if (day.id === 'mar') { const order=['cuadriceps','pecho','espalda','gluteo','hombro']; return order[mod(wk,5)]; }
+    if (day.id === 'vie') return 'hombro';
+  }
+  if (phase.id === 'afine') {
+    if (day.id === 'lun') return 'hombro';
+  }
+  return WODS_SESSIONS[0].id;
 }
 
 // ══════════════════════════════════════════════════════════════ RENDER PAGE
@@ -769,20 +773,18 @@ function renderPage() {
   const p = curPhase;
   let col = d.color;
   let wod = d.wod, strength = d.strength || [], caution = '';
+  let title = d.titleShort || d.title, sub = d.sub;
 
   let pickHTML = '';
   if (d.wodOptions) {
-    const idx = currentWodIdx(d);
-    const session = WODS_SESSIONS[idx];
+    const sid = prescribedWodId(p, d);
+    const session = WODS_SESSIONS.find(s=>s.id===sid) || WODS_SESSIONS[0];
     col = session.color;
     wod = session.wod; strength = session.strength; caution = session.caution;
+    title = session.label;
     pickHTML = `
-      <div class="wod-pick-lbl">¿Qué sesión de WODS toca hoy?</div>
-      <div class="wod-pick-row">
-        ${WODS_SESSIONS.map((s,i)=>`
-          <button class="wod-pick ${i===idx?'active':''}" style="${i===idx?`background:${s.color}`:''}"
-            onclick="selWod('${d.id}',${i})">${s.label}</button>`).join('')}
-      </div>
+      <div class="wod-pick-lbl">Hoy toca</div>
+      <div class="wod-pick-row"><span class="wod-rx" style="background:${session.color}">${session.label}</span></div>
       ${caution ? `<div class="wod-caution">⚠️ ${caution}</div>` : ''}`;
   }
 
@@ -868,8 +870,8 @@ function renderPage() {
   document.getElementById('page').innerHTML = `
     <div class="hero">
       <div class="hero-eyebrow">${d.eyebrow}</div>
-      <div class="hero-title" id="hero-title" style="color:${col}">${d.titleShort||d.title}</div>
-      <div class="hero-sub">${d.sub}</div>
+      <div class="hero-title" id="hero-title" style="color:${col}">${title}</div>
+      <div class="hero-sub">${sub}</div>
       <div class="hero-tags">${tagsHTML}</div>
     </div>
     ${d.id==='lun' || d.kind==='race' ? phaseInfoHTML : ''}
