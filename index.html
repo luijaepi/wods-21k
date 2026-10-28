@@ -425,219 +425,147 @@ const PHASES = [
     id:'cimentacion', label:'CIMENTACIÓN', short:'FASE 1',
     range:'24 ago → 30 nov 2026 · ~14 semanas (Meses 1-3)',
     start:'2026-08-24', end:'2026-11-30',
-    objetivo:'Base aeróbica pura en Z2 — sin excepciones. 3 carreras + 3 sesiones de tu WODS por semana, 1 descanso total. Con 85 kg / 1,70 m el impacto por zancada es mayor que el de un corredor ligero: progresión conservadora, sin subir distancia ni carga de golpe. <b>Punto de partida real (24 ago):</b> 3,15 km en 24:17 (7\'42"/km), FC media 158 (pico 167), RPE percibido 7-8/10.',
-    volKm:'3 carreras · 15 → 45 min c/u', longKm:'sin tirada larga todavía', zona:'Z2 125-140 lpm',
+    objetivo:'Base aeróbica en Z2, ahora con agenda fija de 4 días: <b>Miércoles</b> (fuerza de pierna), <b>Viernes</b> (carrera fácil), <b>Sábado</b> (tirada), <b>Domingo</b> (fuerza de tren superior). <b>Actualización 28 oct:</b> pasamos de 3 a 2 carreras/semana — menos frecuencia, pero cada sesión cuenta más. Vamos conservador: tu test del 28 oct salió más lento y con más pulsaciones de lo esperable (ver nota de abajo).',
+    volKm:'2 carreras/semana (Vie + Sáb)', longKm:'Sáb 30 → 50 min', zona:'Z2 125-140 lpm (recalibrando)',
     progression:[
-      {wk:'Sem 1-3', ws:1, we:3, larga:'15-20 min', semanal:'3× por semana', nota:'Adaptación pura. RPE 3-4, si hace falta corta a andar sin complejos — esto es hábito, no rendimiento.'},
-      {wk:'Sem 4-6', ws:4, we:6, larga:'20-28 min', semanal:'3× por semana', nota:'El cuerpo empieza a reconocer el gesto. Cadencia sube de forma natural con la confianza.'},
-      {wk:'Sem 7-10', ws:7, we:10, larga:'28-36 min', semanal:'3× por semana', nota:'Notarás que el CrossFit de Mar/Jue/Sáb ya no te dificulta tanto correr al día siguiente.'},
-      {wk:'Sem 11-14', ws:11, we:14, larga:'36-45 min', semanal:'3× por semana', nota:'Cierre de fase. Test de esfuerzo controlado al final para recalibrar zonas antes de Fase 2.'},
+      {wk:'Sem 1-9 (ya hechas)', ws:1, we:9, larga:'variable', semanal:'3 carreras/sem (agenda anterior)', nota:'Semanas previas al cambio de agenda del 28 oct — no se recalculan, quedan como estaban.'},
+      {wk:'Sem 10-11', ws:10, we:11, larga:'30-35 min', semanal:'25-30 min', nota:'Arranca la nueva agenda de 4 días. Partimos conservador: el test del 28 oct salió a 9\'09"/km con FC media 151 — más lento y más pulsado de lo esperable frente al de 7\'42"/km a FC 158 del primer test. Puede ser humedad (87%) o fatiga real — por si acaso, margen extra.'},
+      {wk:'Sem 12-14', ws:12, we:14, larga:'40-50 min', semanal:'30-35 min', nota:'Cierre de fase. Test de esfuerzo suave y controlado para confirmar si las zonas se han movido antes de pasar a Fase 2.'},
     ],
     days:[
-      { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
-        eyebrow:'Lunes · Carrera · Fase Cimentación', title:'CARRERA Z2', sub:'Z2 pura (125-140 lpm) — sin excepciones, sin excusas',
-        tags:['15→45 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
-        notes:{ label:'⌚ Configuración inicial — solo hoy', items:[
+      { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Miércoles · Fuerza de pierna · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Rota Cuádriceps-Pecho-Glúteo/Isquios-Espalda cada 4 semanas — 3 días limpios antes de la tirada del sábado',
+        tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH,
+        notes:{ label:'⌚ Actualización 28 oct — leer una vez', items:[
           'Datos base: 170 cm · 85 kg · entrenas en ayunas a las 6:00 AM · Apple Watch Series 8 (watchOS 26.6)',
-          'Tus zonas manuales: <b>Z1 &lt;134 · Z2 125-140 · Z3 146-156 · Z4 157-166 · Z5 167+</b> — hay un pequeño solape Z1/Z2 (125-134) en tu configuración actual; lo dejamos tal cual salvo que quieras afinarlo',
-          'La alerta de "FC alta" a 140 solo salta en reposo (10 min sin actividad) — NO te avisa corriendo. Para eso necesitas activar la <b>alerta de zona dentro del propio entreno</b>: abre la app Entrenamiento en el reloj, desliza a "Alertas" antes de pulsar Iniciar, y activa "Zona de FC" seleccionando tu Z2. Si no aparece exactamente así en tu pantalla (puede variar con watchOS 26.6), pruébalo también desde la app Fitness del iPhone creando un entrenamiento personalizado con objetivo de zona — dime qué ves y lo afinamos.',
-          'Mientras tanto: chequeo visual a la pantalla de "Zona" cada 3-4 min + test del habla como respaldo',
-          'Sobre el CrossFit: ya no eliges sesión — cada día de fuerza tiene la suya fija (verás "Hoy toca: X" al entrar). Rota para que las 5 se trabajen con la frecuencia justa, con Hombro/Brazo cada semana por tu limitación, y sin poner nunca pierna pesada (Cuádriceps/Glúteo-Isquios) el día antes de tu carrera más larga de la semana.',
-          'Nombre del repo: ya está creado como <b>wods-21k</b> — es una de tus opciones (RUN-WOD, half-wod, wods-21k, aerowod, wods-half-marathon), lo doy por elegido salvo que prefieras otro',
-        ]},
-        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑',
-          moves:['Distancia/tiempo según tabla de progresión de esta fase (arriba)','Zona objetivo: 125-140 lpm — chequea la pantalla de Zona cada 3-4 min','En ayunas a las 6AM: hidrátate bien la noche anterior, café si te sienta bien antes de salir','Si vas a más de 140 lpm sostenido, has salido demasiado rápido — corta el ritmo, no el entreno'],
-          tip:'<b>Test del habla:</b> si no puedes mantener una conversación con frases completas, vas demasiado rápido. Con tu peso actual, ir "ridículamente lento" al principio es la decisión más inteligente que puedes tomar — el aeróbico y las articulaciones lo agradecen igual.' },
-        strength:[], cooldown:COOL_RUN },
-      { id:'mar', tab:'MAR', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Martes · CrossFit · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Alterna Pecho/Espalda cada 2 semanas — hoy toca la que ves abajo, sin darle más vueltas',
-        tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
-      { id:'mie', tab:'MIÉ', color:'#47c9ff', kind:'run',
-        eyebrow:'Miércoles · Carrera · Fase Cimentación', title:'CARRERA Z2', sub:'Mismo Z2 — nota cómo responden las piernas tras el CrossFit de ayer',
-        tags:['15→45 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
-        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑',
-          moves:['Misma duración objetivo que el lunes, según la tabla de progresión','Si el cuerpo pide ir más lento por el CrossFit de ayer, ve más lento — el objetivo es la zona, no el ritmo'],
-          tip:'Este día enseña algo distinto al lunes: correr con piernas que ya han trabajado. Esa sensación es exactamente la que necesitarás gestionar en la media maratón.' },
-        strength:[], cooldown:COOL_RUN },
-      { id:'jue', tab:'JUE', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Jueves · CrossFit · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — por tu limitación, este trabajo va cada semana sin excepción',
-        tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+          'Tus zonas manuales: <b>Z1 &lt;134 · Z2 125-140 · Z3 146-156 · Z4 157-166 · Z5 167+</b>',
+          'Alerta de zona dentro del propio entreno: sigue pendiente de confirmar (Entrenamiento → Alertas → Zona de FC antes de pulsar Iniciar). Mientras tanto: chequeo visual a la pantalla de Zona + test del habla.',
+          '<b>Nueva agenda fija:</b> solo 4 días de entreno — Miércoles (fuerza), Viernes (carrera), Sábado (tirada larga), Domingo (fuerza tren superior). Pasas de 3 a 2 carreras/semana: menos volumen total, pero cada sesión de carrera pesa más, así que se tratan con más cuidado, no con más intensidad.',
+          '<b>Segundo test, 28 oct:</b> 3,28 km en 30:03 — ritmo 9\'09"/km, FC media 151, cadencia 155. Comparado con el primero (24 ago: 3,15 km en 24:17, 7\'42"/km, FC 158): ahora vas más lento con una FC parecida o más alta para ese ritmo — señal de que el cuerpo no está tan fresco como en agosto (humedad 87% y hora nocturna también influyen, pero no lo explican todo). No es motivo de alarma, es motivo de prudencia: arrancamos esta fase pisando el freno y confirmamos con un test controlado en 3-4 semanas.',
+          'Sobre el CrossFit: sigue sin elegirse — cada día de fuerza tiene su sesión fija ("Hoy toca: X"). Miércoles rota entre las 4 sesiones de pierna/empuje/tirón (Cuádriceps, Pecho, Glúteo-Isquios, Espalda) una por semana, siempre con 3 días limpios hasta la tirada del sábado. Domingo es siempre Hombro/Brazo — tu sesión fija de salud de hombro, justo después de la tirada larga.',
+        ]} },
       { id:'vie', tab:'VIE', color:'#6ee7b7', kind:'run',
-        eyebrow:'Viernes · Carrera · Fase Cimentación', title:'CARRERA Z2 — LA MÁS LARGA', sub:'La carrera de la semana que más se estira — la semilla de tu futura tirada larga',
-        tags:['20→50 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
-        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2 — SEMILLA', clk:'TABLA+5-10\'',
-          moves:['Añade 5-10 min sobre lo que hagas lunes/miércoles esta semana','Sigue siendo Z2 estricto — el objetivo aquí es tiempo en pie, no velocidad','Fíjate en qué punto del recorrido empiezas a notar la zancada más pesada — esa info vale para más adelante'],
-          tip:'Mañana toca tu CrossFit más intenso de la semana — corre hoy dejando margen, no exprimas el depósito.' },
+        eyebrow:'Viernes · Carrera · Fase Cimentación', title:'CARRERA Z2', sub:'Fácil de verdad — hoy no se compite con nadie, ni contigo mismo',
+        tags:['25→35 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑',
+          moves:['Duración según tabla de progresión de esta fase (arriba)','Zona objetivo: 125-140 lpm — si te cuesta mantenerla a trote suave, hoy el cuerpo pide ir aún más lento','Mañana toca tirada larga: termina hoy con margen, no agotado'],
+          tip:'<b>Test del habla:</b> si no puedes mantener una conversación con frases completas, vas demasiado rápido. Después del test del 28 oct, hoy toca ser todavía más conservador de lo habitual — nadie te está cronometrando.' },
         strength:[], cooldown:COOL_RUN },
-      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'fuerza',
-        eyebrow:'Sábado · CrossFit · Fase Cimentación', title:'CROSSFIT — EL MÁS INTENSO', titleShort:'CROSSFIT', sub:'Alterna Cuádriceps/Glúteo-Isquios — tu día de pierna más duro, con descanso total detrás',
-        tags:['45 MIN','EL MÁS DURO','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
-      { id:'dom', tab:'DOM', color:'#6a6a6a', kind:'descanso',
-        eyebrow:'Domingo · Descanso · Fase Cimentación', title:'DESCANSO', sub:'El entreno que no se ve pero que más rinde',
-        tags:['0 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
-        rest:[
-          'Descanso total — nada de carrera ni CrossFit',
-          'Opcional: paseo suave 20-30 min si el cuerpo lo pide, sin ritmo',
-          'Con la sesión más dura ayer y el ayuno habitual, prioriza hoy hidratación y una buena comida — no restrinjas',
-          'Prioriza el sueño esta noche — es cuando se produce la adaptación real',
-        ] },
+      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
+        eyebrow:'Sábado · Tirada Larga · Fase Cimentación', title:'TIRADA LARGA', sub:'La sesión clave de la semana — con solo 2 carreras/semana, esta vale doble',
+        tags:['30→50 MIN','Z2 125-140','LA CLAVE'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'RODAJE LARGO', clk:'TABLA↑',
+          moves:['Duración según tabla de progresión de esta fase','Z2 estricto — run-walk (4\' trote / 1\' andar) sin complejos si el cuerpo lo pide','Hidrátate antes de salir; si pasas de 45 min, agua contigo'],
+          tip:'Con solo 2 días de carrera a la semana, esta es LA sesión que construye tu aeróbico y tu resistencia articular — no hay margen para saltársela ni para acelerarla.' },
+        strength:[], cooldown:COOL_RUN_LONG },
+      { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
+        eyebrow:'Domingo · Fuerza tren superior · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — tu sesión fija de salud de hombro, justo después de la tirada larga',
+        tags:['25-30 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
     ],
   },
   {
     id:'desarrollo', label:'DESARROLLO', short:'FASE 2',
     range:'1 dic 2026 → 14 mar 2027 · ~15 semanas (Meses 4-6)',
     start:'2026-12-01', end:'2027-03-14',
-    objetivo:'80/20 polarizado: el 80% del volumen de carrera se queda en Z2, con 1 sola sesión de calidad a la semana (fartlek/progresivo suave en Z3-Z4). El CrossFit baja a 2-3 días para dejar sitio a la carrera, pero se mantiene con foco en fuerza específica de pierna/cadera y el trabajo anti-lumbar.',
-    volKm:'4 carreras/semana · 25-55 min', longKm:'la del sábado empieza a estirarse (hasta 60 min)', zona:'Z2 125-140 + 1× Z3-Z4 146-166',
+    objetivo:'Mismo esquema de 4 días. El viernes empieza a incluir progresiones suaves al final (sin convertirse en serie), y la tirada del sábado crece de forma sostenida hasta rozar la hora. CrossFit se mantiene igual: Miércoles pierna, Domingo tren superior sin metcon.',
+    volKm:'2 carreras/semana (Vie + Sáb)', longKm:'Sáb 40 → 80 min', zona:'Z2 125-140 + progresiones suaves',
     progression:[
-      {wk:'Sem 15-18', ws:15, we:18, larga:'25-35 min', semanal:'4 carreras + 2-3 CrossFit', nota:'Primera semana con día de calidad — no lo confundas con serie máxima, es fartlek suave, controlado.'},
-      {wk:'Sem 19-22', ws:19, we:22, larga:'35-45 min', semanal:'4 carreras + 2-3 CrossFit', nota:'El sábado ya es sensiblemente más largo que el resto — empieza a sentirse como "la carrera de la semana".'},
-      {wk:'Sem 23-26', ws:23, we:26, larga:'45-55 min', semanal:'4 carreras + 2-3 CrossFit', nota:'Semana de descarga cada 4ª: baja el volumen un 25-30% para asimilar. No la saltes por sentirte bien.'},
-      {wk:'Sem 27-29', ws:27, we:29, larga:'50-60 min', semanal:'4 carreras + 2-3 CrossFit', nota:'Cierre de fase. Test de esfuerzo de nuevo — probablemente tus zonas ya se hayan movido, ajustamos si hace falta.'},
+      {wk:'Sem 15-18', ws:15, we:18, larga:'40-55 min', semanal:'30-40 min', nota:'Primeras progresiones al final del viernes — últimos 5-8 min algo más vivos, nunca una serie de verdad.'},
+      {wk:'Sem 19-22', ws:19, we:22, larga:'55-70 min', semanal:'35-45 min', nota:'El sábado ya se siente como "la carrera de la semana" — empieza a planificar cuándo hacerla para tener tiempo de sobra.'},
+      {wk:'Sem 23-26', ws:23, we:26, larga:'45-55 min', semanal:'30-35 min', nota:'Semana de descarga: baja el volumen ~25-30% para asimilar. No la saltes por sentirte con ganas.'},
+      {wk:'Sem 27-29', ws:27, we:29, larga:'70-80 min', semanal:'40-45 min', nota:'Cierre de fase. Test de esfuerzo de nuevo — tus zonas probablemente se hayan movido, ajustamos si hace falta antes de pasar a kilómetros reales en Fase 3.'},
     ],
     days:[
-      { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
-        eyebrow:'Lunes · Carrera · Fase Desarrollo', title:'CARRERA Z2', sub:'El 80% de tu volumen vive aquí — Z2 estricto',
-        tags:['25-55 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
-        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑',
-          moves:['Duración según tabla de progresión','125-140 lpm todo el tiempo — si te cuesta mantenerlo, es señal de que necesitas más recuperación, no más disciplina'],
-          tip:'La regla 80/20 falla más por exceso de ganas en los días fáciles que por falta de esfuerzo en el día de calidad. Este día se corre lento aunque te sobren fuerzas.' },
+      { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Miércoles · Fuerza de pierna · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Rota Cuádriceps-Pecho-Glúteo/Isquios-Espalda cada 4 semanas — misma lógica, ahora con más carga acumulada detrás',
+        tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+      { id:'vie', tab:'VIE', color:'#6ee7b7', kind:'run',
+        eyebrow:'Viernes · Carrera · Fase Desarrollo', title:'CARRERA Z2 + PROGRESIONES', sub:'Fácil con un cierre algo más vivo — tu único contacto con la velocidad esta fase',
+        tags:['30→45 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'Z2 + CIERRE', clk:'TABLA↑',
+          moves:['80-85% del tiempo a Z2 estricto, igual que siempre','Últimos 5-8 min: sube a esfuerzo moderado (Z3, RPE 6-7) sin llegar a sprintar','Vuelta a la calma caminando'],
+          tip:'Con solo esta sesión y la tirada larga, no hay margen para un día de calidad aparte — este cierre es tu dosis mínima eficaz de velocidad.' },
         strength:[], cooldown:COOL_RUN },
-      { id:'mar', tab:'MAR', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Martes · CrossFit · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Rota Cuádriceps→Pecho→Glúteo-Isquios→Espalda cada 4 semanas — foco en pierna/cadera y core anti-lumbar',
-        tags:['40 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
-      { id:'mie', tab:'MIÉ', color:'#47c9ff', kind:'run',
-        eyebrow:'Miércoles · Carrera · Fase Desarrollo', title:'CARRERA Z2', sub:'Z2 conversacional, de relleno entre los dos días fuertes',
-        tags:['25-55 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
-        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑', moves:['Misma duración objetivo que el lunes','Zona 125-140 lpm de principio a fin'],
-          tip:'Nada nuevo que probar hoy — es el día "aburrido" que hace que el jueves de calidad tenga sentido.' },
-        strength:[], cooldown:COOL_RUN },
-      { id:'jue', tab:'JUE', color:'#ffc247', kind:'run',
-        eyebrow:'Jueves · Calidad · Fase Desarrollo', title:'FARTLEK / PROGRESIVO', sub:'Tu única sesión de calidad de la semana — Z3-Z4',
-        tags:['30-40 MIN','Z3-Z4 146-166','CALIDAD'], warmup:WARM_INTERVAL,
-        wod:{ fmt:'FARTLEK', nm:'CAMBIOS DE RITMO', clk:'30-40\'',
-          moves:['10 min calentamiento Z2 (incluido en warm-up)','8-10 × 2-3 min a Z3-Z4 (146-166 lpm), recuperación trote suave 1-2 min entre bloques','10 min vuelta a la calma Z1-Z2'],
-          tip:'Esta es la única sesión de la semana donde subes de Z2 corriendo — con tu peso actual, controla la técnica bajo fatiga: si la zancada se descontrola, corta el bloque en vez de forzar.' },
-        strength:[], cooldown:COOL_RUN },
-      { id:'vie', tab:'VIE', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Viernes · CrossFit · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — ligero a propósito, mañana toca tu carrera más larga de la semana',
-        tags:['40 MIN','FUERZA','2 FIJAS/SEM'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
-        eyebrow:'Sábado · Carrera · Fase Desarrollo', title:'CARRERA Z2 — LA MÁS LARGA', sub:'Empieza a ser tu "tirada de la semana", sin presión todavía',
-        tags:['30→60 MIN','Z2 125-140','LA MÁS LARGA'], warmup:WARM_LONG,
-        wod:{ fmt:'RODAJE', nm:'LARGA SUAVE', clk:'TABLA↑',
-          moves:['Duración según tabla de progresión — la más larga de la semana','Z2 estricto, sin excepción por "sentirte bien"','Si pasa de 60 min, lleva agua o algo de energía dado que entrenas en ayunas'],
-          tip:'Esta sesión es el puente directo hacia la tirada larga de verdad que llegará en la Fase Específico — el cuerpo ya se está preparando para eso.' },
+        eyebrow:'Sábado · Tirada Larga · Fase Desarrollo', title:'TIRADA LARGA', sub:'Crece de forma sostenida — empieza a rozar la hora de carrera continua',
+        tags:['40→80 MIN','Z2 125-140','LA CLAVE'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'RODAJE LARGO', clk:'TABLA↑',
+          moves:['Duración según tabla de progresión de esta fase','Z2 estricto de principio a fin, sin excepción por "sentirte bien"','Si pasa de 60 min, lleva agua o algo de energía — entrenas en ayunas'],
+          tip:'Esta sesión es el puente directo hacia la tirada larga en kilómetros reales que llega en Fase Específico — el cuerpo se está preparando exactamente para eso.' },
         strength:[], cooldown:COOL_RUN_LONG },
-      { id:'dom', tab:'DOM', color:'#6a6a6a', kind:'descanso',
-        eyebrow:'Domingo · Descanso · Fase Desarrollo', title:'DESCANSO', sub:'Total, o paseo muy suave si el cuerpo lo pide',
-        tags:['0-25 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
-        rest:['Descanso total de piernas','Opcional: paseo 20-25 min a ritmo cero','Nunca los dos días de fin de semana a intensidad — así evitas la lesión por sobreuso','Buen momento para revisar zapatillas: con más volumen, el desgaste ya se nota'] },
+      { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
+        eyebrow:'Domingo · Fuerza tren superior · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — tu sesión fija de salud de hombro, justo después de la tirada larga',
+        tags:['25-30 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
     ],
   },
   {
     id:'especifico', label:'ESPECÍFICO', short:'FASE 3',
     range:'15 mar → 11 sep 2027 · ~26 semanas (Meses 7-13, ampliada)',
     start:'2027-03-15', end:'2027-09-11',
-    objetivo:'Tirada larga semanal creciendo hasta 16-18 km, series a ritmo umbral, descarga cada 4ª semana. <b>Nota sobre el calendario:</b> tu carrera está a ~14,5 meses vista, no a 12 exactos — he alargado esta fase respecto al esquema original de "meses 7-10" para que la construcción de kilometraje sea más gradual, cuidando rodillas y lumbar con tu peso actual. La idea no cambia, solo el tiempo que le dedicamos.',
-    volKm:'35-50 km/semana', longKm:'10 → 18 km', zona:'Z2 base + Z3-Z4 umbral',
+    objetivo:'El viernes pasa de progresiones a tempo/umbral real — con solo 2 días de carrera, es la única ventana para trabajar velocidad, así que cuenta. La tirada del sábado ya se mide en km y crece hasta 16-18 km, con descarga cada 4ª semana. CrossFit se mantiene: Miércoles pierna, Domingo tren superior sin metcon.',
+    volKm:'~20-28 km/semana (Vie + Sáb)', longKm:'Sáb 10 → 18 km', zona:'Z2 base + Vie umbral Z3-Z4',
     progression:[
-      {wk:'Bloque 1', ws:30, we:35, larga:'10-12 km', semanal:'35-38 km', nota:'Primera tirada larga "de verdad" medida en km, no en minutos. El resto de la semana sigue igual.'},
-      {wk:'Bloque 2', ws:36, we:42, larga:'12-14 km', semanal:'38-42 km', nota:'Las series del jueves ya son a ritmo umbral real, no fartlek suave.'},
-      {wk:'Bloque 3', ws:43, we:49, larga:'14-16 km', semanal:'42-46 km', nota:'Descarga cada 4ª semana: -25/30% de volumen. Si notas la lumbar o la rodilla resentida, esa semana de descarga se respeta al 100%.'},
-      {wk:'Bloque 4 (pico)', ws:50, we:54, larga:'16-18 km', semanal:'46-50 km', nota:'Semana pico. Simulacro con zapatillas y avituallamiento reales — nada nuevo el día de la carrera de Valencia.'},
+      {wk:'Bloque 1', ws:30, we:35, larga:'10-12 km', semanal:'Vie 6-8 km umbral', nota:'Primera tirada larga "de verdad" medida en km. El viernes pasa a ser tempo real, no progresiones sueltas.'},
+      {wk:'Bloque 2', ws:36, we:42, larga:'12-14 km', semanal:'Vie 8-10 km umbral', nota:'El tempo del viernes ya se siente "cómodo-duro" en vez de solo duro — buena señal de mejora aeróbica.'},
+      {wk:'Bloque 3', ws:43, we:49, larga:'14-16 km', semanal:'Vie 8-10 km (descarga/4)', nota:'Descarga cada 4ª semana: -25/30% de volumen. Si notas la lumbar o la rodilla resentida, esa semana se respeta al 100%.'},
+      {wk:'Bloque 4 (pico)', ws:50, we:54, larga:'16-18 km', semanal:'Vie 10 km umbral', nota:'Semana pico. Simulacro con zapatillas y avituallamiento reales — nada nuevo el día de la carrera de Valencia.'},
     ],
     days:[
-      { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
-        eyebrow:'Lunes · Carrera · Fase Específico', title:'CARRERA Z2', sub:'Base aeróbica, ahora con más volumen semanal detrás',
-        tags:['35-50 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
-        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'35-50\'', moves:['Ritmo fácil de siempre, Z2 125-140 lpm','Con este volumen semanal, la disciplina de ir lento importa más que nunca'],
-          tip:'El volumen alto solo funciona si el 80% es de verdad suave — resiste la tentación de acelerar porque "te sientes fuerte".' },
+      { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Miércoles · Fuerza de pierna mantenimiento · Fase Específico', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Rota Cuádriceps-Pecho-Glúteo/Isquios-Espalda cada 4 semanas — la carrera manda ahora, la fuerza se mantiene',
+        tags:['35-40 MIN','FUERZA','MANTENIMIENTO'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+      { id:'vie', tab:'VIE', color:'#b97cff', kind:'run',
+        eyebrow:'Viernes · Tempo/Umbral · Fase Específico', title:'TEMPO / UMBRAL', sub:'Tu única sesión de velocidad real — con 2 días de carrera, esta es la que te prepara para sostener ritmo',
+        tags:['30-45 MIN','UMBRAL Z3-Z4','CALIDAD'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'TEMPO', nm:'RITMO UMBRAL', clk:'TABLA↑',
+          moves:['10-12 min calentamiento (incluido en warm-up)','Según tabla de progresión: bloque continuo o 2-3 tramos a Z3-Z4 (146-166 lpm), recuperación 2-3\' trote suave entre tramos','10 min vuelta a la calma'],
+          tip:'<b>Ritmo umbral</b> = el que podrías mantener 1 hora en competición si te apretaran. Con tu peso actual, controla la técnica bajo fatiga — si la zancada se descontrola, corta el bloque en vez de forzar.' },
         strength:[], cooldown:COOL_RUN },
-      { id:'mar', tab:'MAR', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Martes · CrossFit mantenimiento · Fase Específico', title:'CROSSFIT — MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Rotativo de las 5 sesiones, una por semana — la carrera manda ahora, la fuerza se mantiene',
-        tags:['30-35 MIN','MANTENIMIENTO','1× SEM'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
-      { id:'mie', tab:'MIÉ', color:'#47c9ff', kind:'run',
-        eyebrow:'Miércoles · Carrera · Fase Específico', title:'CARRERA Z2', sub:'Z2 conversacional, volumen alto, mente descansada',
-        tags:['35-50 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
-        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'35-50\'', moves:['Ritmo fácil, Z2 estricto','Cada 10 min, 20-30\'\' de foco consciente en técnica de carrera'],
-          tip:'Es tentador acelerar este día — resístete, mañana no toca pero el jueves sí, y necesitas llegar fresco.' },
-        strength:[], cooldown:COOL_RUN },
-      { id:'jue', tab:'JUE', color:'#ffc247', kind:'run',
-        eyebrow:'Jueves · Series umbral · Fase Específico', title:'SERIES A RITMO UMBRAL', sub:'La sesión que te prepara para sostener ritmo con piernas cansadas',
-        tags:['40-50 MIN','UMBRAL Z3-Z4','INTERVALOS'], warmup:WARM_INTERVAL,
-        wod:{ fmt:'INTERVALOS', nm:'RITMO UMBRAL', clk:'40-50\'',
-          moves:['10-12 min calentamiento (incluido en warm-up)','4-6 × 1000-1600m a Z3-Z4 (146-166 lpm), recuperación 2-3\' trote suave','10 min vuelta a la calma'],
-          tip:'<b>Ritmo umbral</b> = el que podrías mantener 1 hora en competición si te apretaran. Controla la técnica bajo fatiga — con tu peso actual, la forma se degrada antes que la voluntad.' },
-        strength:[], cooldown:COOL_RUN },
-      { id:'vie', tab:'VIE', color:'#6a6a6a', kind:'descanso',
-        eyebrow:'Viernes · Descanso · Fase Específico', title:'DESCANSO', sub:'Sin CrossFit — mañana es la sesión más importante del plan, llegas fresco sí o sí',
-        tags:['0 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
-        rest:['Nada de CrossFit hoy, ni ligero — con el volumen de carrera de esta fase, la tirada larga de mañana pesa más que cualquier accesorio','Movilidad suave 10-15 min si te apetece (pestaña MOV), nada más','Hidrátate y duerme bien esta noche pensando en la tirada de mañana'] },
       { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
-        eyebrow:'Sábado · Tirada Larga · Fase Específico', title:'TIRADA LARGA', sub:'La sesión más importante de la semana, sin excepción',
+        eyebrow:'Sábado · Tirada Larga · Fase Específico', title:'TIRADA LARGA', sub:'La sesión más importante de todo el plan, sin excepción',
         tags:['10→18 KM','Z2 + RITMO','LA CLAVE'], warmup:WARM_LONG,
         wod:{ fmt:'LARGA', nm:'RODAJE LARGO', clk:'TABLA↑',
           moves:['Distancia según tabla de progresión de esta fase','80-90% Z2, últimos km a ritmo objetivo de carrera en los bloques de pico','En ayunas: gel o similar cada 40-45 min a partir de los 60-75 min de carrera','Usa en la semana pico las zapatillas y el gel que llevarás en Valencia'],
           tip:'Aprender a acelerar con las piernas cansadas es lo que decide tu carrera en el km 15-18. Practícalo aquí, no el día de la línea de salida.' },
         strength:[], cooldown:COOL_RUN_LONG },
-      { id:'dom', tab:'DOM', color:'#6a6a6a', kind:'descanso',
-        eyebrow:'Domingo · Descanso · Fase Específico', title:'DESCANSO', sub:'Recuperación real tras el volumen más alto del plan',
-        tags:['0-25 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
-        rest:['Con este volumen, el descanso total pesa más que nunca — respétalo','Opcional: trote muy suave 20-25 min si las piernas piden movimiento, nunca por obligación','Nutrición: esta es la fase de mayor gasto calórico del plan — no restrinjas, repón'] },
+      { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
+        eyebrow:'Domingo · Fuerza tren superior · Fase Específico', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — recuperación real tras la tirada, salud de hombro cada semana',
+        tags:['25-30 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
     ],
   },
   {
     id:'afine', label:'AFINE', short:'FASE 4',
     range:'12 sep → 17 oct 2027 (fecha asumida) · ~5 semanas + carrera',
     start:'2027-09-12', end:'2027-10-17',
-    objetivo:'Bajas volumen sin perder chispa. El cuerpo ya tiene la forma hecha — toca llegar fresco, afilado y con confianza a la línea de salida del Medio Maratón de Valencia. <b>Ojo:</b> la fecha exacta (17 oct 2027, domingo) es una suposición razonable — en cuanto tengas la fecha oficial de inscripción, ajustamos el taper a los días exactos.',
-    volKm:'38 → 12-15 km/sem', longKm:'14 km → shakeout', zona:'Z2 mantenimiento + toques de ritmo objetivo',
+    objetivo:'Bajas volumen sin perder chispa. El viernes se vuelve corto y afilado (series cortas), la tirada del sábado baja cada semana, y el domingo de fuerza se reduce a casi nada la última semana. <b>Tu carrera cae en domingo — uno de tus 4 días fijos, no hace falta mover nada.</b> Fecha asumida (17 oct 2027): en cuanto tengas la oficial, ajustamos el taper a los días exactos.',
+    volKm:'~9 → 22 km/semana (Vie + Sáb)', longKm:'Sáb 14 km → shakeout', zona:'Z2 mantenimiento + toques de ritmo objetivo',
     progression:[
-      {wk:'Sem -5/-4', ws:55, we:56, larga:'12-14 km', semanal:'30-38 km', nota:'Primer recorte de volumen (~20%). La intensidad se mantiene — solo baja el volumen.'},
-      {wk:'Sem -3/-2', ws:57, we:58, larga:'8-10 km', semanal:'24-28 km', nota:'Taper real. Vas a sentir las piernas "raras" de frescas — es normal, es la supercompensación funcionando.'},
-      {wk:'Sem -1', ws:59, we:59, larga:'5-6 km con toques de ritmo', semanal:'18-22 km', nota:'Última semana completa antes de la semana de carrera. Confía en el trabajo hecho.'},
-      {wk:'Semana de carrera', ws:60, we:60, larga:'—', semanal:'12-15 km + 21,1K domingo', nota:'Lun/Mar sesiones cortas con toques de ritmo, Mié-Vie descanso casi total, Sáb descanso completo, Dom: carrera.'},
+      {wk:'Sem -5/-4', ws:55, we:56, larga:'12-14 km', semanal:'Vie 6-8 km afilado', nota:'Primer recorte de volumen (~20%). La intensidad se mantiene — solo baja el volumen.'},
+      {wk:'Sem -3/-2', ws:57, we:58, larga:'8-10 km', semanal:'Vie 5-6 km afilado', nota:'Taper real. Vas a sentir las piernas "raras" de frescas — es normal, es la supercompensación funcionando.'},
+      {wk:'Sem -1', ws:59, we:59, larga:'5-6 km con toques de ritmo', semanal:'Vie 4-5 km suave', nota:'Última semana completa antes de la semana de carrera. Confía en el trabajo hecho.'},
+      {wk:'Semana de carrera', ws:60, we:60, larga:'—', semanal:'Vie shakeout 3-4 km', nota:'Miércoles fuerza muy ligera, Viernes shakeout corto, Sábado descanso total, Domingo: carrera.'},
     ],
     days:[
-      { id:'lun', tab:'LUN', color:'#ff4560', kind:'fuerza',
-        eyebrow:'Lunes · CrossFit muy ligero · Fase Afine', title:'CROSSFIT DE MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — la única sesión con carga externa que queda en el plan',
-        tags:['20 MIN','MUY LIGERO'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
-      { id:'mar', tab:'MAR', color:'#6ee7b7', kind:'run',
-        eyebrow:'Martes · Series cortas · Fase Afine', title:'SERIES CORTAS Y RÁPIDAS', sub:'Mantener el contacto con la velocidad, sin fatiga',
-        tags:['25-30 MIN','AFILADO','POCO VOLUMEN'], warmup:WARM_INTERVAL,
-        wod:{ fmt:'INTERVALOS', nm:'AFILADO', clk:'25-30\'',
-          moves:['6 × 200m a ritmo rápido (Z4-Z5), recuperación completa 2\' andando/trote','Sensación: rápido, ligero, controlado — nunca al límite','Si algo tira o molesta, para. Esta semana no se gana forma, solo se puede perder por lesión tonta'],
-          tip:'El objetivo es que las piernas "recuerden" la sensación de velocidad, no fatigarlas.' },
+      { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Miércoles · Fuerza muy ligera · Fase Afine', title:'CROSSFIT DE MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Misma rotación de siempre (Cuádriceps-Pecho-Glúteo/Isquios-Espalda), pero baja el peso ~30-40% y para 2-3 reps antes del fallo',
+        tags:['20-25 MIN','MUY LIGERO','PIERNA'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+      { id:'vie', tab:'VIE', color:'#ff4560', kind:'run',
+        eyebrow:'Viernes · Series cortas · Fase Afine', title:'SERIES CORTAS Y RÁPIDAS', sub:'Mantener el contacto con la velocidad, sin fatiga',
+        tags:['20-30 MIN','AFILADO','POCO VOLUMEN'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'INTERVALOS', nm:'AFILADO', clk:'TABLA↑',
+          moves:['Según tabla de progresión — semanas -5 a -1: bloques cortos a ritmo rápido (Z4-Z5), recuperación completa entre ellos','Semana de carrera: solo shakeout muy suave, nada de velocidad','Si algo tira o molesta, para — esta fase no se gana forma, solo se puede perder por lesión tonta'],
+          tip:'El objetivo es que las piernas "recuerden" la sensación de velocidad, no fatigarlas. Menos es más a partir de ahora.' },
         strength:[], cooldown:COOL_RUN },
-      { id:'mie', tab:'MIÉ', color:'#47c9ff', kind:'run',
-        eyebrow:'Miércoles · Rodaje corto · Fase Afine', title:'RODAJE MUY SUAVE', sub:'Corto, fácil, sin ambición',
-        tags:['20-30 MIN','Z2 125-140','MUY SUAVE'], warmup:WARM_EASY,
-        wod:{ fmt:'RODAJE', nm:'CONTINUO CORTO', clk:'20-30\'', moves:['Z2, más lento de lo normal si acaso'],
-          tip:'La tentación en el taper es "meter algo más" porque sobra energía. No lo hagas — esa energía es la que necesitas guardar para Valencia.' },
-        strength:[], cooldown:COOL_RUN },
-      { id:'jue', tab:'JUE', color:'#ffc247', kind:'run',
-        eyebrow:'Jueves · Tempo corto · Fase Afine', title:'TEMPO A RITMO CARRERA', sub:'Último contacto real con tu ritmo objetivo',
-        tags:['20-25 MIN','RITMO OBJETIVO','CORTO'], warmup:WARM_INTERVAL,
-        wod:{ fmt:'TEMPO', nm:'RITMO DE CARRERA', clk:'20-25\'',
-          moves:['8-10 min calentamiento (incluido en warm-up)','12-15 min continuos al ritmo objetivo de carrera','Vuelta a la calma trotando muy suave'],
-          tip:'Debe sentirse manejable, casi fácil. Si a este volumen de taper el ritmo objetivo ya no cuesta, vas exactamente donde tienes que ir.' },
-        strength:[], cooldown:COOL_RUN },
-      { id:'vie', tab:'VIE', color:'#6a6a6a', kind:'descanso',
-        eyebrow:'Viernes · Descanso · Fase Afine', title:'DESCANSO / MOVILIDAD', sub:'Nada de fuerza pesada esta última semana',
-        tags:['0-15 MIN','MOVILIDAD LIGERA'], warmup:[], strength:[], cooldown:[],
-        rest:['Descanso de piernas — ni fuerza con carga ni carrera','Movilidad suave 10-15 min (pestaña MOV) si te apetece moverte','Buen día para repasar mentalmente tu estrategia de ritmo y el pronóstico del tiempo en Valencia'] },
       { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
-        eyebrow:'Sábado · Tirada decreciente · Fase Afine', title:'TIRADA LARGA (BAJANDO)', sub:'Cada semana más corta — así debe ser',
+        eyebrow:'Sábado · Tirada decreciente · Fase Afine', title:'TIRADA LARGA (BAJANDO)', sub:'Cada semana más corta — así debe ser. Descanso total en la semana de carrera',
         tags:['5→14 KM','TAPER','DECRECIENTE'], warmup:WARM_LONG,
         wod:{ fmt:'LARGA', nm:'RODAJE LARGO DECRECIENTE', clk:'TABLA↑',
-          moves:['Distancia según tabla de progresión — baja semana a semana','Z2, con 2-3 toques de 3-4 min a ritmo objetivo en semanas -3/-2 (no en semana de carrera)','En la semana de carrera este día NO se corre — descanso total el sábado antes de la carrera'],
+          moves:['Distancia según tabla de progresión — baja semana a semana','Z2, con 2-3 toques de 3-4 min a ritmo objetivo en semanas -3/-2 (no en semana de carrera)','En la semana de carrera este día NO se corre — descanso total el sábado antes de la carrera del domingo'],
           tip:'Bajar volumen no es perder forma, es permitir que aflore.' },
         strength:[], cooldown:COOL_RUN_LONG },
-      { id:'dom', tab:'DOM', color:'#6a6a6a', kind:'descanso',
-        eyebrow:'Domingo · Descanso · Fase Afine', title:'DESCANSO', sub:'Fuera de la semana de carrera',
-        tags:['0-20 MIN','RECUPERACIÓN'], warmup:[], strength:[], cooldown:[],
-        rest:['Descanso total o paseo muy suave','Sueño y nutrición son ahora el entreno más importante que puedes hacer','Si sientes ansiedad de "estoy perdiendo forma", es normal — es la cabeza, no el cuerpo. El cuerpo está donde debe estar.'] },
+      { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
+        eyebrow:'Domingo · Fuerza muy ligera · Fase Afine', title:'CROSSFIT DE MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo — igual que siempre, con cargas mínimas estas últimas semanas',
+        tags:['15-20 MIN','MUY LIGERO','HOMBRO FIJO'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'race', tab:'🏁', color:'#ffc247', kind:'race',
         eyebrow:'Domingo 17 oct 2027 (fecha asumida) · Día D', title:'MEDIO MARATÓN VALENCIA', sub:'21,1 km — todo el trabajo de ~60 semanas converge aquí',
         tags:['21,1 KM','NEGATIVE SPLIT','DISFRUTA'],
@@ -653,7 +581,7 @@ const PHASES = [
           moves:[
             '0-5 km — Ritmo fácil, 10-15"/km MÁS LENTO que tu ritmo objetivo. La euforia de salida mata más carreras que el cansancio.',
             '5-15 km — Ritmo objetivo, el que has entrenado en las tiradas específicas de la Fase 3.',
-            '15-18 km — Aquí aprieta. Mantén el ritmo objetivo aunque cueste — esto lo entrenaste en las series umbral del jueves.',
+            '15-18 km — Aquí aprieta. Mantén el ritmo objetivo aunque cueste — esto lo entrenaste en el tempo de los viernes.',
             '18-21,1 km — Todo lo que te quede. Con negative split, este es el tramo en el que adelantas gente, no al revés.',
           ],
           tip:'<b>Mentalidad:</b> el km 16 decide la carrera, no el km 5. Si a los 5K vas sobrado, vas bien. Si vas sobrado a los 15K, has ido demasiado lento — hoy corre lo entrenado.' },
@@ -750,23 +678,8 @@ function weeksSincePhaseStart(phase) {
 }
 function prescribedWodId(phase, day) {
   const wk = weeksSincePhaseStart(phase);
-  if (phase.id === 'cimentacion') {
-    const parity = mod(wk, 2); // 0='A', 1='B'
-    if (day.id === 'mar') return parity===0 ? 'pecho' : 'espalda';
-    if (day.id === 'jue') return 'hombro';
-    if (day.id === 'sab') return parity===0 ? 'cuadriceps' : 'gluteo';
-  }
-  if (phase.id === 'desarrollo') {
-    if (day.id === 'mar') { const order=['cuadriceps','pecho','gluteo','espalda']; return order[mod(wk,4)]; }
-    if (day.id === 'vie') return 'hombro';
-  }
-  if (phase.id === 'especifico') {
-    if (day.id === 'mar') { const order=['cuadriceps','pecho','espalda','gluteo','hombro']; return order[mod(wk,5)]; }
-    if (day.id === 'vie') return 'hombro';
-  }
-  if (phase.id === 'afine') {
-    if (day.id === 'lun') return 'hombro';
-  }
+  if (day.id === 'mie') { const order=['cuadriceps','pecho','gluteo','espalda']; return order[mod(wk,4)]; }
+  if (day.id === 'dom') return 'hombro';
   return WODS_SESSIONS[0].id;
 }
 
@@ -797,7 +710,7 @@ function renderPage() {
     <div class="sl">📈 Progresión — ${p.label}</div>
     <div class="prog-wrap">
       <table class="prog-table">
-        <thead><tr><th>Bloque</th><th>Sesión clave</th><th>Volumen</th></tr></thead>
+        <thead><tr><th>Bloque</th><th>Sáb · Larga</th><th>Vie · Corta/Calidad</th></tr></thead>
         <tbody>
           ${p.progression.map(r=>{
             const isNow = isCurPhaseNow && r.ws!=null && planWeekNow>=r.ws && planWeekNow<=r.we;
@@ -820,7 +733,7 @@ function renderPage() {
         <div class="phase-stat"><b>Zona</b><span>${p.zona}</span></div>
       </div>
     </div>`;
-  const showObj = d.id==='lun' || d.kind==='race';
+  const showObj = d.id==='mie' || d.kind==='race';
   const showProg = showObj || d.kind==='run';
 
   const notesHTML = d.notes ? `
@@ -1000,7 +913,9 @@ function renderLog() {
 
   document.getElementById('log-page').innerHTML = `
     <div class="log-baseline">
-      🏁 <b>Punto de partida (24 ago 2026):</b> 3,15 km · 24:17 · ritmo 7'42"/km · FC media 158 (pico 167) · RPE percibido 7-8/10 · Esfuerzo Apple 6 (Moderado) · cadencia 152 spm.
+      🏁 <b>Test 1 (24 ago 2026):</b> 3,15 km · 24:17 · ritmo 7'42"/km · FC media 158 (pico 167) · RPE 7-8/10 · cadencia 152 spm.<br>
+      📍 <b>Test 2 (28 oct 2026):</b> 3,28 km · 30:03 · ritmo 9'09"/km · FC media 151 · cadencia 155 spm · humedad 87%, nocturno.<br>
+      Más lento con FC parecida/más alta que el test 1 — razón por la que arrancamos la nueva agenda de 4 días con margen extra. Repetir test en 3-4 semanas para confirmar.
       <div class="zone-legend">
         <span class="zone-chip">Z1 &lt;134</span><span class="zone-chip">Z2 125-140</span><span class="zone-chip">Z3 146-156</span><span class="zone-chip">Z4 157-166</span><span class="zone-chip">Z5 167+</span>
       </div>
@@ -1206,9 +1121,10 @@ function togMovBlock(bodyId, icoId) { document.getElementById(bodyId).classList.
 // ══════════════════════════════════════════════════════════════ INIT
 (function(){
   const wd = new Date().getDay();
-  const map = {0:'dom',1:'lun',2:'mar',3:'mie',4:'jue',5:'vie',6:'sab'};
-  if(map[wd]) curMovDay = MOV_DAYS.find(d=>d.id===map[wd]) || MOV_DAYS[0];
-  if(map[wd]) { const dd = curPhase.days.find(d=>d.id===map[wd]); if(dd) curDay = dd; }
+  const movMap = {0:'dom',1:'lun',2:'mar',3:'mie',4:'jue',5:'vie',6:'sab'};
+  const trainMap = {0:'dom',3:'mie',5:'vie',6:'sab'}; // solo los 4 días de entreno fijos
+  if(movMap[wd]) curMovDay = MOV_DAYS.find(d=>d.id===movMap[wd]) || MOV_DAYS[0];
+  if(trainMap[wd]) { const dd = curPhase.days.find(d=>d.id===trainMap[wd]); if(dd) curDay = dd; }
 })();
 renderPhasePills();
 renderTabs();
