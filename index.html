@@ -405,19 +405,19 @@ const WODS_SESSIONS = [
     ] },
   {
     id:'hombro', label:'HOMBRO + CADERA', color:'#ffc247',
-    caution:'El bloque de hombro es el accesorio directo a tu programa de movilidad de hombro ya existente — no lo saltes por parecer "poca cosa". Las 2 últimas son activación de cadera/gemelo: ligeras, sin carga externa, no compiten con la recuperación de la tirada de ayer.',
+    caution:'29 oct: confirmaste que el manguito ya NO está inflamado — pasamos de "proteger" a "reconstruir capacidad". Sube carga poco a poco en lo que ya hacías, y entra con calma en el nuevo press por encima de cabeza. Si en algún punto vuelve la molestia, retrocede esa misma sesión, sin esperar a la siguiente. Las 2 de cadera/gemelo del final siguen ligeras y sin carga — no compiten con la recuperación de la tirada de ayer.',
     wod:{ fmt:'EMOM', nm:'ACCESORIO LIGERO', clk:'10\'',
       moves:['Min impar — 30\'\' Plancha','Min par — 12 cal Bike ritmo suave','→ 5 rondas, sin prisa, foco en técnica'],
       tip:'<b>Hoy no es día de sprint:</b> el objetivo es sumar volumen sin fatigar el hombro. Si algo molesta, para.' },
     strength:[
-      { nm:'DB Lateral Raise', kg:'6-8 kg', sets:'3×12', rpe:'6-7', rest:'60\'\'', opt:false, note:'Codos con ligera flexión, sube hasta la altura del hombro, no más. Peso bajo — técnica limpia, no ego.' },
-      { nm:'DB External Rotation (codo pegado al cuerpo)', kg:'3-5 kg', sets:'3×12/lado', rpe:'6', rest:'60\'\'', opt:false, note:'⚠️ Hombro: prioridad absoluta. Fortalece el manguito rotador — la mejor prevención que tienes.' },
+      { nm:'DB Lateral Raise', kg:'8-10 kg', sets:'3×12', rpe:'7', rest:'60\'\'', opt:false, note:'Codos con ligera flexión, sube hasta la altura del hombro, no más. Subimos algo la carga ahora que no hay inflamación — técnica limpia sigue mandando sobre el peso.' },
+      { nm:'DB External Rotation (codo pegado al cuerpo)', kg:'4-6 kg', sets:'3×12/lado', rpe:'6-7', rest:'60\'\'', opt:false, note:'Tu ejercicio ancla de salud de hombro. Ya no es "protege", es "construye" — sube carga cuando 12 reps dejen de costar. Sigue siendo la mejor prevención a largo plazo que tienes.' },
+      { nm:'DB Overhead Press — rango controlado', kg:'6-8 kg', sets:'3×8', rpe:'6-7', rest:'75\'\'', opt:false, note:'Incorporación nueva, ahora que el manguito aguanta. Empieza en el rango donde sientas control total (no hace falta llegar arriba del todo) y gana recorrido semana a semana. Molestia = vuelve a rango parcial esa misma serie, sin dudar.' },
       { nm:'DB Bicep Curl', kg:'10-12 kg', sets:'3×10', rpe:'7', rest:'60\'\'', opt:false, note:'Codos fijos a los costados, sin balanceo.' },
-      { nm:'Tricep Kickback DB', kg:'6-8 kg', sets:'3×12', rpe:'7', rest:'60\'\'', opt:false, note:'Torso inclinado, brazo pegado al cuerpo — sin elevar por encima del hombro.' },
       { nm:'Monster Walk con banda', kg:'Banda ligera', sets:'2×10 pasos/lado', rpe:'5', rest:'40\'\'', opt:false, note:'Glúteo medio — el estabilizador de cadera que más usas en cada apoyo al correr. Sin carga externa: no compite con la recuperación de la tirada de ayer, solo activa.' },
       { nm:'Elevación de talón (gemelo)', kg:'Peso corporal', sets:'3×15-20', rpe:'5', rest:'40\'\'', opt:false, note:'Bodyweight, controlado, sin prisa. El gemelo/sóleo absorbe buena parte del impacto de cada zancada — mantenerlo fuerte con un estímulo ligero, no con más carga.' },
-      { nm:'Face Pulls', kg:'12-15 kg', sets:'3×15', rpe:'7', rest:'60\'\'', opt:true, note:'Extra de salud de hombro si queda tiempo.' },
-      { nm:'Dead Bug', kg:'Peso corporal', sets:'3×10/lado', rpe:'5', rest:'40\'\'', opt:true, note:'Core anti-extensión — cierre suave y lumbar-seguro.' },
+      { nm:'Face Pulls', kg:'12-15 kg', sets:'3×15', rpe:'7', rest:'60\'\'', opt:false, note:'Pasa a fija ahora que el hombro responde bien — de lo más rentable que puedes hacer para que siga así. Codos arriba, rotación externa al final.' },
+      { nm:'Dead Bug', kg:'Peso corporal', sets:'3×10/lado', rpe:'5', rest:'40\'\'', opt:true, note:'Core anti-extensión — cierre suave y lumbar-seguro, si queda tiempo.' },
     ] },
 ];
 
@@ -445,6 +445,7 @@ const PHASES = [
           '<b>Nueva agenda fija:</b> solo 4 días de entreno — Miércoles (fuerza), Viernes (carrera), Sábado (tirada larga), Domingo (fuerza tren superior). Pasas de 3 a 2 carreras/semana: menos volumen total, pero cada sesión de carrera pesa más, así que se tratan con más cuidado, no con más intensidad.',
           '<b>Segundo test, 28 oct:</b> 3,28 km en 30:03 — ritmo 9\'09"/km, FC media 151, cadencia 155. Comparado con el primero (24 ago: 3,15 km en 24:17, 7\'42"/km, FC 158): ahora vas más lento con una FC parecida o más alta para ese ritmo — señal de que el cuerpo no está tan fresco como en agosto (humedad 87% y hora nocturna también influyen, pero no lo explican todo). No es motivo de alarma, es motivo de prudencia: arrancamos esta fase pisando el freno y confirmamos con un test controlado en 3-4 semanas.',
           '<b>Actualización 29 oct — prioridad a pierna:</b> por tu pregunta de ese día, Miércoles deja de repartirse entre 4 sesiones y pasa a alternar SOLO Cuádriceps y Glúteo-Isquios cada semana — con tu peso y objetivo, pierna/cadera manda sin discusión frente a pecho/espalda, que apenas transfieren a correr. Domingo sigue siendo siempre Hombro/Brazo (rehab de tu limitación real, no "fitness genérico"), y ahora suma 2 ejercicios ligeros de cadera/gemelo sin carga externa — glúteo medio y pantorrilla, lo justo para sumar sin competir con la recuperación de la tirada del sábado.',
+          '<b>Más del 29 oct — manguito sin inflamación:</b> confirmaste que ya no hay inflamación en el manguito rotador. Pasamos el domingo de "proteger" a "reconstruir": sube algo la carga en Lateral Raise y External Rotation, Face Pulls pasa a fija, y se añade un press por encima de cabeza en rango controlado — progresa semana a semana y retrocede en el momento si vuelve cualquier molestia, sin esperar al día siguiente.',
         ]} },
       { id:'vie', tab:'VIE', color:'#6ee7b7', kind:'run',
         eyebrow:'Viernes · Carrera · Fase Cimentación', title:'CARRERA Z2', sub:'Fácil de verdad — hoy no se compite con nadie, ni contigo mismo',
@@ -462,7 +463,7 @@ const PHASES = [
         strength:[], cooldown:COOL_RUN_LONG },
       { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
         eyebrow:'Domingo · Fuerza tren superior · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo + activación de cadera/gemelo — ligero, no compite con la recuperación de la tirada',
-        tags:['25-30 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+        tags:['30-35 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
     ],
   },
   {
@@ -497,7 +498,7 @@ const PHASES = [
         strength:[], cooldown:COOL_RUN_LONG },
       { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
         eyebrow:'Domingo · Fuerza tren superior · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo + activación de cadera/gemelo — ligero, no compite con la recuperación de la tirada',
-        tags:['25-30 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+        tags:['30-35 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
     ],
   },
   {
@@ -532,7 +533,7 @@ const PHASES = [
         strength:[], cooldown:COOL_RUN_LONG },
       { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
         eyebrow:'Domingo · Fuerza tren superior · Fase Específico', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo + activación de cadera/gemelo — recuperación real tras la tirada',
-        tags:['25-30 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+        tags:['30-35 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
     ],
   },
   {
