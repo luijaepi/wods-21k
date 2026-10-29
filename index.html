@@ -434,7 +434,7 @@ const PHASES = [
     ],
     days:[
       { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
-        eyebrow:'Miércoles · Fuerza de pierna · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Rota Cuádriceps-Pecho-Glúteo/Isquios-Espalda cada 4 semanas — 3 días limpios antes de la tirada del sábado',
+        eyebrow:'Miércoles · Fuerza de pierna · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Alterna Cuádriceps/Glúteo-Isquios cada semana — pierna de verdad, sin diluir, 3 días limpios antes de la tirada',
         tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH,
         notes:{ label:'⌚ Actualización 28 oct — leer una vez', items:[
           'Datos base: 170 cm · 85 kg · entrenas en ayunas a las 6:00 AM · Apple Watch Series 8 (watchOS 26.6)',
@@ -442,7 +442,7 @@ const PHASES = [
           'Alerta de zona dentro del propio entreno: sigue pendiente de confirmar (Entrenamiento → Alertas → Zona de FC antes de pulsar Iniciar). Mientras tanto: chequeo visual a la pantalla de Zona + test del habla.',
           '<b>Nueva agenda fija:</b> solo 4 días de entreno — Miércoles (fuerza), Viernes (carrera), Sábado (tirada larga), Domingo (fuerza tren superior). Pasas de 3 a 2 carreras/semana: menos volumen total, pero cada sesión de carrera pesa más, así que se tratan con más cuidado, no con más intensidad.',
           '<b>Segundo test, 28 oct:</b> 3,28 km en 30:03 — ritmo 9\'09"/km, FC media 151, cadencia 155. Comparado con el primero (24 ago: 3,15 km en 24:17, 7\'42"/km, FC 158): ahora vas más lento con una FC parecida o más alta para ese ritmo — señal de que el cuerpo no está tan fresco como en agosto (humedad 87% y hora nocturna también influyen, pero no lo explican todo). No es motivo de alarma, es motivo de prudencia: arrancamos esta fase pisando el freno y confirmamos con un test controlado en 3-4 semanas.',
-          'Sobre el CrossFit: sigue sin elegirse — cada día de fuerza tiene su sesión fija ("Hoy toca: X"). Miércoles rota entre las 4 sesiones de pierna/empuje/tirón (Cuádriceps, Pecho, Glúteo-Isquios, Espalda) una por semana, siempre con 3 días limpios hasta la tirada del sábado. Domingo es siempre Hombro/Brazo — tu sesión fija de salud de hombro, justo después de la tirada larga.',
+          '<b>Actualización 29 oct — prioridad a pierna:</b> por tu pregunta de hoy, Miércoles deja de repartirse entre 4 sesiones y pasa a alternar SOLO Cuádriceps y Glúteo-Isquios cada semana — con tu peso y objetivo, pierna/cadera manda sin discusión frente a pecho/espalda, que apenas transfieren a correr. Domingo sigue siendo siempre Hombro/Brazo, no como "fitness genérico" sino como rehab de tu limitación real — eso también sirve a correr mejor.',
         ]} },
       { id:'vie', tab:'VIE', color:'#6ee7b7', kind:'run',
         eyebrow:'Viernes · Carrera · Fase Cimentación', title:'CARRERA Z2', sub:'Fácil de verdad — hoy no se compite con nadie, ni contigo mismo',
@@ -477,7 +477,7 @@ const PHASES = [
     ],
     days:[
       { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
-        eyebrow:'Miércoles · Fuerza de pierna · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Rota Cuádriceps-Pecho-Glúteo/Isquios-Espalda cada 4 semanas — misma lógica, ahora con más carga acumulada detrás',
+        eyebrow:'Miércoles · Fuerza de pierna · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Alterna Cuádriceps/Glúteo-Isquios cada semana — misma lógica, ahora con más carga acumulada detrás',
         tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'vie', tab:'VIE', color:'#6ee7b7', kind:'run',
         eyebrow:'Viernes · Carrera · Fase Desarrollo', title:'CARRERA Z2 + PROGRESIONES', sub:'Fácil con un cierre algo más vivo — tu único contacto con la velocidad esta fase',
@@ -512,7 +512,7 @@ const PHASES = [
     ],
     days:[
       { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
-        eyebrow:'Miércoles · Fuerza de pierna mantenimiento · Fase Específico', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Rota Cuádriceps-Pecho-Glúteo/Isquios-Espalda cada 4 semanas — la carrera manda ahora, la fuerza se mantiene',
+        eyebrow:'Miércoles · Fuerza de pierna mantenimiento · Fase Específico', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Alterna Cuádriceps/Glúteo-Isquios cada semana — la carrera manda ahora, la pierna no se negocia',
         tags:['35-40 MIN','FUERZA','MANTENIMIENTO'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'vie', tab:'VIE', color:'#b97cff', kind:'run',
         eyebrow:'Viernes · Tempo/Umbral · Fase Específico', title:'TEMPO / UMBRAL', sub:'Tu única sesión de velocidad real — con 2 días de carrera, esta es la que te prepara para sostener ritmo',
@@ -547,7 +547,7 @@ const PHASES = [
     ],
     days:[
       { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
-        eyebrow:'Miércoles · Fuerza muy ligera · Fase Afine', title:'CROSSFIT DE MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Misma rotación de siempre (Cuádriceps-Pecho-Glúteo/Isquios-Espalda), pero baja el peso ~30-40% y para 2-3 reps antes del fallo',
+        eyebrow:'Miércoles · Fuerza muy ligera · Fase Afine', title:'CROSSFIT DE MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Misma alternancia de siempre (Cuádriceps/Glúteo-Isquios), pero baja el peso ~30-40% y para 2-3 reps antes del fallo',
         tags:['20-25 MIN','MUY LIGERO','PIERNA'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
       { id:'vie', tab:'VIE', color:'#ff4560', kind:'run',
         eyebrow:'Viernes · Series cortas · Fase Afine', title:'SERIES CORTAS Y RÁPIDAS', sub:'Mantener el contacto con la velocidad, sin fatiga',
@@ -678,7 +678,7 @@ function weeksSincePhaseStart(phase) {
 }
 function prescribedWodId(phase, day) {
   const wk = weeksSincePhaseStart(phase);
-  if (day.id === 'mie') { const order=['cuadriceps','pecho','gluteo','espalda']; return order[mod(wk,4)]; }
+  if (day.id === 'mie') { const order=['cuadriceps','gluteo']; return order[mod(wk,2)]; }
   if (day.id === 'dom') return 'hombro';
   return WODS_SESSIONS[0].id;
 }
