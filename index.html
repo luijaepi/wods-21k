@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="21K Plan">
+<meta name="apple-mobile-web-app-title" content="15K Plan">
 <meta name="theme-color" content="#090909">
-<title>21K · Valencia 2027</title>
+<title>15K · Valencia 2027</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -117,12 +117,13 @@ body {
 
 /* ── PROGRESSION TABLE ── */
 .prog-wrap { background: var(--s1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-.prog-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.prog-table th { text-align: left; font-size: 9px; font-weight: 700; letter-spacing: .09em; color: var(--muted2); text-transform: uppercase; padding: 10px 12px 8px; border-bottom: 1px solid var(--border); }
-.prog-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.prog-table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
+.prog-table th { text-align: left; font-size: 9px; font-weight: 700; letter-spacing: .06em; color: var(--muted2); text-transform: uppercase; padding: 10px 8px 8px; border-bottom: 1px solid var(--border); }
+.prog-table th:first-child { width: 24%; }
+.prog-table td { padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: top; overflow-wrap: anywhere; }
 .prog-table tr:last-child td { border-bottom: none; }
-.prog-wk { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); white-space: nowrap; }
-.prog-km { font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 500; white-space: nowrap; }
+.prog-wk { font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--muted2); }
+.prog-km { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; line-height: 1.35; }
 .prog-note { font-size: 11.5px; color: var(--muted2); line-height: 1.5; }
 .prog-now { background: rgba(232,255,71,0.07); }
 .prog-now .prog-wk, .prog-now .prog-km { color: var(--sab); }
@@ -271,7 +272,7 @@ body {
 <div class="hdr">
   <div class="hdr-inner">
     <div class="hdr-top">
-      <div class="logo">21K<span> · VLC 2027</span></div>
+      <div class="logo">15K<span> · VLC 2027</span></div>
       <div class="hdr-right">
         <button class="nav-pill active" id="pill-train" onclick="switchView('train')">RUTINA</button>
         <button class="nav-pill" id="pill-mov" onclick="switchView('mov')">MOV</button>
@@ -347,255 +348,261 @@ const COOL_STRENGTH = [
   'Child\'s Pose — 40\'\'',
 ];
 
-// ══════════════════════════════════════════════════════════════ LAS 5 SESIONES REALES DE TU WODS
-// Contenido tal cual tu rutina "WODS 3.0", con un accesorio anti-lumbar añadido a cada una
-// (Pallof Press / Dead Bug / Bird-dog en vez de más flexión de columna cargada) y notas de
-// precaución hombro/lumbar donde aplica.
-const WODS_SESSIONS = [
-  {
-    id:'cuadriceps', label:'CUÁDRICEPS', color:'#6ee7b7',
-    caution:'Tu día de más carga de pierna del rotativo — la programación lo mantiene siempre lejos del día antes de tu carrera larga de la semana.',
-    wod:{ fmt:'AMRAP', nm:'AL LÍMITE', clk:'10\'',
-      moves:['10 KB Swings rusos — 24 kg','10 Box Step-ups alternos','150m Remo — sprint, no pace','→ cuenta rondas, anota tu récord'],
-      tip:'<b>Estrategia:</b> primera ronda al 85%, de ahí todo. El remo en sprint real — si mantienes conversación no estás trabajando.' },
-    strength:[
-      { nm:'Goblet Squat KB', kg:'32-40 kg', sets:'3×5', rpe:'7-8', rest:'90\'\'', opt:false, note:'Hombros libres. KB en el pecho, codos adentro. Profundidad según movilidad real del día.' },
-      { nm:'Bulgarian Split Squat DB', kg:'14-16 kg', sets:'3×8/lado', rpe:'8', rest:'90\'\'', opt:false, note:'Rodilla trasera roza el suelo. Cuádriceps delantero trabaja. Torso neutro — sin ceder en la lumbar.' },
-      { nm:'Dominadas A — Submáximas', kg:'Peso corporal', sets:'4 × máx-1 rep', rpe:'7', rest:'90\'\'', opt:false, note:'Log obligatorio — apunta reps de cada serie. Escápulas abajo al colgarte, codos a bolsillos al subir.' },
-      { nm:'Leg Press con pausa 2\'\'', kg:'≥80 kg', sets:'3×12', rpe:'9', rest:'60\'\'', opt:true, note:'Solo si queda tiempo. Pausa abajo = no rebote.' },
-      { nm:'Dead Bug', kg:'Peso corporal', sets:'3×10/lado', rpe:'5', rest:'40\'\'', opt:true, note:'Anti-extensión lumbar. Espalda pegada al suelo todo el rato — cierra el día sin cargar más la zona baja.' },
-    ] },
-  {
-    id:'pecho', label:'PECHO', color:'#ff4560',
-    caution:'Hombro: Dips y Landmine/Arnold son las variantes ya adaptadas a tu limitación — si algo cruje o duele, omite sin negociar.',
-    wod:{ fmt:'EMOM', nm:'CON CARGA', clk:'12\'',
-      moves:['Min 1 — 10 DB Floor Press (18-20 kg)','Min 2 — 10 Burpees','Min 3 — 12 cal Assault Bike sprint','Min 4 — Descanso activo','→ 3 rondas completas'],
-      tip:'<b>Floor Press:</b> pausa 1\'\' en el suelo en cada rep. <b>Assault Bike:</b> sprint real, no paseo.' },
-    strength:[
-      { nm:'Bench Press', kg:'72-80 kg', sets:'3×5', rpe:'7-8', rest:'2\'', opt:false, note:'Escápulas juntas antes de tocar la barra. Bajada 2\'\' controlada. Siempre 2-3 reps en el tanque.' },
-      { nm:'Landmine Press (semanas impares)', kg:'peso moderado', sets:'3×8/lado', rpe:'8', rest:'90\'\'', opt:false, note:'Ángulo ~45° = muy amigable con el hombro. Codo cerca del cuerpo.' },
-      { nm:'Arnold Press rango parcial (semanas pares)', kg:'10-12 kg', sets:'3×10', rpe:'8', rest:'90\'\'', opt:false, note:'Sin llegar al overhead completo. Si duele en cualquier punto, para.' },
-      { nm:'Dominadas B — Negativas 5\'\'', kg:'Peso corporal', sets:'3×3', rpe:'8-9', rest:'2\'', opt:false, note:'Baja MUY lento — cuenta 5 segundos. Hold de 3\'\' al final de la última rep de cada serie.' },
-      { nm:'Dips lastrados', kg:'+5-10 kg', sets:'3×6', rpe:'8-9', rest:'90\'\'', opt:true, note:'⚠️ Hombro: ligera inclinación adelante. Si cruje o duele → omite sin negociar.' },
-      { nm:'Pallof Press', kg:'Banda media', sets:'3×10/lado', rpe:'6', rest:'45\'\'', opt:true, note:'Anti-rotación de core — control de tronco sin cargar la lumbar en flexión.' },
-    ] },
-  {
-    id:'espalda', label:'ESPALDA', color:'#47c9ff',
-    caution:'Devil\'s Press hasta hombros, nunca overhead completo — respeta el rango de tu hombro.',
-    wod:{ fmt:'FOR TIME', nm:'BATE LA MARCA', clk:'cap 12\'',
-      moves:['21 KB Swings rusos — 24 kg','15 Devil\'s Press hasta hombros — 8 kg','15 cal SkiErg sprint','9 KB Swings rusos — 24 kg','9 Burpees','→ tiempo al terminar, récord semanal'],
-      tip:'<b>Devil\'s Press:</b> hasta hombros, no overhead completo. <b>SkiErg:</b> tirón desde arriba con brazos, caderas hacia atrás.' },
-    strength:[
-      { nm:'Chest-Supported Row', kg:'50-60 kg', sets:'3×5', rpe:'7-8', rest:'90\'\'', opt:false, note:'Pecho apoyado = imposible compensar con la espalda baja — protege tu lumbar por diseño. Pausa 1\'\' arriba.' },
-      { nm:'Dominadas C — Asistidas (banda)', kg:'Banda ligera', sets:'4×8-10', rpe:'8-9', rest:'90\'\'', opt:false, note:'Misma técnica siempre. Banda más fina cada 2 semanas cuando las reps salgan limpias.' },
-      { nm:'Face Pulls', kg:'15-17 kg', sets:'3×15', rpe:'9', rest:'60\'\'', opt:true, note:'Hazlo siempre que puedas — protege el hombro. Codos ARRIBA, rotación externa al final.' },
-      { nm:'Bird-dog', kg:'Peso corporal', sets:'3×8/lado', rpe:'5', rest:'45\'\'', opt:true, note:'Brazo y pierna contraria a la vez, cadera no rota. Anti-extensión — cierre lumbar-seguro del día de tirón.' },
-    ] },
-  {
-    id:'gluteo', label:'GLÚTEO / ISQUIOS', color:'#b97cff',
-    caution:'RDL + Hip Thrust: la sesión de mayor exigencia lumbar-adyacente del plan (sin flexión de columna cargada). La programación la mantiene siempre lejos del día antes de tu carrera larga.',
-    wod:{ fmt:'CHIPPER', nm:'SIN VUELTA ATRÁS', clk:'cap 14\'',
-      moves:['20 cal Assault Bike — sprint de salida','15 KB Swings rusos — 24 kg','12 Jumping Lunges','10 Devil\'s Press hasta hombros — 8 kg','150m SkiErg','8 Burpee Step-ups','→ un solo paso por cada bloque'],
-      tip:'<b>Estrategia:</b> Assault Bike fuerte para entrar en ritmo. Devil\'s Press cuando ya estás fundido — ahí se define.' },
-    strength:[
-      { nm:'Romanian Deadlift', kg:'55-65 kg', sets:'3×5', rpe:'7-8', rest:'90\'\'', opt:false, note:'HIP HINGE puro, no peso muerto convencional — rodillas semiflex, barra pegada al cuerpo. Para cuando la espalda se redondee, sin excepción.' },
-      { nm:'Hip Thrust con barra', kg:'50-60 kg', sets:'3×8', rpe:'8', rest:'90\'\'', opt:false, note:'Barbilla al pecho en el top. No hiperextendas lumbar. Pausa 1\'\' arriba.' },
-      { nm:'Dominadas C — Asistidas (banda)', kg:'Banda ligera', sets:'4×8-10', rpe:'8-9', rest:'90\'\'', opt:true, note:'Solo si queda tiempo. Si el cuerpo está fundido del chipper, déjalo.' },
-      { nm:'Pallof Press', kg:'Banda media', sets:'3×10/lado', rpe:'6', rest:'45\'\'', opt:true, note:'Anti-rotación — cierre de core seguro tras el trabajo de cadera pesado del día.' },
-    ] },
-  {
-    id:'hombro', label:'HOMBRO + CADERA', color:'#ffc247',
-    caution:'29 oct: confirmaste que el manguito ya NO está inflamado — pasamos de "proteger" a "reconstruir capacidad". Sube carga poco a poco en lo que ya hacías, y entra con calma en el nuevo press por encima de cabeza. Si en algún punto vuelve la molestia, retrocede esa misma sesión, sin esperar a la siguiente. Las 2 de cadera/gemelo del final siguen ligeras y sin carga — no compiten con la recuperación de la tirada de ayer.',
-    wod:{ fmt:'EMOM', nm:'ACCESORIO LIGERO', clk:'10\'',
-      moves:['Min impar — 30\'\' Plancha','Min par — 12 cal Bike ritmo suave','→ 5 rondas, sin prisa, foco en técnica'],
-      tip:'<b>Hoy no es día de sprint:</b> el objetivo es sumar volumen sin fatigar el hombro. Si algo molesta, para.' },
-    strength:[
-      { nm:'DB Lateral Raise', kg:'8-10 kg', sets:'3×12', rpe:'7', rest:'60\'\'', opt:false, note:'Codos con ligera flexión, sube hasta la altura del hombro, no más. Subimos algo la carga ahora que no hay inflamación — técnica limpia sigue mandando sobre el peso.' },
-      { nm:'DB External Rotation (codo pegado al cuerpo)', kg:'4-6 kg', sets:'3×12/lado', rpe:'6-7', rest:'60\'\'', opt:false, note:'Tu ejercicio ancla de salud de hombro. Ya no es "protege", es "construye" — sube carga cuando 12 reps dejen de costar. Sigue siendo la mejor prevención a largo plazo que tienes.' },
-      { nm:'DB Overhead Press — rango controlado', kg:'6-8 kg', sets:'3×8', rpe:'6-7', rest:'75\'\'', opt:false, note:'Incorporación nueva, ahora que el manguito aguanta. Empieza en el rango donde sientas control total (no hace falta llegar arriba del todo) y gana recorrido semana a semana. Molestia = vuelve a rango parcial esa misma serie, sin dudar.' },
-      { nm:'DB Bicep Curl', kg:'10-12 kg', sets:'3×10', rpe:'7', rest:'60\'\'', opt:false, note:'Codos fijos a los costados, sin balanceo.' },
-      { nm:'Monster Walk con banda', kg:'Banda ligera', sets:'2×10 pasos/lado', rpe:'5', rest:'40\'\'', opt:false, note:'Glúteo medio — el estabilizador de cadera que más usas en cada apoyo al correr. Sin carga externa: no compite con la recuperación de la tirada de ayer, solo activa.' },
-      { nm:'Elevación de talón (gemelo)', kg:'Peso corporal', sets:'3×15-20', rpe:'5', rest:'40\'\'', opt:false, note:'Bodyweight, controlado, sin prisa. El gemelo/sóleo absorbe buena parte del impacto de cada zancada — mantenerlo fuerte con un estímulo ligero, no con más carga.' },
-      { nm:'Face Pulls', kg:'12-15 kg', sets:'3×15', rpe:'7', rest:'60\'\'', opt:false, note:'Pasa a fija ahora que el hombro responde bien — de lo más rentable que puedes hacer para que siga así. Codos arriba, rotación externa al final.' },
-      { nm:'Dead Bug', kg:'Peso corporal', sets:'3×10/lado', rpe:'5', rest:'40\'\'', opt:true, note:'Core anti-extensión — cierre suave y lumbar-seguro, si queda tiempo.' },
-    ] },
-];
+// ══════════════════════════════════════════════════════════════ GYM DEL SÁBADO — FUERZA PARA CORRER
+// Un solo día de gym a la semana: cada sesión trabaja un patrón de rodilla y otro de cadera,
+// unilateral, gemelo/sóleo, core anti-lumbar y mantenimiento de manguito. A/B alternan
+// variantes semana a semana; la carga y las repeticiones cambian según la fase.
+function buildGym(p) {
+  return {
+    A: { label:'GYM A', color:'#ff6b9d', caution:p.caution,
+      wod:{ fmt:'ACTIVACIÓN', nm:p.actName, clk:p.actClk, moves:p.act, tip:p.actTip },
+      strength:[
+        { nm:'Sentadilla goblet', kg:p.kg.goblet, sets:p.main, rpe:p.rpe, rest:p.rest, opt:false, note:'Patrón de rodilla: el cuádriceps frena cada apoyo, sobre todo al final de la carrera cuando llega cansado. Codos dentro, baja hasta donde la espalda siga neutra.' },
+        { nm:'Peso muerto rumano', kg:p.kg.rdl, sets:p.main, rpe:p.rpe, rest:p.rest, opt:false, note:'Bisagra de cadera — NO peso muerto convencional. Glúteo e isquio son el motor de la zancada. Barra pegada a las piernas; para en cuanto la lumbar quiera redondearse.' },
+        { nm:'Zancada búlgara', kg:p.kg.bulg, sets:p.uni, rpe:p.rpe, rest:p.restUni, opt:false, note:'Correr es apoyarse en una pierna miles de veces: esto corrige asimetrías. Torso neutro, rodilla trasera roza el suelo.' },
+        { nm:'Gemelo a una pierna (bajada en 3")', kg:p.kg.calf, sets:p.calf, rpe:'7', rest:'45\'\'', opt:false, note:'Gemelo y Aquiles absorben buena parte del impacto de cada zancada — con 85 kg, esto es tu seguro anti-lesión. Sube rápido, baja en 3 segundos.' },
+        { nm:'Plancha lateral', kg:'Peso corporal', sets:p.core, rpe:'6', rest:'45\'\'', opt:false, note:'Pelvis nivelada al correr = menos dolor lateral de rodilla y de lumbar. Cadera arriba, línea recta hombro-tobillo.' },
+        { nm:'Rotación externa + Face pull (superserie)', kg:'4-6 kg / 12-15 kg', sets:'2×12-15', rpe:'6-7', rest:'60\'\'', opt:false, note:'Mantenimiento del manguito, ya sin inflamación. Poco tiempo, mucho retorno: así sigue sin dar guerra.' },
+      ] },
+    B: { label:'GYM B', color:'#ff6b9d', caution:p.caution,
+      wod:{ fmt:'ACTIVACIÓN', nm:p.actName, clk:p.actClk, moves:p.act, tip:p.actTip },
+      strength:[
+        { nm:'Hip thrust con barra', kg:p.kg.hip, sets:p.main, rpe:p.rpe, rest:p.rest, opt:false, note:'El glúteo es el músculo que más te empuja hacia delante. Barbilla al pecho arriba, sin hiperextender la lumbar, pausa de 1".' },
+        { nm:'Step-up a cajón alto', kg:p.kg.step, sets:p.uni, rpe:p.rpe, rest:p.restUni, opt:false, note:'Patrón de rodilla a una pierna, muy parecido a la fase de impulso. Empuja con el talón del pie de arriba, sin impulsarte con el de abajo.' },
+        { nm:'Peso muerto rumano a una pierna', kg:p.kg.slrdl, sets:p.uni, rpe:p.rpe, rest:p.restUni, opt:false, note:'Isquio, glúteo y equilibrio a la vez: la estabilidad de cadera que necesitas en cada apoyo. Cadera nivelada, sin girar.' },
+        { nm:'Sóleo: gemelo con rodilla flexionada', kg:p.kg.soleus, sets:p.calf, rpe:'7', rest:'45\'\'', opt:false, note:'Sentado o con la rodilla doblada: trabaja el sóleo, que soporta más carga que el gemelo al correr y es el gran olvidado.' },
+        { nm:'Pallof press', kg:'Banda media', sets:'3×10/lado', rpe:'6', rest:'45\'\'', opt:false, note:'Anti-rotación: core que aguanta la postura en el km 12 sin cargar la lumbar.' },
+        { nm:'Press por encima de cabeza (rango controlado) + rotación externa', kg:p.kg.ohp+' / 4-6 kg', sets:'2×8 + 2×12', rpe:'6-7', rest:'60\'\'', opt:false, note:'Reconstruir el rango completo del hombro ahora que no hay inflamación. Gana recorrido semana a semana; si molesta, vuelve a rango parcial en esa misma serie.' },
+      ] },
+  };
+}
 
-// ══════════════════════════════════════════════════════════════ DATA — 4 FASES
+const GYM_BASE = buildGym({
+  caution:'Fase de base: técnica y tendón antes que kilos. Va el día después de la tirada larga — si las piernas vienen muy cargadas, quita una serie a todo; nunca subas peso para "compensar".',
+  actName:'PRE-FUERZA', actClk:'8\'',
+  act:['5\' bici o remo suave','Glute bridge ×12 + Monster walk con banda ×10 pasos/lado','Skipping A suave 2×15 m','Serie de aproximación del primer ejercicio al 50% del peso'],
+  actTip:'Todavía sin saltos: primero construimos tendón y técnica. Los pogos entran en la Fase 2.',
+  main:'3×10', rpe:'6-7', rest:'90\'\'', uni:'3×8/lado', restUni:'75\'\'', calf:'3×12/lado', core:'3×30\'\'/lado',
+  kg:{ goblet:'24-28 kg', rdl:'45-55 kg', bulg:'2×10 kg', calf:'Peso corporal', step:'2×10 kg', hip:'50-60 kg', slrdl:'12-14 kg', soleus:'10-16 kg', ohp:'6-8 kg' },
+});
+const GYM_DESARROLLO = buildGym({
+  caution:'Fase de fuerza: más carga, menos repeticiones. Sigue siendo el día después de la tirada: si una serie se deforma, para ahí. Nada de peso muerto convencional ni flexión de columna cargada.',
+  actName:'PRE-FUERZA + POGOS', actClk:'10\'',
+  act:['5\' bici o remo suave','Glute bridge ×12 + Monster walk ×10 pasos/lado','Pogo jumps (saltitos de tobillo, rodilla casi recta) 3×20','Skipping A 2×15 m'],
+  actTip:'Los pogos entrenan la rigidez del tobillo: devuelve energía en cada apoyo = mejor economía de carrera. Contactos cortos y silenciosos.',
+  main:'4×6', rpe:'7-8', rest:'2\'', uni:'3×6/lado', restUni:'90\'\'', calf:'3×10/lado', core:'3×40\'\'/lado',
+  kg:{ goblet:'32-36 kg', rdl:'60-70 kg', bulg:'2×12-14 kg', calf:'+10 kg', step:'2×12-14 kg', hip:'70-80 kg', slrdl:'16-18 kg', soleus:'20-24 kg', ohp:'8-10 kg' },
+});
+const GYM_ESPECIFICO = buildGym({
+  caution:'Fase específica: pocas repeticiones, pesadas y explosivas en la subida. Mantienes la fuerza con poca fatiga para que el miércoles de ritmo y la tirada no se resientan.',
+  actName:'POTENCIA BAJO IMPACTO', actClk:'10\'',
+  act:['5\' bici o remo suave','Pogo jumps 3×20','Salto a cajón bajo 3×5 — bajas andando, nunca saltando','Skipping B 2×15 m'],
+  actTip:'Potencia sin castigar articulaciones: subes saltando, bajas andando. Si la lumbar se queja, quita el cajón y deja solo pogos.',
+  main:'3×5', rpe:'8', rest:'2\'30\'\'', uni:'3×5/lado', restUni:'2\'', calf:'3×10/lado', core:'3×40\'\'/lado',
+  kg:{ goblet:'36-40 kg', rdl:'70-80 kg', bulg:'2×14-16 kg', calf:'+12-16 kg', step:'2×14-16 kg', hip:'80-90 kg', slrdl:'18-20 kg', soleus:'24-28 kg', ohp:'8-10 kg' },
+});
+const GYM_AFINE = buildGym({
+  caution:'Taper: mismo patrón, cargas un 30-40% más bajas y 2-3 repeticiones lejos del fallo. Mantener, no construir. La semana de carrera NO hay gym (ver notas del día).',
+  actName:'CHISPA', actClk:'6\'',
+  act:['5\' bici suave','Pogo jumps 2×10','Glute bridge ×12'],
+  actTip:'Solo mantener la chispa. Si dudas entre hacer o no una serie, no la hagas.',
+  main:'2×5', rpe:'6', rest:'2\'', uni:'2×5/lado', restUni:'90\'\'', calf:'2×10/lado', core:'2×30\'\'/lado',
+  kg:{ goblet:'~24 kg', rdl:'~50 kg', bulg:'2×10 kg', calf:'Peso corporal', step:'2×10 kg', hip:'~55 kg', slrdl:'~12 kg', soleus:'~16 kg', ohp:'6-8 kg' },
+});
+
+// ══════════════════════════════════════════════════════════════ DATA — 4 FASES HACIA EL 15K (25 ABR 2027)
 const PHASES = [
   {
-    id:'cimentacion', label:'CIMENTACIÓN', short:'FASE 1',
-    range:'24 ago → 30 nov 2026 · ~14 semanas (Meses 1-3)',
-    start:'2026-08-24', end:'2026-11-30',
-    objetivo:'Base aeróbica en Z2, ahora con agenda fija de 4 días: <b>Miércoles</b> (fuerza de pierna), <b>Viernes</b> (carrera fácil), <b>Sábado</b> (tirada), <b>Domingo</b> (fuerza de tren superior). <b>Actualización 28 oct:</b> pasamos de 3 a 2 carreras/semana — menos frecuencia, pero cada sesión cuenta más. Vamos conservador: tu test del 28 oct salió más lento y con más pulsaciones de lo esperable (ver nota de abajo).',
-    volKm:'2 carreras/semana (Vie + Sáb)', longKm:'Sáb 30 → 50 min', zona:'Z2 125-140 lpm (recalibrando)',
+    id:'base', label:'BASE AERÓBICA', short:'FASE 1',
+    range:'16 nov → 27 dic 2026 · 6 semanas',
+    start:'2026-11-16', end:'2026-12-27',
+    objetivo:'Nuevo objetivo: <b>15K Valencia Abierta al Mar, domingo 25 de abril de 2027</b> — 23 semanas desde hoy. Esta fase construye la base: 3 carreras en Z2 (Lun, Mié, Vie) y 1 día de gym (Sáb) centrado en pierna, cadera y gemelo. <b>Punto de partida (16 nov):</b> 3,74 km en 33:02, 8\'49"/km, FC media 144 — más rápido y con menos pulsaciones que el 28 oct (9\'09"/km a 151): el aeróbico está respondiendo.',
+    volKm:'3 carreras · 1h45 → 2h15/sem', longKm:'Vie 40 → 60 min', zona:'Z2 125-140 lpm',
     progression:[
-      {wk:'Sem 1-9 (ya hechas)', ws:1, we:9, larga:'variable', semanal:'3 carreras/sem (agenda anterior)', nota:'Semanas previas al cambio de agenda del 28 oct — no se recalculan, quedan como estaban.'},
-      {wk:'Sem 10-11', ws:10, we:11, larga:'30-35 min', semanal:'25-30 min', nota:'Arranca la nueva agenda de 4 días. Partimos conservador: el test del 28 oct salió a 9\'09"/km con FC media 151 — más lento y más pulsado de lo esperable frente al de 7\'42"/km a FC 158 del primer test. Puede ser humedad (87%) o fatiga real — por si acaso, margen extra.'},
-      {wk:'Sem 12-14', ws:12, we:14, larga:'40-50 min', semanal:'30-35 min', nota:'Cierre de fase. Test de esfuerzo suave y controlado para confirmar si las zonas se han movido antes de pasar a Fase 2.'},
+      {wk:'Sem 1-2', ws:1, we:2, lun:'30 min', mie:'30 min', vie:'40-45 min', nota:'Arranque. Todo en Z2: si la FC pasa de 140, baja el ritmo aunque parezca ridículo — hoy promediaste 144, justo en el borde.'},
+      {wk:'Sem 3-4', ws:3, we:4, lun:'35 min', mie:'35 min + 4 rectas', vie:'50 min', nota:'Aparecen las rectas del miércoles: 4×20" alegres pero relajadas al final del rodaje. Técnica y cadencia, no intensidad.'},
+      {wk:'Sem 5', ws:5, we:5, lun:'40 min', mie:'40 min + 6 rectas', vie:'55-60 min', nota:'Semana más cargada de la fase. La tirada del viernes ya ronda los 6-7 km.'},
+      {wk:'Sem 6 · Navidad', ws:6, we:6, lun:'30 min', mie:'30 min', vie:'40 min', nota:'Descarga: -30% de volumen, coincide con las fiestas. Asimilas lo hecho y llegas fresco a la Fase 2.'},
     ],
     days:[
-      { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
-        eyebrow:'Miércoles · Fuerza de pierna · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Alterna Cuádriceps/Glúteo-Isquios cada semana — pierna de verdad, sin diluir, 3 días limpios antes de la tirada',
-        tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH,
-        notes:{ label:'⌚ Actualización 28 oct — leer una vez', items:[
-          'Datos base: 170 cm · 85 kg · entrenas en ayunas a las 6:00 AM · Apple Watch Series 8 (watchOS 26.6)',
-          'Tus zonas manuales: <b>Z1 &lt;134 · Z2 125-140 · Z3 146-156 · Z4 157-166 · Z5 167+</b>',
-          'Alerta de zona dentro del propio entreno: sigue pendiente de confirmar (Entrenamiento → Alertas → Zona de FC antes de pulsar Iniciar). Mientras tanto: chequeo visual a la pantalla de Zona + test del habla.',
-          '<b>Nueva agenda fija:</b> solo 4 días de entreno — Miércoles (fuerza), Viernes (carrera), Sábado (tirada larga), Domingo (fuerza tren superior). Pasas de 3 a 2 carreras/semana: menos volumen total, pero cada sesión de carrera pesa más, así que se tratan con más cuidado, no con más intensidad.',
-          '<b>Segundo test, 28 oct:</b> 3,28 km en 30:03 — ritmo 9\'09"/km, FC media 151, cadencia 155. Comparado con el primero (24 ago: 3,15 km en 24:17, 7\'42"/km, FC 158): ahora vas más lento con una FC parecida o más alta para ese ritmo — señal de que el cuerpo no está tan fresco como en agosto (humedad 87% y hora nocturna también influyen, pero no lo explican todo). No es motivo de alarma, es motivo de prudencia: arrancamos esta fase pisando el freno y confirmamos con un test controlado en 3-4 semanas.',
-          '<b>Actualización 29 oct — prioridad a pierna:</b> por tu pregunta de ese día, Miércoles deja de repartirse entre 4 sesiones y pasa a alternar SOLO Cuádriceps y Glúteo-Isquios cada semana — con tu peso y objetivo, pierna/cadera manda sin discusión frente a pecho/espalda, que apenas transfieren a correr. Domingo sigue siendo siempre Hombro/Brazo (rehab de tu limitación real, no "fitness genérico"), y ahora suma 2 ejercicios ligeros de cadera/gemelo sin carga externa — glúteo medio y pantorrilla, lo justo para sumar sin competir con la recuperación de la tirada del sábado.',
-          '<b>Más del 29 oct — manguito sin inflamación:</b> confirmaste que ya no hay inflamación en el manguito rotador. Pasamos el domingo de "proteger" a "reconstruir": sube algo la carga en Lateral Raise y External Rotation, Face Pulls pasa a fija, y se añade un press por encima de cabeza en rango controlado — progresa semana a semana y retrocede en el momento si vuelve cualquier molestia, sin esperar al día siguiente.',
-        ]} },
-      { id:'vie', tab:'VIE', color:'#6ee7b7', kind:'run',
-        eyebrow:'Viernes · Carrera · Fase Cimentación', title:'CARRERA Z2', sub:'Fácil de verdad — hoy no se compite con nadie, ni contigo mismo',
-        tags:['25→35 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
+      { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
+        eyebrow:'Lunes · Rodaje · Fase Base', title:'RODAJE Z2', sub:'Fácil de verdad — empiezas la semana sumando, no demostrando',
+        tags:['30→40 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
+        notes:{ label:'🎯 Nuevo objetivo — leer una vez', items:[
+          'Objetivo: <b>15K Valencia Abierta al Mar · domingo 25 de abril de 2027</b>. Sustituye al plan anterior de media maratón. 23 semanas desde el lunes 16 de noviembre.',
+          'Semana tipo: <b>Lun</b> rodaje Z2 · <b>Mié</b> rodaje → calidad según la fase · <b>Vie</b> tirada larga · <b>Sáb</b> gym (pierna, cadera, gemelo y mantenimiento de hombro). Martes, jueves y domingo: descanso o movilidad (pestaña MOV).',
+          'Por qué el gym va el sábado: la tirada del viernes necesita piernas frescas, así que la fuerza va después. Detrás tiene domingo de descanso y lunes suave para recuperar, y el miércoles de calidad queda lejos.',
+          'Tu evolución: 28 oct 9\'09"/km a FC 151 → 16 nov 8\'49"/km a FC 144. Más rápido con menos pulsaciones = mejora aeróbica real en tres semanas.',
+          'Zonas del reloj: Z1 &lt;134 · Z2 125-140 · Z3 146-156 · Z4 157-166 · Z5 167+. Ojo: entre 141 y 145 no hay zona definida, y tu media de hoy (144) cae en ese hueco. Para los rodajes, techo de 140.',
+          'Datos base: 170 cm · 85 kg · ayunas a las 6:00 · Apple Watch Series 8. En marzo la tirada del viernes llegará a 1h40-1h50: si a esa hora no te da tiempo, avísame y movemos la tirada.',
+          'Hombro: el manguito ya no está inflamado. El gym mantiene rotación externa y face pulls cada semana, y el press por encima de la cabeza en rango controlado.',
+        ]},
         wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑',
-          moves:['Duración según tabla de progresión de esta fase (arriba)','Zona objetivo: 125-140 lpm — si te cuesta mantenerla a trote suave, hoy el cuerpo pide ir aún más lento','Mañana toca tirada larga: termina hoy con margen, no agotado'],
-          tip:'<b>Test del habla:</b> si no puedes mantener una conversación con frases completas, vas demasiado rápido. Después del test del 28 oct, hoy toca ser todavía más conservador de lo habitual — nadie te está cronometrando.' },
+          moves:['Duración según la tabla de progresión (columna Lun)','FC objetivo 125-140 — hoy promediaste 144: si ves 141 o más, afloja','Cadencia: busca 160+ pasos/min con pasos cortos (hoy 156)'],
+          tip:'<b>Test del habla:</b> si no puedes decir frases completas, vas demasiado rápido. Ir lento ahora es lo que te permitirá ir rápido en abril.' },
         strength:[], cooldown:COOL_RUN },
-      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
-        eyebrow:'Sábado · Tirada Larga · Fase Cimentación', title:'TIRADA LARGA', sub:'La sesión clave de la semana — con solo 2 carreras/semana, esta vale doble',
-        tags:['30→50 MIN','Z2 125-140','LA CLAVE'], warmup:WARM_LONG,
-        wod:{ fmt:'LARGA', nm:'RODAJE LARGO', clk:'TABLA↑',
-          moves:['Duración según tabla de progresión de esta fase','Z2 estricto — run-walk (4\' trote / 1\' andar) sin complejos si el cuerpo lo pide','Hidrátate antes de salir; si pasas de 45 min, agua contigo'],
-          tip:'Con solo 2 días de carrera a la semana, esta es LA sesión que construye tu aeróbico y tu resistencia articular — no hay margen para saltársela ni para acelerarla.' },
+      { id:'mie', tab:'MIÉ', color:'#47c9ff', kind:'run',
+        eyebrow:'Miércoles · Rodaje + técnica · Fase Base', title:'RODAJE + RECTAS', sub:'Z2 con rectas al final desde la semana 3 — velocidad sin fatiga',
+        tags:['30→40 MIN','Z2 + RECTAS','AYUNAS 6AM'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'Z2 + RECTAS', clk:'TABLA↑',
+          moves:['Rodaje Z2 según la tabla (columna Mié)','Desde la semana 3: al final, 4-6 rectas de 20" a ritmo alegre y relajado, recuperando 1\' andando','Rectas = técnica: brazos sueltos, pasos cortos y rápidos, sin apretar los dientes'],
+          tip:'Las rectas no cansan y enseñan al cuerpo a moverse más rápido gastando lo mismo. Son la semilla del trabajo de calidad de la Fase 2.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'vie', tab:'VIE', color:'#e8ff47', kind:'run',
+        eyebrow:'Viernes · Tirada larga · Fase Base', title:'TIRADA LARGA', sub:'La sesión más importante de la semana',
+        tags:['40→60 MIN','Z2 125-140','LA CLAVE'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'RODAJE LARGO Z2', clk:'TABLA↑',
+          moves:['Duración según la tabla (columna Vie)','Z2 de principio a fin; run-walk (4\' trote / 1\' andar) sin complejos si la FC se dispara','Empieza más lento que el lunes: el final tiene que sentirse controlado'],
+          tip:'Construye la resistencia que piden los 15 km. Mañana toca gym: termina con margen, no vacío.' },
         strength:[], cooldown:COOL_RUN_LONG },
-      { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
-        eyebrow:'Domingo · Fuerza tren superior · Fase Cimentación', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo + activación de cadera/gemelo — ligero, no compite con la recuperación de la tirada',
-        tags:['30-35 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+      { id:'sab', tab:'SÁB', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Sábado · Gym · Fase Base', title:'GYM', sub:'Alterna A/B cada semana — pierna, cadera y gemelo para correr mejor',
+        tags:['50-60 MIN','FUERZA CORREDOR','POST-TIRADA'], warmup:WARM_STRENGTH, gym:GYM_BASE, cooldown:COOL_STRENGTH },
     ],
   },
   {
     id:'desarrollo', label:'DESARROLLO', short:'FASE 2',
-    range:'1 dic 2026 → 14 mar 2027 · ~15 semanas (Meses 4-6)',
-    start:'2026-12-01', end:'2027-03-14',
-    objetivo:'Mismo esquema de 4 días. El viernes empieza a incluir progresiones suaves al final (sin convertirse en serie), y la tirada del sábado crece de forma sostenida hasta rozar la hora. CrossFit se mantiene igual: Miércoles pierna, Domingo tren superior sin metcon.',
-    volKm:'2 carreras/semana (Vie + Sáb)', longKm:'Sáb 40 → 80 min', zona:'Z2 125-140 + progresiones suaves',
+    range:'28 dic 2026 → 21 feb 2027 · 8 semanas',
+    start:'2026-12-28', end:'2027-02-21',
+    objetivo:'Aparece la calidad: el miércoles pasa de rodaje con rectas a fartlek y después a tempo en Z3-Z4. La tirada del viernes sube hasta 75-80 min. El gym pasa a fase de fuerza — menos repeticiones, más carga — y entran los saltos de tobillo (pogos). Descarga en la semana 10 y test 5K en la 14.',
+    volKm:'3 carreras · 2h15 → 2h45/sem', longKm:'Vie 60 → 80 min', zona:'Z2 + Mié Z3-Z4 (146-166)',
     progression:[
-      {wk:'Sem 15-18', ws:15, we:18, larga:'40-55 min', semanal:'30-40 min', nota:'Primeras progresiones al final del viernes — últimos 5-8 min algo más vivos, nunca una serie de verdad.'},
-      {wk:'Sem 19-22', ws:19, we:22, larga:'55-70 min', semanal:'35-45 min', nota:'El sábado ya se siente como "la carrera de la semana" — empieza a planificar cuándo hacerla para tener tiempo de sobra.'},
-      {wk:'Sem 23-26', ws:23, we:26, larga:'45-55 min', semanal:'30-35 min', nota:'Semana de descarga: baja el volumen ~25-30% para asimilar. No la saltes por sentirte con ganas.'},
-      {wk:'Sem 27-29', ws:27, we:29, larga:'70-80 min', semanal:'40-45 min', nota:'Cierre de fase. Test de esfuerzo de nuevo — tus zonas probablemente se hayan movido, ajustamos si hace falta antes de pasar a kilómetros reales en Fase 3.'},
+      {wk:'Sem 7-9', ws:7, we:9, lun:'40 min', mie:'Fartlek 6-8×2\' Z3', vie:'60-70 min', nota:'Primer trabajo de calidad. Fartlek = cambios de ritmo por sensaciones, recuperando 2\' trotando. Controlado, no a tope.'},
+      {wk:'Sem 10', ws:10, we:10, lun:'35 min', mie:'Fartlek 5×2\' suave', vie:'50 min', nota:'Descarga: baja el volumen ~30%. Asimilar también es entrenar.'},
+      {wk:'Sem 11-13', ws:11, we:13, lun:'45 min', mie:'Tempo 2×10\' → 2×12\' Z3-Z4', vie:'70-80 min', nota:'Tempo = "cómodamente duro": frases cortas sí, conversación no. Recupera 3\' trotando entre bloques.'},
+      {wk:'Sem 14 · Test', ws:14, we:14, lun:'35 min', mie:'TEST 5K', vie:'50-60 min', nota:'Test 5K el miércoles: calienta 15\', corre 5 km al máximo sostenible y anota tiempo y FC media. Con eso fijamos tu ritmo objetivo de 15K para la Fase 3.'},
     ],
     days:[
-      { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
-        eyebrow:'Miércoles · Fuerza de pierna · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Alterna Cuádriceps/Glúteo-Isquios cada semana — misma lógica, ahora con más carga acumulada detrás',
-        tags:['45 MIN','FUERZA','WODS 3.0'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
-      { id:'vie', tab:'VIE', color:'#6ee7b7', kind:'run',
-        eyebrow:'Viernes · Carrera · Fase Desarrollo', title:'CARRERA Z2 + PROGRESIONES', sub:'Fácil con un cierre algo más vivo — tu único contacto con la velocidad esta fase',
-        tags:['30→45 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
-        wod:{ fmt:'RODAJE', nm:'Z2 + CIERRE', clk:'TABLA↑',
-          moves:['80-85% del tiempo a Z2 estricto, igual que siempre','Últimos 5-8 min: sube a esfuerzo moderado (Z3, RPE 6-7) sin llegar a sprintar','Vuelta a la calma caminando'],
-          tip:'Con solo esta sesión y la tirada larga, no hay margen para un día de calidad aparte — este cierre es tu dosis mínima eficaz de velocidad.' },
+      { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
+        eyebrow:'Lunes · Rodaje · Fase Desarrollo', title:'RODAJE Z2', sub:'El día fácil que hace posible el miércoles duro',
+        tags:['35→45 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑',
+          moves:['Duración según la tabla (columna Lun)','Z2 estricto: 125-140 lpm','Viene del gym del sábado: si las piernas pesan, más lento todavía'],
+          tip:'Con solo tres carreras a la semana, la tentación es apretar todas. No: una dura, dos fáciles. Así se mejora sin romperse.' },
         strength:[], cooldown:COOL_RUN },
-      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
-        eyebrow:'Sábado · Tirada Larga · Fase Desarrollo', title:'TIRADA LARGA', sub:'Crece de forma sostenida — empieza a rozar la hora de carrera continua',
-        tags:['40→80 MIN','Z2 125-140','LA CLAVE'], warmup:WARM_LONG,
-        wod:{ fmt:'LARGA', nm:'RODAJE LARGO', clk:'TABLA↑',
-          moves:['Duración según tabla de progresión de esta fase','Z2 estricto de principio a fin, sin excepción por "sentirte bien"','Si pasa de 60 min, lleva agua o algo de energía — entrenas en ayunas'],
-          tip:'Esta sesión es el puente directo hacia la tirada larga en kilómetros reales que llega en Fase Específico — el cuerpo se está preparando exactamente para eso.' },
+      { id:'mie', tab:'MIÉ', color:'#ffc247', kind:'run',
+        eyebrow:'Miércoles · Calidad · Fase Desarrollo', title:'FARTLEK / TEMPO', sub:'Tu única sesión dura de la semana — Z3-Z4',
+        tags:['40-50 MIN','Z3-Z4 146-166','CALIDAD'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'CALIDAD', nm:'FARTLEK → TEMPO', clk:'TABLA↑',
+          moves:['10-12\' de trote suave (incluido en el calentamiento)','Bloque principal según la tabla (columna Mié): fartlek o tempo en Z3-Z4 (146-166 lpm)','10\' de vuelta a la calma en Z1-Z2','Semana 14: test 5K en lugar del bloque — anota tiempo y FC media'],
+          tip:'Si la zancada se descompone, corta el bloque: con 85 kg la técnica bajo fatiga manda sobre el orgullo.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'vie', tab:'VIE', color:'#e8ff47', kind:'run',
+        eyebrow:'Viernes · Tirada larga · Fase Desarrollo', title:'TIRADA LARGA', sub:'Sube hasta 75-80 minutos de carrera continua',
+        tags:['50→80 MIN','Z2 125-140','LA CLAVE'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'RODAJE LARGO Z2', clk:'TABLA↑',
+          moves:['Duración según la tabla (columna Vie)','Z2 estricto de principio a fin','Más de 60 min: algo ligero antes de salir (plátano) y agua — empieza a probar lo que tomarás el día de la carrera'],
+          tip:'Al acabar esta fase habrás corrido 10 km seguidos en Z2. Eso son dos tercios del objetivo, sin forzar.' },
         strength:[], cooldown:COOL_RUN_LONG },
-      { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
-        eyebrow:'Domingo · Fuerza tren superior · Fase Desarrollo', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo + activación de cadera/gemelo — ligero, no compite con la recuperación de la tirada',
-        tags:['30-35 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+      { id:'sab', tab:'SÁB', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Sábado · Gym · Fase Desarrollo', title:'GYM', sub:'Fase de fuerza: más carga, menos repeticiones + pogos',
+        tags:['55-60 MIN','FUERZA CORREDOR','POST-TIRADA'], warmup:WARM_STRENGTH, gym:GYM_DESARROLLO, cooldown:COOL_STRENGTH },
     ],
   },
   {
-    id:'especifico', label:'ESPECÍFICO', short:'FASE 3',
-    range:'15 mar → 11 sep 2027 · ~26 semanas (Meses 7-13, ampliada)',
-    start:'2027-03-15', end:'2027-09-11',
-    objetivo:'El viernes pasa de progresiones a tempo/umbral real — con solo 2 días de carrera, es la única ventana para trabajar velocidad, así que cuenta. La tirada del sábado ya se mide en km y crece hasta 16-18 km, con descarga cada 4ª semana. CrossFit se mantiene: Miércoles pierna, Domingo tren superior sin metcon.',
-    volKm:'~20-28 km/semana (Vie + Sáb)', longKm:'Sáb 10 → 18 km', zona:'Z2 base + Vie umbral Z3-Z4',
+    id:'especifico', label:'ESPECÍFICO 15K', short:'FASE 3',
+    range:'22 feb → 4 abr 2027 · 6 semanas',
+    start:'2027-02-22', end:'2027-04-04',
+    objetivo:'Entrenas el ritmo de carrera. El miércoles trabaja a ritmo objetivo de 15K (sale del test 5K: aproximadamente tu ritmo de 5K + 20-30"/km) y a Z4. La tirada del viernes llega a 13-14 km con los últimos kilómetros a ritmo de carrera. El gym mantiene la fuerza con pocas repeticiones pesadas y saltos de bajo impacto.',
+    volKm:'3 carreras · ~25-32 km/sem', longKm:'Vie 10 → 14 km', zona:'Z2 + ritmo 15K + Z4',
     progression:[
-      {wk:'Bloque 1', ws:30, we:35, larga:'10-12 km', semanal:'Vie 6-8 km umbral', nota:'Primera tirada larga "de verdad" medida en km. El viernes pasa a ser tempo real, no progresiones sueltas.'},
-      {wk:'Bloque 2', ws:36, we:42, larga:'12-14 km', semanal:'Vie 8-10 km umbral', nota:'El tempo del viernes ya se siente "cómodo-duro" en vez de solo duro — buena señal de mejora aeróbica.'},
-      {wk:'Bloque 3', ws:43, we:49, larga:'14-16 km', semanal:'Vie 8-10 km (descarga/4)', nota:'Descarga cada 4ª semana: -25/30% de volumen. Si notas la lumbar o la rodilla resentida, esa semana se respeta al 100%.'},
-      {wk:'Bloque 4 (pico)', ws:50, we:54, larga:'16-18 km', semanal:'Vie 10 km umbral', nota:'Semana pico. Simulacro con zapatillas y avituallamiento reales — nada nuevo el día de la carrera de Valencia.'},
+      {wk:'Sem 15-16', ws:15, we:16, lun:'40-45 min', mie:'3×2 km ritmo 15K', vie:'10-11 km (2 últ. a ritmo)', nota:'Primer contacto con el ritmo de carrera. Recupera 2\' trotando entre series.'},
+      {wk:'Sem 17', ws:17, we:17, lun:'35 min', mie:'5×1 km Z4', vie:'8 km Z2', nota:'Descarga: menos volumen, algo de chispa el miércoles.'},
+      {wk:'Sem 18-19', ws:18, we:19, lun:'45-50 min', mie:'2×3 km → 5 km seguidos a ritmo 15K', vie:'12-14 km (3-4 últ. a ritmo)', nota:'Bloque pico. La tirada de 13-14 km es la prueba de que los 15 km ya están en las piernas.'},
+      {wk:'Sem 20', ws:20, we:20, lun:'40 min', mie:'6×1 km Z4', vie:'12 km ensayo general', nota:'Ensayo general: zapatillas, ropa, desayuno y gel de carrera. Nada nuevo el día D.'},
     ],
     days:[
-      { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
-        eyebrow:'Miércoles · Fuerza de pierna mantenimiento · Fase Específico', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Alterna Cuádriceps/Glúteo-Isquios cada semana — la carrera manda ahora, la pierna no se negocia',
-        tags:['35-40 MIN','FUERZA','MANTENIMIENTO'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
-      { id:'vie', tab:'VIE', color:'#b97cff', kind:'run',
-        eyebrow:'Viernes · Tempo/Umbral · Fase Específico', title:'TEMPO / UMBRAL', sub:'Tu única sesión de velocidad real — con 2 días de carrera, esta es la que te prepara para sostener ritmo',
-        tags:['30-45 MIN','UMBRAL Z3-Z4','CALIDAD'], warmup:WARM_INTERVAL,
-        wod:{ fmt:'TEMPO', nm:'RITMO UMBRAL', clk:'TABLA↑',
-          moves:['10-12 min calentamiento (incluido en warm-up)','Según tabla de progresión: bloque continuo o 2-3 tramos a Z3-Z4 (146-166 lpm), recuperación 2-3\' trote suave entre tramos','10 min vuelta a la calma'],
-          tip:'<b>Ritmo umbral</b> = el que podrías mantener 1 hora en competición si te apretaran. Con tu peso actual, controla la técnica bajo fatiga — si la zancada se descontrola, corta el bloque en vez de forzar.' },
+      { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
+        eyebrow:'Lunes · Rodaje · Fase Específico', title:'RODAJE Z2', sub:'Recuperación activa entre el gym y el miércoles de ritmo',
+        tags:['35→50 MIN','Z2 125-140','AYUNAS 6AM'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑',
+          moves:['Duración según la tabla (columna Lun)','Z2 estricto: 125-140 lpm','Al final, 4 rectas de 20" para soltar las piernas'],
+          tip:'Con más volumen e intensidad que nunca, el día fácil es lo que te mantiene sano. Lento de verdad.' },
         strength:[], cooldown:COOL_RUN },
-      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
-        eyebrow:'Sábado · Tirada Larga · Fase Específico', title:'TIRADA LARGA', sub:'La sesión más importante de todo el plan, sin excepción',
-        tags:['10→18 KM','Z2 + RITMO','LA CLAVE'], warmup:WARM_LONG,
-        wod:{ fmt:'LARGA', nm:'RODAJE LARGO', clk:'TABLA↑',
-          moves:['Distancia según tabla de progresión de esta fase','80-90% Z2, últimos km a ritmo objetivo de carrera en los bloques de pico','En ayunas: gel o similar cada 40-45 min a partir de los 60-75 min de carrera','Usa en la semana pico las zapatillas y el gel que llevarás en Valencia'],
-          tip:'Aprender a acelerar con las piernas cansadas es lo que decide tu carrera en el km 15-18. Practícalo aquí, no el día de la línea de salida.' },
+      { id:'mie', tab:'MIÉ', color:'#b97cff', kind:'run',
+        eyebrow:'Miércoles · Ritmo de carrera · Fase Específico', title:'RITMO 15K', sub:'Aprendes a sostener exactamente el ritmo del 25 de abril',
+        tags:['45-55 MIN','RITMO 15K','CALIDAD'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'RITMO', nm:'SERIES A RITMO 15K', clk:'TABLA↑',
+          moves:['10-12\' de trote suave (incluido en el calentamiento)','Bloque principal según la tabla (columna Mié): series a ritmo 15K o a Z4','Ritmo 15K = el que salga del test 5K de la semana 14 (≈ ritmo de 5K + 20-30"/km)','10\' de vuelta a la calma'],
+          tip:'El ritmo de carrera tiene que sentirse controlado aquí. Si cada serie es una lucha, el ritmo objetivo es demasiado ambicioso: lo ajustamos.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'vie', tab:'VIE', color:'#e8ff47', kind:'run',
+        eyebrow:'Viernes · Tirada larga · Fase Específico', title:'TIRADA LARGA', sub:'Hasta 13-14 km con el final a ritmo de carrera',
+        tags:['8→14 KM','Z2 + RITMO','LA CLAVE'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'LARGA + FINAL A RITMO', clk:'TABLA↑',
+          moves:['Distancia según la tabla (columna Vie)','Z2 hasta los últimos 2-4 km, que van a ritmo 15K','Más de 75 min: desayuno ligero antes (el mismo que tomarás el día de la carrera) y gel a mitad','A esta duración la tirada pasa de 1h40: si el viernes a las 6 no te da tiempo, avísame y la movemos'],
+          tip:'Acelerar con las piernas cansadas es lo que decide la carrera en el km 11-13. Se entrena aquí, no el día D.' },
         strength:[], cooldown:COOL_RUN_LONG },
-      { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
-        eyebrow:'Domingo · Fuerza tren superior · Fase Específico', title:'CROSSFIT — WODS', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo + activación de cadera/gemelo — recuperación real tras la tirada',
-        tags:['30-35 MIN','HOMBRO FIJO','TREN SUPERIOR'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+      { id:'sab', tab:'SÁB', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Sábado · Gym · Fase Específico', title:'GYM', sub:'Pocas repeticiones, pesadas, y saltos de bajo impacto',
+        tags:['45-55 MIN','FUERZA + POTENCIA','POST-TIRADA'], warmup:WARM_STRENGTH, gym:GYM_ESPECIFICO, cooldown:COOL_STRENGTH },
     ],
   },
   {
     id:'afine', label:'AFINE', short:'FASE 4',
-    range:'12 sep → 17 oct 2027 (fecha asumida) · ~5 semanas + carrera',
-    start:'2027-09-12', end:'2027-10-17',
-    objetivo:'Bajas volumen sin perder chispa. El viernes se vuelve corto y afilado (series cortas), la tirada del sábado baja cada semana, y el domingo de fuerza se reduce a casi nada la última semana. <b>Tu carrera cae en domingo — uno de tus 4 días fijos, no hace falta mover nada.</b> Fecha asumida (17 oct 2027): en cuanto tengas la oficial, ajustamos el taper a los días exactos.',
-    volKm:'~9 → 22 km/semana (Vie + Sáb)', longKm:'Sáb 14 km → shakeout', zona:'Z2 mantenimiento + toques de ritmo objetivo',
+    range:'5 abr → 25 abr 2027 · 3 semanas + carrera',
+    start:'2027-04-05', end:'2027-04-25',
+    objetivo:'Bajas volumen y mantienes toques de intensidad cortos: llegas fresco al domingo 25 de abril. La semana de carrera no hay gym — el sábado 24 solo hay 15 minutos de activación.',
+    volKm:'3 carreras · bajando ~40%', longKm:'Vie 10 → 4 km', zona:'Z2 + toques de ritmo 15K',
     progression:[
-      {wk:'Sem -5/-4', ws:55, we:56, larga:'12-14 km', semanal:'Vie 6-8 km afilado', nota:'Primer recorte de volumen (~20%). La intensidad se mantiene — solo baja el volumen.'},
-      {wk:'Sem -3/-2', ws:57, we:58, larga:'8-10 km', semanal:'Vie 5-6 km afilado', nota:'Taper real. Vas a sentir las piernas "raras" de frescas — es normal, es la supercompensación funcionando.'},
-      {wk:'Sem -1', ws:59, we:59, larga:'5-6 km con toques de ritmo', semanal:'Vie 4-5 km suave', nota:'Última semana completa antes de la semana de carrera. Confía en el trabajo hecho.'},
-      {wk:'Semana de carrera', ws:60, we:60, larga:'—', semanal:'Vie shakeout 3-4 km', nota:'Miércoles fuerza muy ligera, Viernes shakeout corto, Sábado descanso total, Domingo: carrera.'},
+      {wk:'Sem 21', ws:21, we:21, lun:'40 min', mie:'3×2 km ritmo 15K', vie:'10 km Z2', nota:'Primer recorte (~20%). La intensidad se mantiene.'},
+      {wk:'Sem 22', ws:22, we:22, lun:'35 min', mie:'4×1 km ritmo 15K', vie:'7-8 km (2 últ. a ritmo)', nota:'Las piernas empiezan a sentirse "raras" de frescas: es la supercompensación funcionando.'},
+      {wk:'Sem 23 · Carrera', ws:23, we:23, lun:'30 min + 4 rectas', mie:'20 min con 3×3\' a ritmo', vie:'20-25 min muy suave', nota:'Sábado 24: solo activación de 15\'. Domingo 25: 15K Valencia.'},
     ],
     days:[
-      { id:'mie', tab:'MIÉ', color:'#ff6b9d', kind:'fuerza',
-        eyebrow:'Miércoles · Fuerza muy ligera · Fase Afine', title:'CROSSFIT DE MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Misma alternancia de siempre (Cuádriceps/Glúteo-Isquios), pero baja el peso ~30-40% y para 2-3 reps antes del fallo',
-        tags:['20-25 MIN','MUY LIGERO','PIERNA'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
-      { id:'vie', tab:'VIE', color:'#ff4560', kind:'run',
-        eyebrow:'Viernes · Series cortas · Fase Afine', title:'SERIES CORTAS Y RÁPIDAS', sub:'Mantener el contacto con la velocidad, sin fatiga',
-        tags:['20-30 MIN','AFILADO','POCO VOLUMEN'], warmup:WARM_INTERVAL,
-        wod:{ fmt:'INTERVALOS', nm:'AFILADO', clk:'TABLA↑',
-          moves:['Según tabla de progresión — semanas -5 a -1: bloques cortos a ritmo rápido (Z4-Z5), recuperación completa entre ellos','Semana de carrera: solo shakeout muy suave, nada de velocidad','Si algo tira o molesta, para — esta fase no se gana forma, solo se puede perder por lesión tonta'],
-          tip:'El objetivo es que las piernas "recuerden" la sensación de velocidad, no fatigarlas. Menos es más a partir de ahora.' },
+      { id:'lun', tab:'LUN', color:'#6ee7b7', kind:'run',
+        eyebrow:'Lunes · Rodaje · Fase Afine', title:'RODAJE Z2', sub:'Corto y fácil',
+        tags:['30→40 MIN','Z2 125-140','SUAVE'], warmup:WARM_EASY,
+        wod:{ fmt:'RODAJE', nm:'CONTINUO Z2', clk:'TABLA↑',
+          moves:['Duración según la tabla (columna Lun)','Semana de carrera: 4 rectas al final para despertar las piernas'],
+          tip:'En el taper sobra energía y apetece meter más. No lo hagas: esa energía es para el domingo 25.' },
         strength:[], cooldown:COOL_RUN },
-      { id:'sab', tab:'SÁB', color:'#e8ff47', kind:'run',
-        eyebrow:'Sábado · Tirada decreciente · Fase Afine', title:'TIRADA LARGA (BAJANDO)', sub:'Cada semana más corta — así debe ser. Descanso total en la semana de carrera',
-        tags:['5→14 KM','TAPER','DECRECIENTE'], warmup:WARM_LONG,
-        wod:{ fmt:'LARGA', nm:'RODAJE LARGO DECRECIENTE', clk:'TABLA↑',
-          moves:['Distancia según tabla de progresión — baja semana a semana','Z2, con 2-3 toques de 3-4 min a ritmo objetivo en semanas -3/-2 (no en semana de carrera)','En la semana de carrera este día NO se corre — descanso total el sábado antes de la carrera del domingo'],
-          tip:'Bajar volumen no es perder forma, es permitir que aflore.' },
+      { id:'mie', tab:'MIÉ', color:'#ff4560', kind:'run',
+        eyebrow:'Miércoles · Toques de ritmo · Fase Afine', title:'RITMO CORTO', sub:'Recordar el ritmo de carrera sin cansarte',
+        tags:['30-40 MIN','RITMO 15K','POCO VOLUMEN'], warmup:WARM_INTERVAL,
+        wod:{ fmt:'RITMO', nm:'TOQUES DE RITMO', clk:'TABLA↑',
+          moves:['Bloque según la tabla (columna Mié)','Ritmo 15K exacto: ni más rápido ni más lento','Si algo tira o molesta, para — ahora no se gana forma, solo se puede perder'],
+          tip:'Debe sentirse fácil. Si el ritmo objetivo ya no cuesta, vas exactamente donde tienes que ir.' },
+        strength:[], cooldown:COOL_RUN },
+      { id:'vie', tab:'VIE', color:'#e8ff47', kind:'run',
+        eyebrow:'Viernes · Tirada decreciente · Fase Afine', title:'TIRADA CORTA', sub:'Cada semana más corta — así debe ser',
+        tags:['10→4 KM','TAPER','DECRECIENTE'], warmup:WARM_LONG,
+        wod:{ fmt:'LARGA', nm:'RODAJE DECRECIENTE', clk:'TABLA↑',
+          moves:['Distancia según la tabla (columna Vie)','Semana de carrera: 20-25 min muy suaves, nada más','Revisa el pronóstico del tiempo y prepara la ropa'],
+          tip:'Bajar volumen no es perder forma: es dejar que aflore.' },
         strength:[], cooldown:COOL_RUN_LONG },
-      { id:'dom', tab:'DOM', color:'#47c9ff', kind:'fuerza',
-        eyebrow:'Domingo · Fuerza muy ligera · Fase Afine', title:'CROSSFIT DE MANTENIMIENTO', titleShort:'CROSSFIT', sub:'Siempre Hombro/Brazo + activación de cadera/gemelo — igual que siempre, con cargas mínimas estas últimas semanas',
-        tags:['15-20 MIN','MUY LIGERO','HOMBRO FIJO'], warmup:WARM_STRENGTH, wodOptions:true, cooldown:COOL_STRENGTH },
+      { id:'sab', tab:'SÁB', color:'#ff6b9d', kind:'fuerza',
+        eyebrow:'Sábado · Gym ligero · Fase Afine', title:'GYM', sub:'Mantener, no construir — semana de carrera: solo activación',
+        tags:['30-40 MIN','MUY LIGERO','TAPER'], warmup:WARM_STRENGTH, gym:GYM_AFINE, cooldown:COOL_STRENGTH,
+        rest:['Semana 23 (sábado 24 de abril, víspera de la carrera): NADA de gym. Solo 15\' de activación: movilidad de cadera y tobillo, 2×10 glute bridge, 2×10 pogos suaves y 3 rectas cortas de 15". El resto del día, descanso.'] },
       { id:'race', tab:'🏁', color:'#ffc247', kind:'race',
-        eyebrow:'Domingo 17 oct 2027 (fecha asumida) · Día D', title:'MEDIO MARATÓN VALENCIA', sub:'21,1 km — todo el trabajo de ~60 semanas converge aquí',
-        tags:['21,1 KM','NEGATIVE SPLIT','DISFRUTA'],
+        eyebrow:'Domingo 25 abr 2027 · Día D', title:'15K VALENCIA', sub:'15 km Abierta al Mar — 23 semanas de trabajo convergen aquí',
+        tags:['15 KM','NEGATIVE SPLIT','DISFRUTA'],
         warmLabel:'🎒 Días antes (72h-24h)',
         warmup:[
-          'Carga de carbohidratos suave los 2-3 días previos — no es un atracón, es mantener glucógeno alto',
-          'Hidrátate bien toda la semana, no solo el día antes',
-          'Duerme lo mejor que puedas 2 noches antes (la noche justo antes casi nunca se duerme bien, y no pasa nada)',
-          'Prepara el kit la noche anterior: dorsal, zapatillas ya probadas, geles, ropa según el tiempo que haga en Valencia en octubre',
-          'La salida suele ser bastante más tarde que tus 6AM habituales — no cambies tu rutina de ayuno/desayuno sin haberla probado antes en una tirada larga',
+          'Carbohidratos algo más altos los 2 días previos — no es un atracón, es llegar con el depósito lleno',
+          'Hidrátate bien toda la semana, no solo la víspera',
+          'Duerme bien dos noches antes (la víspera casi nunca se duerme bien, y no pasa nada)',
+          'Prepara el kit la noche antes: dorsal, zapatillas ya probadas, gel, ropa según el tiempo',
+          'La salida no será a tus 6:00: el desayuno tiene que ser uno ya probado en las tiradas largas',
+          'Antes de la salida: 10-12\' de trote muy suave + 3-4 rectas',
         ],
-        wod:{ fmt:'RITMO', nm:'ESTRATEGIA NEGATIVE SPLIT', clk:'21,1K',
+        wod:{ fmt:'RITMO', nm:'NEGATIVE SPLIT 15K', clk:'15K',
           moves:[
-            '0-5 km — Ritmo fácil, 10-15"/km MÁS LENTO que tu ritmo objetivo. La euforia de salida mata más carreras que el cansancio.',
-            '5-15 km — Ritmo objetivo, el que has entrenado en las tiradas específicas de la Fase 3.',
-            '15-18 km — Aquí aprieta. Mantén el ritmo objetivo aunque cueste — esto lo entrenaste en el tempo de los viernes.',
-            '18-21,1 km — Todo lo que te quede. Con negative split, este es el tramo en el que adelantas gente, no al revés.',
+            '0-3 km — 10-15"/km más lento que tu ritmo objetivo. La euforia de la salida es el error nº1.',
+            '3-10 km — Ritmo objetivo, el que entrenaste los miércoles de la Fase 3.',
+            '10-13 km — Aquí se decide: mantén el ritmo aunque cueste. Lo ensayaste al final de las tiradas de 13-14 km.',
+            '13-15 km — Lo que te quede. Si has sido paciente, aquí adelantas gente.',
           ],
-          tip:'<b>Mentalidad:</b> el km 16 decide la carrera, no el km 5. Si a los 5K vas sobrado, vas bien. Si vas sobrado a los 15K, has ido demasiado lento — hoy corre lo entrenado.' },
+          tip:'<b>Mentalidad:</b> el km 11 decide la carrera, no el km 2. Si en el km 3 vas sobrado, vas bien.' },
         strength:[],
         coolLabel:'🍌 Avituallamiento y después',
         cooldown:[
-          'Gel o similar cada 40-45 min desde el km 8-10 aprox., agua en cada punto — lo mismo que practicaste en tus tiradas largas',
-          'Cruzada la meta: sigue caminando 5-10 min, no te sientes de golpe',
-          'Come algo con carbohidrato + proteína en los primeros 30-60 min',
-          'Las siguientes 48-72h: caminar suave, mucha hidratación, sueño',
-          'Guarda esta cifra: sea cual sea tu tiempo, veniste de 3,15 km el 24 de agosto de 2026. Eso ya lo has ganado.',
+          'Un gel hacia el km 8-9 (≈60-70 min), solo si lo probaste antes en las tiradas; agua en los avituallamientos',
+          'En meta: camina 5-10 min, no te sientes de golpe',
+          'Carbohidrato + proteína en los primeros 30-60 min',
+          '48-72 h: paseos suaves, hidratación y sueño',
+          'Guarda la cifra: el 16 de noviembre de 2026 corrías 3,74 km a 8\'49"/km. Esto ya lo has ganado.',
         ] },
     ],
   },
@@ -667,23 +674,16 @@ function tog(id) {
   document.getElementById('ic'+id).classList.toggle('open');
 }
 
-// ══════════════════════════════════════════════════════════════ WOD PRESCRITO
-// Nada de elegir: cada slot de CrossFit tiene una sesión fija asignada, rotando
-// por semanas donde hace falta reparto. Reglas de diseño (evitar pierna pesada
-// justo antes de la tirada más larga de la semana; Hombro/Brazo semanal por tu
-// limitación de hombro; Sábado siempre el día de pierna más exigente porque
-// detrás viene el descanso total del domingo):
+// ══════════════════════════════════════════════════════════════ GYM A/B
+// Alterna por semana del plan (no de la fase) para que la secuencia A-B no se rompa al cambiar de fase.
 function mod(n, m) { return ((n % m) + m) % m; }
 function weeksSincePhaseStart(phase) {
   const start = new Date(phase.start + 'T00:00:00Z');
   const now = new Date();
   return Math.floor((now - start) / (7*24*3600*1000));
 }
-function prescribedWodId(phase, day) {
-  const wk = weeksSincePhaseStart(phase);
-  if (day.id === 'mie') { const order=['cuadriceps','gluteo']; return order[mod(wk,2)]; }
-  if (day.id === 'dom') return 'hombro';
-  return WODS_SESSIONS[0].id;
+function gymSessionForThisWeek(day) {
+  return mod(weeksSincePhaseStart(PHASES[0]), 2) === 0 ? day.gym.A : day.gym.B;
 }
 
 // ══════════════════════════════════════════════════════════════ RENDER PAGE
@@ -695,9 +695,8 @@ function renderPage() {
   let title = d.titleShort || d.title, sub = d.sub;
 
   let pickHTML = '';
-  if (d.wodOptions) {
-    const sid = prescribedWodId(p, d);
-    const session = WODS_SESSIONS.find(s=>s.id===sid) || WODS_SESSIONS[0];
+  if (d.gym) {
+    const session = gymSessionForThisWeek(d);
     col = session.color;
     wod = session.wod; strength = session.strength; caution = session.caution;
     title = session.label;
@@ -713,13 +712,13 @@ function renderPage() {
     <div class="sl">📈 Progresión — ${p.label}</div>
     <div class="prog-wrap">
       <table class="prog-table">
-        <thead><tr><th>Bloque</th><th>Sáb · Larga</th><th>Vie · Corta/Calidad</th></tr></thead>
+        <thead><tr><th>Semanas</th><th>Lun</th><th>Mié</th><th>Vie · Larga</th></tr></thead>
         <tbody>
           ${p.progression.map(r=>{
             const isNow = isCurPhaseNow && r.ws!=null && planWeekNow>=r.ws && planWeekNow<=r.we;
             return `
-            <tr class="${isNow?'prog-now':''}"><td class="prog-wk">${r.wk}${isNow?' <span class="prog-now-tag">AHORA</span>':''}</td><td class="prog-km">${r.larga}</td><td class="prog-km">${r.semanal}</td></tr>
-            <tr class="${isNow?'prog-now':''}"><td colspan="3" class="prog-note" style="padding-top:0">${r.nota}</td></tr>`;
+            <tr class="${isNow?'prog-now':''}"><td class="prog-wk">${r.wk}${isNow?' <span class="prog-now-tag">AHORA</span>':''}</td><td class="prog-km">${r.lun}</td><td class="prog-km">${r.mie}</td><td class="prog-km">${r.vie}</td></tr>
+            <tr class="${isNow?'prog-now':''}"><td colspan="4" class="prog-note" style="padding-top:0">${r.nota}</td></tr>`;
           }).join('')}
         </tbody>
       </table>
@@ -736,7 +735,7 @@ function renderPage() {
         <div class="phase-stat"><b>Zona</b><span>${p.zona}</span></div>
       </div>
     </div>`;
-  const showObj = d.id==='mie' || d.kind==='race';
+  const showObj = d.id==='lun' || d.kind==='race';
   const showProg = showObj || d.kind==='run';
 
   const notesHTML = d.notes ? `
@@ -837,7 +836,8 @@ function renderLog() {
   const wk = getWeekKey();
   const allLog = loadLog();
   const cur = allLog[wk] || {};
-  const days = curPhase.days;
+  const nowPhase = PHASES.find(x=>x.id===CURRENT_PHASE_ID) || curPhase;
+  const days = nowPhase.days;
 
   const dayRows = days.map(d => {
     const dk = d.id;
@@ -868,7 +868,7 @@ function renderLog() {
     const fuerzaInputs = d.kind==='fuerza' ? `
       <div class="log-input-row">
         <div class="log-input-lbl">Sesión</div>
-        <input class="log-input" type="text" placeholder="ej: Cuádriceps" value="${dc.sesion||''}" oninput="setField('${wk}','${dk}','sesion',this.value)">
+        <input class="log-input" type="text" placeholder="ej: Gym A" value="${dc.sesion||''}" oninput="setField('${wk}','${dk}','sesion',this.value)">
       </div>` : '';
 
     return `
@@ -916,14 +916,14 @@ function renderLog() {
 
   document.getElementById('log-page').innerHTML = `
     <div class="log-baseline">
-      🏁 <b>Test 1 (24 ago 2026):</b> 3,15 km · 24:17 · ritmo 7'42"/km · FC media 158 (pico 167) · RPE 7-8/10 · cadencia 152 spm.<br>
-      📍 <b>Test 2 (28 oct 2026):</b> 3,28 km · 30:03 · ritmo 9'09"/km · FC media 151 · cadencia 155 spm · humedad 87%, nocturno.<br>
-      Más lento con FC parecida/más alta que el test 1 — razón por la que arrancamos la nueva agenda de 4 días con margen extra. Repetir test en 3-4 semanas para confirmar.
+      🎯 <b>Objetivo:</b> 15K Valencia Abierta al Mar · domingo 25 abril 2027.<br>
+      📍 <b>Punto de partida (16 nov 2026):</b> 3,74 km · 33:02 · 8'49"/km · FC media 144 · cadencia 156 spm · esfuerzo Apple 4.<br>
+      Antes: 28 oct 9'09"/km a FC 151 · 24 ago 7'42"/km a FC 158 (esfuerzo alto). De octubre a noviembre: más rápido con 7 pulsaciones menos — el aeróbico responde. Próximo test: 5K en la semana 14 (17 feb).
       <div class="zone-legend">
         <span class="zone-chip">Z1 &lt;134</span><span class="zone-chip">Z2 125-140</span><span class="zone-chip">Z3 146-156</span><span class="zone-chip">Z4 157-166</span><span class="zone-chip">Z5 167+</span>
       </div>
     </div>
-    <div class="sl">📋 Semana actual — ${wk} · ${curPhase.label}</div>
+    <div class="sl">📋 Semana actual — ${wk} · ${nowPhase.label}</div>
     <div class="log-week">
       <div class="log-week-hd"><div class="log-week-title">Registro semanal</div><div class="log-week-num">${wk}</div></div>
       ${dayRows}
@@ -1060,29 +1060,29 @@ const MOV_DAYS = [
       { emoji:'🔄', title:'Estabilidad de cadera', duration:'5 min', exs:[
         { nm:'Single-leg RDL sin peso', dur:'8/lado', sets:'3 series', note:'Control total, cadera nivelada.' },
         { nm:'Estiramiento "figura 4" — Piriforme', dur:'45\'\'/lado', sets:'—', note:'Tumbado, cruza el tobillo sobre la rodilla contraria.' } ] } ] },
-  { id:'jue', label:'JUE', sublabel:'Isquios + Cadena posterior', focus:'Isquiotibiales · Lumbar · Flexibilidad activa',
-    insight:'<b>Isquios cortos, zancada corta:</b> trabajarlo con PNF (contracción-relajación) gana 2-3× más rango que el estiramiento pasivo puro.',
-    blocks:[
-      { emoji:'🦿', title:'Isquios — PNF', duration:'4 min', exs:[
-        { nm:'Estiramiento isquio activo (PNF)', dur:'8 reps/pierna', sets:'2 series', note:'Empuja el talón hacia el techo 5\'\', relaja 2\'\', gana rango.' } ] },
-      { emoji:'🌀', title:'Lumbar + Core', duration:'4 min', exs:[
-        { nm:'Cat-Cow', dur:'10 reps', sets:'—', note:'Moviliza la columna segmento a segmento.' },
-        { nm:'Dead bug', dur:'8/lado', sets:'2 series', note:'Espalda pegada al suelo todo el rato — el mismo movimiento anti-lumbar de tus días de CrossFit.' } ] } ] },
-  { id:'vie', label:'VIE', sublabel:'IT Band + Cuádriceps', focus:'Cadena anterior · Core anti-rotación · Activación',
-    insight:'<b>Preparar el terreno:</b> hoy es activación, no fatiga — el objetivo es llegar listo a la tirada larga del sábado.',
+  { id:'jue', label:'JUE', sublabel:'Pre-tirada: IT Band + Cuádriceps', focus:'Cadena anterior · Core anti-rotación · Activación',
+    insight:'<b>Preparar el terreno:</b> hoy es activación, no fatiga — el objetivo es llegar listo a la tirada larga de mañana.',
     blocks:[
       { emoji:'🦵', title:'Cuádriceps + IT Band', duration:'4 min', exs:[
         { nm:'FR Cuádriceps completo', dur:'60\'\'/pierna', sets:'—', note:'De arriba a abajo del muslo, presión estática.' } ] },
       { emoji:'🧘', title:'Activación final', duration:'4 min', exs:[
         { nm:'Bird-dog', dur:'8/lado', sets:'2 series', note:'Control de tronco sin rotar la cadera.' },
         { nm:'Pallof Press', dur:'10/lado', sets:'2 series', note:'Anti-rotación con banda o mancuerna.' } ] } ] },
-  { id:'sab', label:'SÁB', sublabel:'Post-tirada larga', focus:'Recuperación profunda · Cuerpo completo',
+  { id:'vie', label:'VIE', sublabel:'Post-tirada larga', focus:'Recuperación profunda · Cuerpo completo',
     insight:'<b>Después del esfuerzo más largo de la semana:</b> hoy es puramente recuperación.',
     blocks:[
       { emoji:'🦵', title:'Cuerpo completo — Foam roller', duration:'5 min', exs:[
         { nm:'FR Cuádriceps + Isquios + Gemelo', dur:'45\'\'/zona', sets:'—', note:'Recorrido lento, sin prisa.' } ] },
       { emoji:'🧘', title:'Estiramiento pasivo largo', duration:'6 min', exs:[
         { nm:'Couch Stretch', dur:'90\'\'/pierna', sets:'—', note:'Devuelve extensión de cadera tras kilómetros en flexión repetida.' } ] } ] },
+  { id:'sab', label:'SÁB', sublabel:'Post-gym: isquios + lumbar', focus:'Isquiotibiales · Lumbar · Flexibilidad activa',
+    insight:'<b>Después del gym — isquios cortos, zancada corta:</b> trabajarlo con PNF (contracción-relajación) gana 2-3× más rango que el estiramiento pasivo puro.',
+    blocks:[
+      { emoji:'🦿', title:'Isquios — PNF', duration:'4 min', exs:[
+        { nm:'Estiramiento isquio activo (PNF)', dur:'8 reps/pierna', sets:'2 series', note:'Empuja el talón hacia el techo 5\'\', relaja 2\'\', gana rango.' } ] },
+      { emoji:'🌀', title:'Lumbar + Core', duration:'4 min', exs:[
+        { nm:'Cat-Cow', dur:'10 reps', sets:'—', note:'Moviliza la columna segmento a segmento.' },
+        { nm:'Dead bug', dur:'8/lado', sets:'2 series', note:'Espalda pegada al suelo todo el rato — el mismo movimiento anti-lumbar de tus días de CrossFit.' } ] } ] },
   { id:'dom', label:'DOM', sublabel:'Descanso + Respiración', focus:'Relajación general · Movilidad muy suave',
     insight:'<b>El día que no se entrena pero sí se cuida:</b> movilidad general suave, sin buscar rango nuevo.',
     blocks:[
@@ -1125,7 +1125,7 @@ function togMovBlock(bodyId, icoId) { document.getElementById(bodyId).classList.
 (function(){
   const wd = new Date().getDay();
   const movMap = {0:'dom',1:'lun',2:'mar',3:'mie',4:'jue',5:'vie',6:'sab'};
-  const trainMap = {0:'dom',3:'mie',5:'vie',6:'sab'}; // solo los 4 días de entreno fijos
+  const trainMap = {0:'race',1:'lun',3:'mie',5:'vie',6:'sab'};
   if(movMap[wd]) curMovDay = MOV_DAYS.find(d=>d.id===movMap[wd]) || MOV_DAYS[0];
   if(trainMap[wd]) { const dd = curPhase.days.find(d=>d.id===trainMap[wd]); if(dd) curDay = dd; }
 })();
@@ -1133,6 +1133,11 @@ renderPhasePills();
 renderTabs();
 renderPage();
 requestAnimationFrame(fitHeroTitle);
+// La fuente web llega después del primer pintado y ensancha el título: reajustar cuando esté lista.
+function refitTitles() { fitHeroTitle(); fitTitleEl('mov-hero-title'); }
+window.addEventListener('load', refitTitles);
+window.addEventListener('resize', refitTitles);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(refitTitles);
 </script>
 </body>
 </html>
