@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="15K Plan">
 <meta name="theme-color" content="#090909">
@@ -49,10 +53,9 @@ body {
 .hdr {
   position: sticky; top: 0; z-index: 50;
   background: var(--bg);
-  padding-top: var(--sit);
+  /* Extra bajo la Dynamic Island: iOS difumina el borde superior de las apps de inicio */
+  padding-top: calc(var(--sit) + 10px);
   border-bottom: 1px solid var(--border);
-  margin-top: calc(-1 * var(--sit));
-  padding-top: calc(var(--sit) + 0px);
 }
 .hdr-inner { padding: 8px 18px 0; }
 .hdr-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -986,7 +989,9 @@ function setRootField(wk, field, val) {
 function togSaved(k) { document.getElementById('saved-'+k).classList.toggle('open'); }
 
 // ══════════════════════════════════════════════════════════════ TIMER
-let tSec=0,tTarget=0,tRun=false,tDown=false,tIv=null,tSelBtn=null;
+// Con marcas de tiempo: iOS congela la página al bloquear la pantalla, así que contar ticks
+// se paraba. Así, al volver, el reloj muestra el tiempo real transcurrido.
+let tSec=0,tRun=false,tDown=false,tIv=null,tSelBtn=null,tEndAt=0,tStartAt=0,tAudio=null;
 function fmt(s){const m=Math.floor(Math.abs(s)/60);return `${m}:${(Math.abs(s)%60).toString().padStart(2,'0')}`;}
 function updT(){
   const el=document.getElementById('tnum');
@@ -994,44 +999,68 @@ function updT(){
   el.classList.remove('go','warn');
   if(tRun){ el.classList.add(tDown&&tSec<=10?'warn':'go'); }
 }
+function setGoBtn(running){
+  const b=document.getElementById('tgo');
+  b.textContent=running?'PAUSA':'INICIAR';
+  b.className='tbtn '+(running?'t-stop':'t-go');
+}
+// iPhone no vibra desde la web: aviso sonoro. El AudioContext se crea en el toque de INICIAR (iOS lo exige).
+function unlockAudio(){
+  try{
+    if(!tAudio){ const AC=window.AudioContext||window.webkitAudioContext; if(AC) tAudio=new AC(); }
+    if(tAudio&&tAudio.state==='suspended') tAudio.resume();
+  }catch(e){}
+}
+function beep(){
+  try{
+    if(!tAudio) return;
+    [0,0.35,0.7].forEach((t,i)=>{
+      const o=tAudio.createOscillator(), g=tAudio.createGain();
+      o.type='sine'; o.frequency.value=i===2?1320:880;
+      g.gain.setValueAtTime(0.0001,tAudio.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.4,tAudio.currentTime+t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,tAudio.currentTime+t+0.25);
+      o.connect(g); g.connect(tAudio.destination);
+      o.start(tAudio.currentTime+t); o.stop(tAudio.currentTime+t+0.3);
+    });
+  }catch(e){}
+  try{navigator.vibrate&&navigator.vibrate([200,100,200,100,400]);}catch(e){}
+}
+function tTick(){
+  const now=Date.now();
+  if(tDown){
+    tSec=Math.max(0,Math.ceil((tEndAt-now)/1000));
+    if(tSec<=0){
+      clearInterval(tIv); tRun=false; setGoBtn(false);
+      if(tSelBtn){tSelBtn.classList.remove('sel');tSelBtn=null;}
+      updT(); document.getElementById('tnum').classList.add('warn');
+      beep(); return;
+    }
+  } else {
+    tSec=Math.floor((now-tStartAt)/1000);
+  }
+  updT();
+}
 function tSet(s,btn){
   tReset();
-  if(tSelBtn) tSelBtn.classList.remove('sel');
   tSelBtn=btn; btn.classList.add('sel');
-  tTarget=s; tSec=s; tDown=true; updT();
+  tSec=s; tDown=true; updT();
 }
 function tToggle(){
-  if(tRun){
-    clearInterval(tIv); tRun=false;
-    document.getElementById('tgo').textContent='INICIAR';
-    document.getElementById('tgo').className='tbtn t-go';
-    updT(); return;
-  }
-  tRun=true;
-  document.getElementById('tgo').textContent='PAUSA';
-  document.getElementById('tgo').className='tbtn t-stop';
-  tIv=setInterval(()=>{
-    if(tDown){ tSec--;
-      if(tSec<=0){
-        tSec=0; clearInterval(tIv); tRun=false;
-        document.getElementById('tgo').textContent='INICIAR';
-        document.getElementById('tgo').className='tbtn t-go';
-        try{navigator.vibrate&&navigator.vibrate([200,100,200,100,400]);}catch(e){}
-        if(tSelBtn){tSelBtn.classList.remove('sel');tSelBtn=null;}
-        document.getElementById('tnum').classList.add('warn');
-        return;
-      }
-    } else { tSec++; }
-    updT();
-  },1000);
+  unlockAudio();
+  if(tRun){ tTick(); clearInterval(tIv); tRun=false; setGoBtn(false); updT(); return; }
+  tRun=true; setGoBtn(true);
+  if(tDown) tEndAt=Date.now()+tSec*1000; else tStartAt=Date.now()-tSec*1000;
+  tIv=setInterval(tTick,250);
+  updT();
 }
 function tReset(){
   clearInterval(tIv); tRun=false; tDown=false; tSec=0;
-  document.getElementById('tgo').textContent='INICIAR';
-  document.getElementById('tgo').className='tbtn t-go';
+  setGoBtn(false);
   if(tSelBtn){tSelBtn.classList.remove('sel');tSelBtn=null;}
   updT();
 }
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&tRun) tTick(); });
 
 // ══════════════════════════════════════════════════════════════ MOVILIDAD DATA — runner-specific (complementa tu programa de hombro)
 const MOV_DAYS = [
@@ -1138,6 +1167,20 @@ function refitTitles() { fitHeroTitle(); fitTitleEl('mov-hero-title'); }
 window.addEventListener('load', refitTitles);
 window.addEventListener('resize', refitTitles);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(refitTitles);
+
+// ══════════════════════════════════════════════════════════════ MODO APP (iPhone, pantalla de inicio)
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+// iOS mantiene la app viva en segundo plano: al volver otro día (o tras varias horas) se recarga,
+// así muestra el entreno de hoy y trae la última versión publicada.
+const LOADED_AT = Date.now();
+const LOADED_DAY = new Date().toDateString();
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden || tRun) return;
+  const stale = new Date().toDateString() !== LOADED_DAY || Date.now() - LOADED_AT > 6*3600*1000;
+  if (stale) location.reload();
+});
 </script>
 </body>
 </html>
