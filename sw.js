@@ -1,6 +1,6 @@
 // Red primero: con cobertura siempre sirve la última versión publicada (una app de inicio
 // de iOS no tiene botón de recargar); sin cobertura tira de la copia guardada.
-const CACHE = '15k-plan-v1';
+const CACHE = '15k-plan-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 const NETWORK_TIMEOUT_MS = 4000;
 

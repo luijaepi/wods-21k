@@ -247,7 +247,37 @@ body {
 .mov-ex-chips { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 7px; }
 .mov-ex-note { font-size: 12px; font-weight: 400; color: var(--muted2); line-height: 1.6; }
 .mov-ex-note b { color: #ccc; }
-.mov-fr-tag { background: #ff9f4722; border: 1px solid #ff9f4744; color: var(--mov); }
+.mov-key { background: #ff9f4722; border: 1px solid #ff9f4766; color: var(--mov); }
+
+/* ── GUÍA: palabras tocables, ficha y lista ── */
+.gl { text-decoration: underline dotted; text-decoration-color: rgba(240,240,240,0.45); text-underline-offset: 3px; cursor: pointer; }
+.gl-sheet { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.6); display: none; align-items: flex-end; }
+.gl-sheet.open { display: flex; }
+.gl-card {
+  width: 100%; max-height: 75dvh; overflow-y: auto; background: var(--s2); border-top: 1px solid var(--border);
+  border-radius: 20px 20px 0 0; padding: 10px 20px max(20px, calc(var(--sib) + 12px)); animation: glup 0.2s ease both;
+}
+@keyframes glup { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+.gl-handle { width: 40px; height: 4px; border-radius: 2px; background: var(--muted); margin: 0 auto 14px; }
+.gl-cat { font-size: 10px; font-weight: 700; letter-spacing: .14em; color: var(--muted2); text-transform: uppercase; margin-bottom: 6px; }
+.gl-term { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--sab); }
+.gl-text { font-size: 15px; line-height: 1.6; color: #ddd; }
+.gl-how { margin-top: 12px; padding: 11px 13px; background: var(--s3); border-radius: 10px; font-size: 14px; line-height: 1.55; color: #ccc; }
+.gl-text b, .gl-how b { color: var(--text); }
+.gl-actions { display: flex; gap: 8px; margin-top: 18px; }
+.gl-btn { flex: 1; min-height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--s3); color: var(--muted2); font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .06em; cursor: pointer; }
+.gl-btn-main { background: var(--sab); color: #090909; border-color: var(--sab); }
+.guide-search { width: 100%; margin: 16px 0 4px; font-size: 16px; padding: 11px 12px; }
+.guide-item { background: var(--s1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+.guide-term { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+.guide-text { font-size: 13px; line-height: 1.55; color: var(--muted2); }
+.guide-text b, .guide-how b { color: #ccc; }
+.guide-how { font-size: 12.5px; line-height: 1.55; color: var(--muted2); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
+
+/* ── GYM: progresión y avisos ── */
+.gym-prog { margin: 8px 0 4px; padding: 10px 13px; background: var(--s1); border: 1px solid var(--border); border-radius: 10px; font-size: 12px; color: var(--muted2); line-height: 1.6; }
+.gym-prog b { color: var(--text); }
+.gym-note { margin: 8px 0 4px; padding: 10px 13px; background: rgba(110,231,183,0.07); border: 1px solid rgba(110,231,183,0.3); border-radius: 10px; font-size: 12px; color: #a7f3d0; line-height: 1.6; }
 .mov-insight { margin: 0 18px 14px; padding: 12px 14px; background: rgba(255,159,71,0.07); border: 1px solid rgba(255,159,71,0.2); border-radius: 10px; font-size: 12px; color: var(--muted2); line-height: 1.65; }
 .mov-insight b { color: var(--mov); font-weight: 600; }
 
@@ -275,11 +305,12 @@ body {
 <div class="hdr">
   <div class="hdr-inner">
     <div class="hdr-top">
-      <div class="logo">15K<span> · VLC 2027</span></div>
+      <div class="logo">15K<span> · VLC</span></div>
       <div class="hdr-right">
         <button class="nav-pill active" id="pill-train" onclick="switchView('train')">RUTINA</button>
         <button class="nav-pill" id="pill-mov" onclick="switchView('mov')">MOV</button>
         <button class="nav-pill" id="pill-log" onclick="switchView('log')">LOG</button>
+        <button class="nav-pill" id="pill-guia" onclick="switchView('guia')">GUÍA</button>
       </div>
     </div>
   </div>
@@ -290,6 +321,18 @@ body {
 <div class="view active" id="view-train"><div class="page" id="page"></div></div>
 <div class="view" id="view-mov"><div class="page" id="mov-page"></div></div>
 <div class="view" id="view-log"><div class="log-page" id="log-page"></div></div>
+<div class="view" id="view-guia"><div class="page" id="guide-page"></div></div>
+
+<div class="gl-sheet" id="gl-sheet" onclick="if(event.target===this) closeGlossary()">
+  <div class="gl-card">
+    <div class="gl-handle"></div>
+    <div id="gl-body"></div>
+    <div class="gl-actions">
+      <button class="gl-btn" onclick="closeGlossary(); switchView('guia')">Ver toda la guía</button>
+      <button class="gl-btn gl-btn-main" onclick="closeGlossary()">Entendido</button>
+    </div>
+  </div>
+</div>
 
 <div class="tbar">
   <div class="tbar-inner">
@@ -355,64 +398,70 @@ const COOL_STRENGTH = [
 // ══════════════════════════════════════════════════════════════ GYM DEL SÁBADO — FUERZA PARA CORRER
 // Un solo día de gym a la semana: cada sesión trabaja un patrón de rodilla y otro de cadera,
 // unilateral, gemelo/sóleo, core anti-lumbar y mantenimiento de manguito. A/B alternan
-// variantes semana a semana; la carga y las repeticiones cambian según la fase.
+// variantes semana a semana; series, repeticiones y forma de progresar cambian según la fase.
 function buildGym(p) {
   return {
-    A: { label:'GYM A', color:'#ff6b9d', caution:p.caution,
+    A: { label:'GYM A', color:'#ff6b9d', caution:p.caution, prog:p.prog,
       wod:{ fmt:'ACTIVACIÓN', nm:p.actName, clk:p.actClk, moves:p.act, tip:p.actTip },
       strength:[
         { nm:'Sentadilla goblet', kg:p.kg.goblet, sets:p.main, rpe:p.rpe, rest:p.rest, opt:false, note:'Patrón de rodilla: el cuádriceps frena cada apoyo, sobre todo al final de la carrera cuando llega cansado. Codos dentro, baja hasta donde la espalda siga neutra.' },
-        { nm:'Peso muerto rumano', kg:p.kg.rdl, sets:p.main, rpe:p.rpe, rest:p.rest, opt:false, note:'Bisagra de cadera — NO peso muerto convencional. Glúteo e isquio son el motor de la zancada. Barra pegada a las piernas; para en cuanto la lumbar quiera redondearse.' },
-        { nm:'Zancada búlgara', kg:p.kg.bulg, sets:p.uni, rpe:p.rpe, rest:p.restUni, opt:false, note:'Correr es apoyarse en una pierna miles de veces: esto corrige asimetrías. Torso neutro, rodilla trasera roza el suelo.' },
-        { nm:'Gemelo a una pierna (bajada en 3")', kg:p.kg.calf, sets:p.calf, rpe:'7', rest:'45\'\'', opt:false, note:'Gemelo y Aquiles absorben buena parte del impacto de cada zancada — con 85 kg, esto es tu seguro anti-lesión. Sube rápido, baja en 3 segundos.' },
+        { nm:'Peso muerto rumano', kg:p.kg.rdl, sets:p.main, rpe:p.rpe, rest:p.rest, opt:false, note:'Bisagra de cadera — NO peso muerto convencional. Glúteo e isquio son el motor de la zancada. Pesa pegada a las piernas; para en cuanto la lumbar quiera redondearse.' },
+        { nm:'Zancada búlgara', kg:p.kg.bulg, sets:p.uni, rpe:p.rpe, rest:p.restUni, opt:false, note:'Correr es apoyarse en una pierna miles de veces: esto corrige diferencias entre una y otra. Torso neutro, rodilla trasera casi al suelo.' },
+        { nm:'Gemelo a una pierna (bajada en 3")', kg:p.kg.calf, sets:p.calf, rpe:p.rpe, rest:'45\'\'', opt:false, note:'Gemelo y tendón de Aquiles absorben buena parte del impacto de cada zancada — con 85 kg, esto es tu seguro anti-lesión. Sube rápido, baja en 3 segundos.' },
         { nm:'Plancha lateral', kg:'Peso corporal', sets:p.core, rpe:'6', rest:'45\'\'', opt:false, note:'Pelvis nivelada al correr = menos dolor lateral de rodilla y de lumbar. Cadera arriba, línea recta hombro-tobillo.' },
-        { nm:'Rotación externa + Face pull (superserie)', kg:'4-6 kg / 12-15 kg', sets:'2×12-15', rpe:'6-7', rest:'60\'\'', opt:false, note:'Mantenimiento del manguito, ya sin inflamación. Poco tiempo, mucho retorno: así sigue sin dar guerra.' },
+        { nm:'Rotación externa + Face pull (superserie)', kg:'4-6 kg / 12-15 kg', sets:'2×12-15', rpe:'6-7', rest:'60\'\'', opt:false, note:'Mantenimiento del manguito rotador, ya sin inflamación. Poco tiempo, mucho retorno.' },
       ] },
-    B: { label:'GYM B', color:'#ff6b9d', caution:p.caution,
+    B: { label:'GYM B', color:'#ff6b9d', caution:p.caution, prog:p.prog,
       wod:{ fmt:'ACTIVACIÓN', nm:p.actName, clk:p.actClk, moves:p.act, tip:p.actTip },
       strength:[
-        { nm:'Hip thrust con barra', kg:p.kg.hip, sets:p.main, rpe:p.rpe, rest:p.rest, opt:false, note:'El glúteo es el músculo que más te empuja hacia delante. Barbilla al pecho arriba, sin hiperextender la lumbar, pausa de 1".' },
+        { nm:'Hip thrust con barra', kg:p.kg.hip, sets:p.main, rpe:p.rpe, rest:p.rest, opt:false, note:'El glúteo es el músculo que más te empuja hacia delante. Barbilla al pecho arriba, sin arquear la lumbar, pausa de 1".' },
         { nm:'Step-up a cajón alto', kg:p.kg.step, sets:p.uni, rpe:p.rpe, rest:p.restUni, opt:false, note:'Patrón de rodilla a una pierna, muy parecido a la fase de impulso. Empuja con el talón del pie de arriba, sin impulsarte con el de abajo.' },
-        { nm:'Peso muerto rumano a una pierna', kg:p.kg.slrdl, sets:p.uni, rpe:p.rpe, rest:p.restUni, opt:false, note:'Isquio, glúteo y equilibrio a la vez: la estabilidad de cadera que necesitas en cada apoyo. Cadera nivelada, sin girar.' },
-        { nm:'Sóleo: gemelo con rodilla flexionada', kg:p.kg.soleus, sets:p.calf, rpe:'7', rest:'45\'\'', opt:false, note:'Sentado o con la rodilla doblada: trabaja el sóleo, que soporta más carga que el gemelo al correr y es el gran olvidado.' },
-        { nm:'Pallof press', kg:'Banda media', sets:'3×10/lado', rpe:'6', rest:'45\'\'', opt:false, note:'Anti-rotación: core que aguanta la postura en el km 12 sin cargar la lumbar.' },
+        { nm:'Peso muerto rumano a una pierna', kg:p.kg.slrdl, sets:p.uni, rpe:p.rpe, rest:p.restUni, opt:false, note:'Isquio, glúteo y equilibrio a la vez: la estabilidad de cadera que necesitas en cada apoyo. Cadera nivelada, sin girar; apóyate en la pared si hace falta.' },
+        { nm:'Sóleo: gemelo con rodilla flexionada', kg:p.kg.soleus, sets:p.calf, rpe:p.rpe, rest:'45\'\'', opt:false, note:'Sentado con peso sobre las rodillas, o de pie con la rodilla doblada: trabaja el sóleo, que al correr soporta más carga que el gemelo y es el gran olvidado.' },
+        { nm:'Pallof press', kg:'Banda media', sets:p.core2, rpe:'6', rest:'45\'\'', opt:false, note:'Anti-rotación: el core que aguanta la postura en el km 12 sin cargar la lumbar.' },
         { nm:'Press por encima de cabeza (rango controlado) + rotación externa', kg:p.kg.ohp+' / 4-6 kg', sets:'2×8 + 2×12', rpe:'6-7', rest:'60\'\'', opt:false, note:'Reconstruir el rango completo del hombro ahora que no hay inflamación. Gana recorrido semana a semana; si molesta, vuelve a rango parcial en esa misma serie.' },
       ] },
   };
 }
 
 const GYM_BASE = buildGym({
-  caution:'Fase de base: técnica y tendón antes que kilos. Va el día después de la tirada larga — si las piernas vienen muy cargadas, quita una serie a todo; nunca subas peso para "compensar". Los kilos son orientativos: sube solo cuando completes todas las series con 2 repeticiones en la recámara.',
+  caution:'Va el día después de la tirada: si las piernas llegan muy cargadas, quita una serie a todo — nunca subas peso para "compensar". Con tu lumbar: espalda neutra siempre; el rumano se para en cuanto quiera redondearse.',
+  prog:'<b>Doble progresión:</b> con el mismo peso, suma repeticiones hasta hacer 12 en todas las series. La semana que lo consigas, sube un escalón (+2-2,5 kg o el siguiente par de mancuernas) y vuelve a 8. Siempre con 2-3 repeticiones en la recámara.',
   actName:'PRE-FUERZA', actClk:'8\'',
   act:['5\' bici o remo suave','Glute bridge ×12 + Monster walk con banda ×10 pasos/lado','Skipping A suave 2×15 m','Serie de aproximación del primer ejercicio al 50% del peso'],
-  actTip:'Todavía sin saltos: primero construimos tendón y técnica. Los pogos entran en la Fase 2.',
-  main:'3×10', rpe:'6-7', rest:'90\'\'', uni:'3×8/lado', restUni:'75\'\'', calf:'3×12/lado', core:'3×30\'\'/lado',
-  kg:{ goblet:'24-28 kg', rdl:'45-55 kg', bulg:'2×10 kg', calf:'Peso corporal', step:'2×10 kg', hip:'50-60 kg', slrdl:'12-14 kg', soleus:'10-16 kg', ohp:'6-8 kg' },
+  actTip:'Sin saltos en el gym: llegas de la tirada. Los pogos van en el calentamiento del miércoles a partir de la Fase 2, con las piernas frescas.',
+  main:'3×8-12', rpe:'6-7', rest:'90\'\'', uni:'3×8-10/lado', restUni:'75\'\'', calf:'3×10-15/lado', core:'3×20-40\'\'/lado', core2:'2×10/lado',
+  kg:{ goblet:'20-28 kg', rdl:'40-55 kg', bulg:'2×8-12 kg', calf:'Peso corporal', step:'2×8-12 kg', hip:'40-60 kg', slrdl:'10-14 kg', soleus:'10-16 kg', ohp:'6-8 kg' },
 });
 const GYM_DESARROLLO = buildGym({
-  caution:'Fase de fuerza: más carga, menos repeticiones. Sigue siendo el día después de la tirada: si una serie se deforma, para ahí. Kilos orientativos — sube solo con 2 repeticiones en la recámara en todas las series. Nada de peso muerto convencional ni flexión de columna cargada.',
+  caution:'Más carga y menos repeticiones. Sigue siendo el día después de la tirada: si una serie se deforma, para ahí. Nada de peso muerto convencional ni flexión de columna cargada.',
+  prog:'<b>Doble progresión:</b> mismo peso hasta hacer 8 en todas las series; entonces sube un escalón y vuelve a 5. Gemelo y sóleo ya con peso (mancuerna o máquina). 2 repeticiones en la recámara.',
   actName:'PRE-FUERZA', actClk:'8\'',
   act:['5\' bici o remo suave','Glute bridge ×12 + Monster walk ×10 pasos/lado','Skipping A suave 2×15 m','Serie de aproximación del primer ejercicio al 50% del peso'],
-  actTip:'Los saltos (pogos) van el miércoles, con las piernas frescas: después de una tirada larga, la pliometría suma riesgo y poco más.',
-  main:'4×6', rpe:'7-8', rest:'2\'', uni:'3×6/lado', restUni:'90\'\'', calf:'3×10/lado', core:'3×40\'\'/lado',
-  kg:{ goblet:'32-36 kg', rdl:'60-70 kg', bulg:'2×12-14 kg', calf:'+10 kg', step:'2×12-14 kg', hip:'70-80 kg', slrdl:'16-18 kg', soleus:'20-24 kg', ohp:'8-10 kg' },
+  actTip:'Los pogos van el miércoles, con las piernas frescas: después de una tirada larga, la pliometría suma riesgo y poco más.',
+  main:'4×5-8', rpe:'7-8', rest:'2\'', uni:'3×6-8/lado', restUni:'90\'\'', calf:'3×8-12/lado', core:'3×30-45\'\'/lado', core2:'3×10/lado',
+  kg:{ goblet:'28-36 kg', rdl:'55-70 kg', bulg:'2×12-14 kg', calf:'+8-12 kg', step:'2×12-14 kg', hip:'60-80 kg', slrdl:'14-18 kg', soleus:'20-24 kg', ohp:'8-10 kg' },
 });
 const GYM_ESPECIFICO = buildGym({
-  caution:'Fase específica: pocas repeticiones y subida explosiva, sin buscar récords: mantener fuerza con poca fatiga. Si la tirada del viernes pasó de 90 minutos, haz solo los 3 primeros ejercicios.',
+  caution:'Pocas repeticiones y subida explosiva, sin buscar récords: mantener la fuerza con poca fatiga para que el miércoles de ritmo y la tirada no se resientan.',
+  prog:'<b>Mantener, no batir récords:</b> usa el peso con el que cerraste la Fase 2 y sube solo si las 6 repeticiones salen rápidas y limpias. Si la tirada del viernes pasó de 90 minutos, haz solo los 3 primeros ejercicios.',
   actName:'PRE-FUERZA', actClk:'8\'',
   act:['5\' bici o remo suave','Glute bridge ×12 + Monster walk ×10 pasos/lado','Skipping B suave 2×15 m','Serie de aproximación del primer ejercicio al 50% del peso'],
   actTip:'Sin saltos aquí: llegas de la tirada más larga del plan. La potencia se trabaja el miércoles con los pogos del calentamiento.',
-  main:'3×5', rpe:'7-8', rest:'2\'30\'\'', uni:'3×5/lado', restUni:'2\'', calf:'3×10/lado', core:'3×40\'\'/lado',
+  main:'3×4-6', rpe:'7-8', rest:'2\'30\'\'', uni:'3×5-6/lado', restUni:'2\'', calf:'3×8-10/lado', core:'3×30-45\'\'/lado', core2:'3×10/lado',
   kg:{ goblet:'32-40 kg', rdl:'60-75 kg', bulg:'2×12-16 kg', calf:'+10-14 kg', step:'2×12-16 kg', hip:'70-85 kg', slrdl:'16-20 kg', soleus:'20-26 kg', ohp:'8-10 kg' },
 });
 const GYM_AFINE = buildGym({
-  caution:'Taper: mismo patrón, cargas un 30-40% más bajas y 2-3 repeticiones lejos del fallo. Mantener, no construir. La semana de carrera NO hay gym (ver notas del día).',
+  caution:'Taper: mantener, no construir. La semana de carrera NO hay gym (ver notas del día).',
+  prog:'<b>Nada de progresar:</b> un 30-40% menos de peso que en la Fase 3 y lejos del fallo. Si dudas entre hacer o no una serie, no la hagas.',
   actName:'CHISPA', actClk:'6\'',
   act:['5\' bici suave','Glute bridge ×12','Monster walk ×10 pasos/lado'],
-  actTip:'Solo mantener la chispa. Si dudas entre hacer o no una serie, no la hagas.',
-  main:'2×5', rpe:'6', rest:'2\'', uni:'2×5/lado', restUni:'90\'\'', calf:'2×10/lado', core:'2×30\'\'/lado',
-  kg:{ goblet:'~24 kg', rdl:'~50 kg', bulg:'2×10 kg', calf:'Peso corporal', step:'2×10 kg', hip:'~55 kg', slrdl:'~12 kg', soleus:'~16 kg', ohp:'6-8 kg' },
+  actTip:'Solo mantener la chispa.',
+  main:'2×5', rpe:'6', rest:'2\'', uni:'2×5/lado', restUni:'90\'\'', calf:'2×8/lado', core:'2×30\'\'/lado', core2:'2×10/lado',
+  kg:{ goblet:'~24 kg', rdl:'~45 kg', bulg:'2×10 kg', calf:'Peso corporal', step:'2×10 kg', hip:'~50 kg', slrdl:'~12 kg', soleus:'~14 kg', ohp:'6-8 kg' },
 });
+// Semanas de descarga del plan (coinciden con las de carrera): el gym también baja.
+const DELOAD_WEEKS = [4, 6, 10, 14, 17];
 
 // ══════════════════════════════════════════════════════════════ DATA — 4 FASES HACIA EL 15K (25 ABR 2027)
 const PHASES = [
@@ -636,10 +685,13 @@ function switchView(v) {
   document.getElementById('view-' + v).classList.add('active');
   document.querySelectorAll('.nav-pill').forEach(el => el.classList.remove('active'));
   document.getElementById('pill-' + v).classList.add('active');
-  document.getElementById('tabs').style.display = v === 'mov' ? 'none' : '';
-  document.getElementById('phase-row').style.display = v === 'mov' ? 'none' : '';
+  const noPlanNav = v === 'mov' || v === 'guia';
+  document.getElementById('tabs').style.display = noPlanNav ? 'none' : '';
+  document.getElementById('phase-row').style.display = noPlanNav ? 'none' : '';
   if (v === 'log') renderLog();
   if (v === 'mov') renderMov();
+  if (v === 'guia') renderGuidePage();
+  window.scrollTo({top:0,behavior:'instant'});
 }
 
 // ══════════════════════════════════════════════════════════════ PHASE PILLS + TABS
@@ -708,10 +760,17 @@ function renderPage() {
     col = session.color;
     wod = session.wod; strength = session.strength; caution = session.caution;
     title = session.label;
+    const wkNow = weeksSincePhaseStart(PHASES[0]) + 1;
+    const live = p.id === CURRENT_PHASE_ID;
+    const notice = !live ? '' :
+      (p.id === 'base' && wkNow <= 2) ? '<div class="gym-note">🌱 <b>Semanas 1-2 · adaptación:</b> haz 2 series de cada ejercicio en vez de 3. Tendones y agujetas primero; los kilos ya llegarán.</div>' :
+      DELOAD_WEEKS.includes(wkNow) ? '<div class="gym-note">🔋 <b>Semana de descarga:</b> una serie menos en cada ejercicio y un 10-15% menos de peso. Asimilar también es entrenar.</div>' : '';
     pickHTML = `
       <div class="wod-pick-lbl">Hoy toca</div>
       <div class="wod-pick-row"><span class="wod-rx" style="background:${session.color}">${session.label}</span></div>
-      ${caution ? `<div class="wod-caution">⚠️ ${caution}</div>` : ''}`;
+      ${notice}
+      ${caution ? `<div class="wod-caution">⚠️ ${caution}</div>` : ''}
+      ${session.prog ? `<div class="gym-prog">📈 ${session.prog}</div>` : ''}`;
   }
 
   const planWeekNow = weeksSincePhaseStart(PHASES[0]) + 1;
@@ -817,6 +876,7 @@ function renderPage() {
     ${restBlock}
     ${coolBlock}
   `;
+  linkGlossary(document.getElementById('page'));
 }
 
 // ══════════════════════════════════════════════════════════════ LOG
@@ -1067,62 +1127,85 @@ function tReset(){
 }
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&tRun) tTick(); });
 
-// ══════════════════════════════════════════════════════════════ MOVILIDAD DATA — runner-specific (complementa tu programa de hombro)
+// ══════════════════════════════════════════════════════════════ MOVILIDAD — ligada a tu semana
+// Corta después de correr (músculo caliente, 6-10'), sesión principal de 12' los días libres
+// sobre tus limitadores (cadera por estar sentado, tobillo/pantorrilla por el impacto, espalda
+// alta y hombro). "CLAVE" = el mínimo si vas con prisa.
 const MOV_DAYS = [
-  { id:'lun', label:'LUN', sublabel:'Psoas + Cadera', focus:'Flexor de cadera · Glúteo · Activación',
-    insight:'<b>Complementa, no sustituye:</b> tu programa de movilidad de hombro ya cubre esa zona en paralelo. Esta pestaña se centra en cadera/pierna/tobillo — lo que un corredor necesita y tu rutina actual no cubre.',
+  { id:'lun', label:'LUN', sublabel:'Post-rodaje', focus:'Pantorrilla · Flexor de cadera · Isquio', total:'8\'',
+    insight:'<b>8 minutos al terminar de correr</b>, con el músculo caliente: es cuando estirar rinde más. Lo marcado CLAVE es el mínimo si vas con prisa.',
     blocks:[
-      { emoji:'🦵', title:'Psoas — Liberación', duration:'4 min', exs:[
-        { nm:'Couch Stretch', dur:'60-90\'\'/pierna', sets:'—', note:'Rodilla trasera en el suelo, pie apoyado en pared/sofá. Pelvis neutra, contrae el glúteo del lado trasero.' },
-        { nm:'Half-kneeling Hip Flexor Stretch', dur:'45\'\'/lado', sets:'—', note:'Empuja la cadera hacia delante sin arquear la lumbar.' } ] },
-      { emoji:'🍑', title:'Glúteo — Activación', duration:'4 min', exs:[
-        { nm:'Glute Bridge isométrico', dur:'3×10\'\' hold', sets:'3 series', note:'Aprieta glúteo al máximo arriba.' },
-        { nm:'Clamshell', dur:'15/lado', sets:'2 series', note:'Glúteo medio — estabiliza la pelvis en cada apoyo.' } ] } ] },
-  { id:'mar', label:'MAR', sublabel:'Tobillo + Pantorrilla', focus:'Dorsiflexión · Gemelo/sóleo · Fascia plantar',
-    insight:'<b>El tobillo que no perdona:</b> cada zancada carga 2-3× tu peso corporal — con 85 kg eso importa más que con un corredor ligero. Un tobillo rígido fuerza al gemelo y es antesala de tendinopatía de Aquiles.',
+      { emoji:'🦶', title:'Pantorrilla', duration:'3 min', exs:[
+        { nm:'Gemelo en pared', dur:'30"/pierna', sets:'×2', key:true, note:'Manos en la pared, pierna de atrás estirada y talón en el suelo. Notas el tirón en la parte alta de la pantorrilla.' },
+        { nm:'Sóleo en pared', dur:'30"/pierna', sets:'×2', key:true, note:'Igual, pero <b>dobla la rodilla</b> de atrás: el tirón baja hacia el tobillo. El sóleo es el músculo que más carga aguanta al correr.' } ] },
+      { emoji:'🦵', title:'Cadera e isquio', duration:'5 min', exs:[
+        { nm:'Flexor de cadera de rodillas', dur:'40"/lado', sets:'×2', key:true, note:'Una rodilla en el suelo y la otra pierna delante a 90°. Aprieta el glúteo de atrás y lleva la cadera adelante <b>sin arquear la lumbar</b>.' },
+        { nm:'Isquio con el pie en un escalón', dur:'30"/pierna', sets:'—', note:'Talón en un escalón o banco bajo, pierna estirada; inclínate desde la cadera con la espalda recta.' } ] },
+    ] },
+  { id:'mar', label:'MAR', sublabel:'Libre · Cadera + tobillo', focus:'Rotación de cadera · Dorsiflexión · Glúteo medio', total:'12\'',
+    insight:'<b>Sesión principal de la semana (12 min)</b>, en casa y con una banda elástica. Cadera y tobillo son tus dos limitadores: horas sentado y 85 kg aterrizando en cada zancada.',
     blocks:[
-      { emoji:'🦿', title:'Foam roller — Pantorrilla', duration:'3 min', exs:[
-        { nm:'FR Gemelo + Sóleo', dur:'45\'\'/pierna', sets:'—', note:'Cruza la otra pierna encima para más presión.' } ] },
-      { emoji:'🦶', title:'Dorsiflexión + Fuerza de tobillo', duration:'5 min', exs:[
-        { nm:'Dorsiflexión con pared', dur:'45\'\'/tobillo', sets:'2 series', note:'Lleva la rodilla hacia la pared sin levantar el talón.' },
-        { nm:'Elevación de talón excéntrica', dur:'12 reps/pierna', sets:'2 series', note:'Sube con las dos piernas, baja solo con una en 3\'\'.' } ] } ] },
-  { id:'mie', label:'MIÉ', sublabel:'Glúteo medio + Rotadores', focus:'Estabilidad de cadera · IT Band · Piriforme',
-    insight:'<b>La rodilla del corredor casi nunca es la rodilla:</b> el dolor lateral casi siempre nace en un glúteo medio débil. Fortalecer aquí es más eficaz que estirar el IT Band en sí.',
+      { emoji:'🔄', title:'Cadera', duration:'5 min', exs:[
+        { nm:'90/90 con cambio de lado', dur:'8 cambios', sets:'—', key:true, note:'Sentado con las dos piernas dobladas a 90°, giras las rodillas de un lado al otro, sin manos si puedes. Devuelve la rotación de cadera que bloquea estar sentado.' },
+        { nm:'Couch stretch', dur:'60"/lado', sets:'—', key:true, note:'Rodilla de atrás junto a la pared o el sofá, empeine apoyado en ella. Glúteo apretado y lumbar sin arquear. El estiramiento más rentable si pasas horas sentado.' } ] },
+      { emoji:'🦶', title:'Tobillo', duration:'3 min', exs:[
+        { nm:'Rodilla a la pared (dorsiflexión)', dur:'10/lado', sets:'×2', key:true, note:'Pie a un palmo de la pared: llevas la rodilla a tocarla sin levantar el talón. Si llegas fácil, aleja el pie 1 cm. <b>Anota la distancia</b>: es tu medida de progreso.' } ] },
+      { emoji:'🍑', title:'Glúteo medio', duration:'4 min', exs:[
+        { nm:'Clamshell con banda', dur:'15/lado', sets:'×2', note:'De lado, rodillas dobladas y banda encima de ellas: abres la rodilla de arriba sin mover la pelvis. Bajada lenta.' },
+        { nm:'Glute bridge', dur:'12 reps', sets:'×2', note:'Pausa de 2" arriba apretando glúteos. Si notas más el isquio que el glúteo, acerca los pies.' } ] },
+    ] },
+  { id:'mie', label:'MIÉ', sublabel:'Post-calidad', focus:'Pantorrilla · Glúteo profundo · Flexor de cadera', total:'8\'',
+    insight:'<b>8 minutos tras la sesión más intensa.</b> El mismo esquema que el lunes, cambiando el isquio por el glúteo profundo, que es lo que más se carga con los cambios de ritmo.',
     blocks:[
-      { emoji:'🫁', title:'Foam roller — Lateral', duration:'3 min', exs:[
-        { nm:'FR Glúteo medio + TFL', dur:'45\'\'/lado', sets:'—', note:'De lado, FR bajo la cadera lateral.' } ] },
-      { emoji:'🔄', title:'Estabilidad de cadera', duration:'5 min', exs:[
-        { nm:'Single-leg RDL sin peso', dur:'8/lado', sets:'3 series', note:'Control total, cadera nivelada.' },
-        { nm:'Estiramiento "figura 4" — Piriforme', dur:'45\'\'/lado', sets:'—', note:'Tumbado, cruza el tobillo sobre la rodilla contraria.' } ] } ] },
-  { id:'jue', label:'JUE', sublabel:'Pre-tirada: IT Band + Cuádriceps', focus:'Cadena anterior · Core anti-rotación · Activación',
-    insight:'<b>Preparar el terreno:</b> hoy es activación, no fatiga — el objetivo es llegar listo a la tirada larga de mañana.',
+      { emoji:'🦶', title:'Pantorrilla', duration:'3 min', exs:[
+        { nm:'Gemelo en pared', dur:'30"/pierna', sets:'×2', key:true, note:'Pierna de atrás estirada, talón en el suelo.' },
+        { nm:'Sóleo en pared', dur:'30"/pierna', sets:'×2', key:true, note:'Igual con la rodilla doblada.' } ] },
+      { emoji:'🍑', title:'Cadera', duration:'5 min', exs:[
+        { nm:'Flexor de cadera de rodillas', dur:'40"/lado', sets:'—', key:true, note:'Glúteo de atrás apretado, sin arquear la lumbar.' },
+        { nm:'Figura 4', dur:'40"/lado', sets:'—', note:'Tumbado, tobillo cruzado sobre la rodilla contraria; llevas las dos piernas hacia el pecho. Estira el glúteo profundo (piriforme).' },
+        { nm:'Rodillo: cuádriceps y gemelo (opcional)', dur:'45"/zona', sets:'—', note:'Solo si tienes rodillo. Lento, parándote en los puntos cargados. Nunca sobre la rodilla.' } ] },
+    ] },
+  { id:'jue', label:'JUE', sublabel:'Libre · Espalda + hombro', focus:'Rotación torácica · Hombro · Core anti-lumbar', total:'12\'',
+    insight:'<b>Sesión principal de tronco (12 min).</b> Una espalda alta rígida carga la lumbar y limita el hombro: aquí cuidas las dos cosas. Si sigues haciendo aparte tu rutina de hombro, sáltate ese bloque.',
     blocks:[
-      { emoji:'🦵', title:'Cuádriceps + IT Band', duration:'4 min', exs:[
-        { nm:'FR Cuádriceps completo', dur:'60\'\'/pierna', sets:'—', note:'De arriba a abajo del muslo, presión estática.' } ] },
-      { emoji:'🧘', title:'Activación final', duration:'4 min', exs:[
-        { nm:'Bird-dog', dur:'8/lado', sets:'2 series', note:'Control de tronco sin rotar la cadera.' },
-        { nm:'Pallof Press', dur:'10/lado', sets:'2 series', note:'Anti-rotación con banda o mancuerna.' } ] } ] },
-  { id:'vie', label:'VIE', sublabel:'Post-tirada larga', focus:'Recuperación profunda · Cuerpo completo',
-    insight:'<b>Después del esfuerzo más largo de la semana:</b> hoy es puramente recuperación.',
+      { emoji:'🌀', title:'Columna', duration:'4 min', exs:[
+        { nm:'Cat-cow', dur:'8 lentos', sets:'—', note:'A cuatro patas, alternas arquear y redondear la espalda, vértebra a vértebra.' },
+        { nm:'Rotación torácica a cuatro patas', dur:'8/lado', sets:'—', key:true, note:'Mano detrás de la cabeza: giras el codo hacia el techo moviendo solo la espalda alta. La cadera no se mueve.' },
+        { nm:'Open book', dur:'6/lado', sets:'—', note:'Tumbado de lado con las rodillas dobladas, abres el brazo de arriba hacia el otro lado siguiéndolo con la mirada.' } ] },
+      { emoji:'🦅', title:'Hombro', duration:'4 min', exs:[
+        { nm:'Wall slide', dur:'8 reps', sets:'×2', key:true, note:'De espaldas a la pared, brazos en W apoyados; subes deslizando sin despegar codos ni muñecas. Si se despegan, sube solo hasta ahí.' },
+        { nm:'Rotación externa con banda', dur:'12/lado', sets:'×2', note:'Codo pegado al costado a 90°, giras el antebrazo hacia fuera. Mantenimiento del manguito.' } ] },
+      { emoji:'🧱', title:'Core', duration:'4 min', exs:[
+        { nm:'Dead bug', dur:'8/lado', sets:'×2', key:true, note:'Boca arriba, bajas brazo y pierna contrarios <b>sin despegar la lumbar del suelo</b>. Si se despega, recorrido más corto.' },
+        { nm:'Bird-dog', dur:'8/lado', sets:'×2', note:'A cuatro patas, estiras brazo y pierna contrarios con la cadera quieta. Despacio.' } ] },
+    ] },
+  { id:'vie', label:'VIE', sublabel:'Post-tirada', focus:'Recuperación · Pantorrilla · Piernas en alto', total:'10\'',
+    insight:'<b>10 minutos tras la tirada larga, sin forzar nada.</b> Hoy no buscas ganar rango, sino bajar la carga. Mañana hay gym: esto te ayuda a llegar mejor.',
     blocks:[
-      { emoji:'🦵', title:'Cuerpo completo — Foam roller', duration:'5 min', exs:[
-        { nm:'FR Cuádriceps + Isquios + Gemelo', dur:'45\'\'/zona', sets:'—', note:'Recorrido lento, sin prisa.' } ] },
-      { emoji:'🧘', title:'Estiramiento pasivo largo', duration:'6 min', exs:[
-        { nm:'Couch Stretch', dur:'90\'\'/pierna', sets:'—', note:'Devuelve extensión de cadera tras kilómetros en flexión repetida.' } ] } ] },
-  { id:'sab', label:'SÁB', sublabel:'Post-gym: isquios + lumbar', focus:'Isquiotibiales · Lumbar · Flexibilidad activa',
-    insight:'<b>Después del gym — isquios cortos, zancada corta:</b> trabajarlo con PNF (contracción-relajación) gana 2-3× más rango que el estiramiento pasivo puro.',
+      { emoji:'🦶', title:'Pantorrilla y cadera', duration:'5 min', exs:[
+        { nm:'Gemelo y sóleo en pared', dur:'30" + 30"/pierna', sets:'—', key:true, note:'Primero con la rodilla estirada (gemelo), después doblada (sóleo). Suave.' },
+        { nm:'Flexor de cadera de rodillas', dur:'40"/lado', sets:'—', key:true, note:'Sin forzar: solo devolver longitud tras muchos minutos de zancada.' },
+        { nm:'Figura 4', dur:'40"/lado', sets:'—', note:'Glúteo profundo.' } ] },
+      { emoji:'🛌', title:'Recuperación', duration:'5 min', exs:[
+        { nm:'Piernas en alto en la pared', dur:'3-5 min', sets:'—', key:true, note:'Tumbado boca arriba con las piernas apoyadas en vertical en la pared. Respira lento y profundo: relaja y favorece el retorno de la sangre.' } ] },
+    ] },
+  { id:'sab', label:'SÁB', sublabel:'Post-gym', focus:'Isquio · Flexor de cadera · Espalda', total:'6\'',
+    insight:'<b>6 minutos al acabar el gym.</b> Suave: los músculos ya han trabajado mucho, solo devuelves rango y descomprimes la espalda.',
     blocks:[
-      { emoji:'🦿', title:'Isquios — PNF', duration:'4 min', exs:[
-        { nm:'Estiramiento isquio activo (PNF)', dur:'8 reps/pierna', sets:'2 series', note:'Empuja el talón hacia el techo 5\'\', relaja 2\'\', gana rango.' } ] },
-      { emoji:'🌀', title:'Lumbar + Core', duration:'4 min', exs:[
-        { nm:'Cat-Cow', dur:'10 reps', sets:'—', note:'Moviliza la columna segmento a segmento.' },
-        { nm:'Dead bug', dur:'8/lado', sets:'2 series', note:'Espalda pegada al suelo todo el rato — el mismo movimiento anti-lumbar de tus días de CrossFit.' } ] } ] },
-  { id:'dom', label:'DOM', sublabel:'Descanso + Respiración', focus:'Relajación general · Movilidad muy suave',
-    insight:'<b>El día que no se entrena pero sí se cuida:</b> movilidad general suave, sin buscar rango nuevo.',
+      { emoji:'🧘', title:'Vuelta a la calma', duration:'6 min', exs:[
+        { nm:'Child\'s pose', dur:'60"', sets:'—', key:true, note:'De rodillas, sentado sobre los talones, brazos estirados al frente. Descomprime la espalda tras cargar peso.' },
+        { nm:'Couch stretch', dur:'45"/lado', sets:'—', note:'Más suave que el martes.' },
+        { nm:'Isquio con el pie en un escalón', dur:'30"/pierna', sets:'—', note:'Espalda recta, inclínate desde la cadera.' } ] },
+    ] },
+  { id:'dom', label:'DOM', sublabel:'Descanso', focus:'Respiración · Movilidad general · Paseo', total:'10\'',
+    insight:'<b>Día de descanso de verdad.</b> Si te apetece moverte: 10 minutos muy suaves y un paseo. Nada aquí es obligatorio.',
     blocks:[
-      { emoji:'🧘', title:'Movilidad suave general', duration:'6 min', exs:[
-        { nm:'Cat-Cow + World\'s Greatest Stretch', dur:'8 reps + 3/lado', sets:'—', note:'Movimiento fluido, sin forzar ningún rango.' },
-        { nm:'Child\'s Pose + respiración', dur:'60\'\'', sets:'—', note:'Respiración diafragmática lenta.' } ] } ] },
+      { emoji:'🌬️', title:'Suave', duration:'10 min', exs:[
+        { nm:'Respiración diafragmática', dur:'2 min', sets:'—', key:true, note:'Tumbado con las piernas sobre una silla y una mano en la tripa: inspira 4" llevando el aire a la tripa, espira 6". Activa la recuperación.' },
+        { nm:'90/90 con cambio de lado', dur:'6 cambios', sets:'—', note:'Lento y sin forzar.' },
+        { nm:'Rotación torácica a cuatro patas', dur:'6/lado', sets:'—', note:'Solo la espalda alta.' },
+        { nm:'Paseo', dur:'20-30 min', sets:'—', note:'Opcional, a ritmo de charla. Mueve sangre sin cansar.' } ] },
+    ] },
 ];
 let curMovDay = MOV_DAYS[0];
 function renderMov() {
@@ -1132,17 +1215,16 @@ function renderMov() {
     const bid = 'mb'+d.id+bi;
     const exsHTML = bl.exs.map(ex=>`
       <div class="mov-ex"><div class="mov-ex-bar"></div><div class="mov-ex-name">${ex.nm}</div>
-        <div class="mov-ex-chips"><span class="chip">${ex.dur}</span>${ex.sets!=='—'?`<span class="chip">${ex.sets}</span>`:''}
-        ${ex.nm.toLowerCase().includes('foam')||ex.nm.toLowerCase().includes('fr ')?'<span class="chip mov-fr-tag">FOAM ROLLER</span>':''}</div>
+        <div class="mov-ex-chips"><span class="chip">${ex.dur}</span>${ex.sets!=='—'?`<span class="chip">${ex.sets}</span>`:''}${ex.key?'<span class="chip mov-key">CLAVE</span>':''}</div>
         <div class="mov-ex-note">${ex.note}</div></div>`).join('');
     return `<div class="mov-block"><div class="mov-block-hd" onclick="togMovBlock('${bid}','${bid}ico')">
         <div class="mov-block-title">${bl.emoji} ${bl.title}</div>
-        <div style="display:flex;gap:10px;align-items:center"><div class="mov-block-meta">${bl.duration}</div><div class="coll-ico" id="${bid}ico">+</div></div></div>
-      <div class="mov-block-body" id="${bid}">${exsHTML}</div></div>`;
+        <div style="display:flex;gap:10px;align-items:center"><div class="mov-block-meta">${bl.duration}</div><div class="coll-ico open" id="${bid}ico">+</div></div></div>
+      <div class="mov-block-body open" id="${bid}">${exsHTML}</div></div>`;
   }).join('');
   document.getElementById('mov-page').innerHTML = `
     <div class="mov-hero">
-      <div class="hero-eyebrow">Diaria · 10-20 min · Prevención de lesiones (cadera/pierna/tobillo)</div>
+      <div class="hero-eyebrow">${d.sublabel} · ${d.total}</div>
       <div class="hero-title" id="mov-hero-title" style="color:var(--mov)">MOVILIDAD</div>
       <div class="hero-sub">${d.focus}</div>
       <div class="mov-day-tabs">${tabsHTML}</div>
@@ -1150,10 +1232,192 @@ function renderMov() {
     <div class="mov-insight">${d.insight}</div>
     ${blocksHTML}
   `;
+  linkGlossary(document.getElementById('mov-page'));
   requestAnimationFrame(() => fitTitleEl('mov-hero-title'));
 }
 function selMovDay(id) { curMovDay = MOV_DAYS.find(d=>d.id===id); renderMov(); window.scrollTo({top:0,behavior:'instant'}); }
 function togMovBlock(bodyId, icoId) { document.getElementById(bodyId).classList.toggle('open'); document.getElementById(icoId).classList.toggle('open'); }
+
+// ══════════════════════════════════════════════════════════════ GUÍA — CONCEPTOS PARA EMPEZAR DESDE CERO
+// Cada término aparece subrayado la primera vez que sale en una pantalla (toca para ver la ficha)
+// y todos están en la pestaña GUÍA. `a` = textos que lo enlazan; vacío = solo en la GUÍA.
+const GLOSSARY_CATS = [
+  ['leer', '📖 Cómo leer el plan'],
+  ['carrera', '🏃 Tipos de sesión de carrera'],
+  ['intensidad', '❤️ Intensidad y control'],
+  ['tecnica', '🦶 Técnica y ejercicios de carrera'],
+  ['fuerza', '💪 Gym'],
+  ['movilidad', '🧘 Movilidad y cuerpo'],
+  ['plan', '🗓️ Planificación y carrera'],
+];
+const GLOSSARY = [
+  // Cómo leer
+  { k:'notacion', c:'leer', t:'3×10, 3×8-12, /lado, 3×2 km', a:[], d:'<b>3×10</b> = 3 series de 10 repeticiones. <b>3×8-12</b> = elige un peso con el que hagas entre 8 y 12. <b>/lado</b> = por cada pierna o brazo. <b>3×30"</b> = 3 veces 30 segundos. En carrera, <b>3×2 km</b> = 3 repeticiones de 2 km con recuperación entre ellas.' },
+  { k:'flecha', c:'leer', t:'La flecha → en la tabla', a:[], d:'Indica cómo sube a lo largo de las semanas de esa fila. "Sem 1-2 · 35 → 40 min" = 35 min la semana 1 y 40 min la semana 2. Con 3 semanas, el salto se reparte (55 → 65 = 55, 60, 65).' },
+  { k:'abrev', c:'leer', t:'Abreviaturas', a:[], d:'<b>min</b> o <b>\'</b> = minutos · <b>"</b> = segundos · <b>lpm</b> = latidos por minuto · <b>ppm/spm</b> = pasos por minuto · <b>km</b> = kilómetros · <b>8\'49"/km</b> = tardas 8 min 49 s en cada kilómetro.' },
+  // Carrera
+  { k:'rodaje', c:'carrera', t:'Rodaje', a:['rodaje','rodajes'], d:'Carrera continua a ritmo suave (Z2). Es la base del plan: construye el motor aeróbico sin desgastarte.', h:'A ritmo de conversación: si no puedes decir frases completas, frena.' },
+  { k:'tirada', c:'carrera', t:'Tirada larga', a:['tirada larga','tiradas largas','tirada','tiradas'], d:'La carrera más larga de la semana (el viernes), siempre suave. Te prepara para aguantar los 15 km.', h:'Más lenta que los demás días. Si hace falta, alterna trote y caminar.' },
+  { k:'rectas', c:'carrera', t:'Rectas', a:['rectas'], d:'Aceleraciones de unos 20" al final de un rodaje, a ritmo alegre pero relajado. Mejoran la técnica y la cadencia sin cansar.', h:'Aceleras 5", mantienes 15" suelto (≈80% de tu máximo) y caminas 1\' antes de la siguiente. Si acabas jadeando, ha sido demasiado fuerte.' },
+  { k:'fartlek', c:'carrera', t:'Fartlek', a:['fartlek'], d:'"Juego de velocidad" en sueco: dentro de un rodaje alternas tramos más rápidos con tramos de trote suave. Es tu primer trabajo de calidad.', h:'Ej. 6×2\': 2 min "cómodamente duro" (Z3) + 2 min trotando, seis veces. Por sensaciones, sin obsesionarte con el ritmo.' },
+  { k:'tempo', c:'carrera', t:'Tempo', a:['tempo'], d:'Bloque continuo a ritmo "cómodamente duro" (Z3). Enseña al cuerpo a sostener un ritmo exigente sin venirse abajo.', h:'Puedes decir frases cortas, pero no conversar. Ej. 2×10\': dos bloques de 10 min con 3 min de trote entre ellos.' },
+  { k:'series', c:'carrera', t:'Series', a:[], d:'Repeticiones de una distancia a un ritmo concreto, con recuperación entre ellas.', h:'Ej. 3×2 km a ritmo 15K: corres 2 km a ritmo de carrera, trotas 2 min, y así tres veces.' },
+  { k:'ritmo', c:'carrera', t:'Ritmo 15K (ritmo objetivo)', a:['ritmo 15k','ritmo objetivo','ritmo de carrera'], d:'Los minutos por kilómetro a los que piensas correr el 25 de abril. Se calcula con el test 5K de febrero.', h:'Aproximadamente tu ritmo de 5K + 20-30"/km. Hoy la referencia es terminar sobre 2h (7\'50"-8\'15"/km).' },
+  { k:'test5k', c:'carrera', t:'Test 5K', a:['test 5k'], d:'Correr 5 km al máximo que puedas sostener para medir tu forma y calcular tus ritmos.', h:'15 min de calentamiento suave y 5 km a tope sostenible. Anota tiempo y FC media.' },
+  { k:'runwalk', c:'carrera', t:'Run-walk', a:['run-walk'], d:'Alternar correr y caminar (ej. 4 min trotando / 1 min andando). Es entrenamiento válido, no un fracaso.', h:'Úsalo si la FC se dispara o en las primeras tiradas largas.' },
+  { k:'progresiones', c:'carrera', t:'Progresiones', a:['progresiones'], d:'Tramos cortos (20-80 m) del calentamiento en los que pasas de trote a un ritmo vivo, recuperando andando. Preparan las piernas para correr.' },
+  { k:'calentamiento', c:'carrera', t:'Calentamiento (warm-up)', a:['calentamiento','warm-up'], d:'Los minutos previos que suben pulsaciones y temperatura y movilizan articulaciones. A las 6:00 y en ayunas, imprescindible.' },
+  { k:'vueltacalma', c:'carrera', t:'Vuelta a la calma (cool-down)', a:['vuelta a la calma','cool-down','cooldown'], d:'Los minutos finales andando y estirando suave para bajar pulsaciones y empezar a recuperar.' },
+  // Intensidad
+  { k:'fc', c:'intensidad', t:'FC (frecuencia cardiaca)', a:['fc','lpm'], d:'Pulsaciones por minuto (lpm). La mide el Apple Watch y te dice lo fuerte que vas.' },
+  { k:'zonas', c:'intensidad', t:'Zonas de FC', a:['zonas'], d:'Rangos de pulsaciones según la intensidad. Las tuyas: Z1 &lt;134 · Z2 134-145 · Z3 146-156 · Z4 157-166 · Z5 167+.', h:'Son aproximadas (no tenemos tu FC máxima medida): combínalas siempre con el test del habla.' },
+  { k:'z1', c:'intensidad', t:'Z1', a:['z1'], d:'Muy suave: caminar rápido, calentamiento y vuelta a la calma.' },
+  { k:'z2', c:'intensidad', t:'Z2', a:['z2'], d:'Suave y "conversacional" (tus 134-145 lpm). Es donde haces la mayor parte del plan: rodajes y tiradas.' },
+  { k:'z3', c:'intensidad', t:'Z3', a:['z3'], d:'Moderada, "cómodamente dura" (146-156 lpm). Fartlek y tempo.' },
+  { k:'z4', c:'intensidad', t:'Z4', a:['z4'], d:'Dura (157-166 lpm). Series cortas: solo te salen palabras sueltas.' },
+  { k:'z5', c:'intensidad', t:'Z5', a:['z5'], d:'Máxima (167+ lpm). Esfuerzos muy cortos; en este plan casi no aparece.' },
+  { k:'habla', c:'intensidad', t:'Test del habla', a:['test del habla'], d:'La forma más fiable de saber si vas suave: si puedes decir frases completas sin jadear, estás en Z2.' },
+  { k:'rpe', c:'intensidad', t:'RPE', a:['rpe'], d:'Esfuerzo percibido del 1 al 10. En el gym, RPE 7 ≈ te quedan unas 3 repeticiones; RPE 8 ≈ te quedan 2.' },
+  { k:'recamara', c:'intensidad', t:'Repeticiones en la recámara', a:['en la recámara','recámara'], d:'Las repeticiones que aún podrías hacer al acabar la serie. "2 en la recámara" = paras cuando todavía podrías hacer 2 más con buena técnica.' },
+  { k:'cadencia', c:'intensidad', t:'Cadencia', a:['cadencia'], d:'Pasos por minuto. Estás en ~156; subir a 160+ con pasos más cortos (no más largos) reduce el impacto en rodillas y caderas.' },
+  { k:'ayunas', c:'intensidad', t:'Entrenar en ayunas', a:['en ayunas','ayunas'], d:'Correr sin desayunar. Vale para sesiones cortas y suaves; para más de 60-75 min o días intensos, come algo ligero antes (un plátano).' },
+  { k:'gel', c:'intensidad', t:'Gel', a:['gel','geles'], d:'Sobre de carbohidrato concentrado para tomar corriendo. Se prueba en las tiradas largas, nunca por primera vez el día de la carrera.' },
+  // Técnica de carrera
+  { k:'skippinga', c:'tecnica', t:'Skipping A', a:['skipping a','skipping alto'], d:'Avanzar muy poco elevando las rodillas hasta la altura de la cadera, con pasos rápidos y apoyando la parte delantera del pie.' },
+  { k:'skippingb', c:'tecnica', t:'Skipping B', a:['skipping b'], d:'Como el A, pero al bajar estiras la pierna hacia delante y "rascas" el suelo hacia atrás.' },
+  { k:'skippingbajo', c:'tecnica', t:'Skipping bajo', a:['skipping bajo'], d:'Pasos muy cortos y rápidos con las rodillas poco elevadas. Despierta tobillos y pies.' },
+  { k:'talon', c:'tecnica', t:'Talón-glúteo', a:['talón-glúteo','talón al glúteo'], d:'Trotar llevando los talones hacia el glúteo. Activa los isquios.' },
+  { k:'pogos', c:'tecnica', t:'Pogos', a:['pogos','pogo'], d:'Saltitos seguidos solo con los tobillos, rodilla casi recta y contacto muy corto con el suelo. Hacen el tobillo más "elástico" y la zancada más económica.', h:'Silenciosos y rápidos, como si el suelo quemara. Si notas el Aquiles, para.' },
+  // Gym
+  { k:'dobleprog', c:'fuerza', t:'Doble progresión', a:['doble progresión'], d:'Forma de subir carga: con el mismo peso sumas repeticiones hasta el tope del rango en todas las series; entonces subes un poco el peso y vuelves al mínimo.' },
+  { k:'aproximacion', c:'fuerza', t:'Serie de aproximación', a:['serie de aproximación'], d:'Una serie ligera (~50% del peso) antes del primer ejercicio para ensayar la técnica. No cuenta como serie de trabajo.' },
+  { k:'superserie', c:'fuerza', t:'Superserie', a:['superserie'], d:'Dos ejercicios seguidos sin descanso entre ellos; descansas al terminar el par.' },
+  { k:'goblet', c:'fuerza', t:'Sentadilla goblet', a:['sentadilla goblet'], d:'Sentadilla sujetando una pesa pegada al pecho. Fortalece el cuádriceps, que frena cada apoyo al correr.', h:'Pies a la anchura de los hombros, codos dentro; bajas sentándote entre los talones con la espalda neutra.' },
+  { k:'rdl', c:'fuerza', t:'Peso muerto rumano', a:['peso muerto rumano'], d:'Bisagra de cadera con barra o mancuernas: bajas el peso pegado a las piernas llevando la cadera atrás, con las rodillas algo flexionadas. Trabaja glúteo e isquio, el motor de la zancada.', h:'Para en cuanto la espalda quiera redondearse. No es el peso muerto convencional desde el suelo.' },
+  { k:'slrdl', c:'fuerza', t:'Peso muerto rumano a una pierna', a:['peso muerto rumano a una pierna'], d:'El rumano apoyado en una sola pierna mientras la otra se va atrás. Fuerza de isquio y equilibrio de cadera.', h:'Cadera nivelada, sin girar. Al principio, apóyate con una mano en la pared.' },
+  { k:'bisagra', c:'fuerza', t:'Bisagra de cadera', a:['bisagra de cadera','bisagra'], d:'Doblarte por la cadera (llevándola atrás) y no por la espalda. Protege tu lumbar en el gym y en el día a día.' },
+  { k:'bulgara', c:'fuerza', t:'Zancada búlgara', a:['zancada búlgara','búlgara','búlgaras'], d:'Zancada con el empeine del pie de atrás apoyado en un banco. Trabaja cada pierna por separado y corrige diferencias entre ellas.', h:'Baja en vertical hasta que la rodilla de atrás casi toque el suelo; el peso, sobre la pierna de delante.' },
+  { k:'stepup', c:'fuerza', t:'Step-up', a:['step-up'], d:'Subir a un cajón o banco alto con una pierna y bajar controlado. Imita el impulso de la zancada.', h:'Empuja con el talón del pie de arriba, sin impulsarte con el de abajo.' },
+  { k:'hipthrust', c:'fuerza', t:'Hip thrust', a:['hip thrust'], d:'Con la espalda alta apoyada en un banco y una barra sobre la cadera, la elevas apretando glúteos. El ejercicio rey para el glúteo.', h:'Barbilla al pecho arriba, sin arquear la lumbar. Pausa de 1".' },
+  { k:'gemelo', c:'fuerza', t:'Gemelo a una pierna', a:['gemelo a una pierna'], d:'Elevaciones de talón a una pierna sobre un escalón. Fortalecen gemelo y tendón de Aquiles, que absorben gran parte del impacto.', h:'Sube rápido y baja en 3 segundos hasta estirar del todo.' },
+  { k:'soleo', c:'fuerza', t:'Sóleo', a:['sóleo'], d:'Músculo de la pantorrilla por debajo del gemelo. Al correr aguanta aún más carga que el gemelo. Se trabaja y se estira con la rodilla doblada.' },
+  { k:'plancha', c:'fuerza', t:'Plancha lateral', a:['plancha lateral'], d:'De lado, apoyado en el antebrazo, mantienes la cadera elevada en línea recta. Estabiliza la pelvis al correr.' },
+  { k:'pallof', c:'fuerza', t:'Pallof press', a:['pallof press'], d:'Con una banda o polea sujeta a un lado, empujas las manos al frente y aguantas sin dejar que el tronco gire. Core que protege la lumbar.' },
+  { k:'facepull', c:'fuerza', t:'Face pull', a:['face pull','face pulls'], d:'Tirar de una cuerda en polea alta hacia la cara, con los codos altos y abriendo hacia fuera al final. Salud del hombro y postura.' },
+  { k:'rotext', c:'fuerza', t:'Rotación externa', a:['rotación externa'], d:'Con el codo pegado al costado a 90°, giras el antebrazo hacia fuera con banda o mancuerna ligera. Fortalece el manguito rotador.' },
+  { k:'ohp', c:'fuerza', t:'Press por encima de cabeza', a:['press por encima de cabeza'], d:'Empujar mancuernas desde los hombros hacia arriba. "Rango controlado" = solo hasta donde controlas sin molestia, ganando recorrido semana a semana.' },
+  { k:'glutebridge', c:'fuerza', t:'Glute bridge (puente de glúteo)', a:['glute bridge'], d:'Tumbado boca arriba con los pies apoyados, elevas la cadera apretando glúteos. Activación.' },
+  { k:'monster', c:'fuerza', t:'Monster walk', a:['monster walk'], d:'Pasos laterales o en diagonal con una banda elástica en rodillas o tobillos y las rodillas algo flexionadas. Activa el glúteo medio.' },
+  { k:'manguito', c:'fuerza', t:'Manguito rotador', a:['manguito rotador','manguito'], d:'Cuatro músculos pequeños que estabilizan el hombro. El tuyo ya no está inflamado: se mantiene con rotación externa y face pulls.' },
+  // Movilidad y cuerpo
+  { k:'flexor', c:'movilidad', t:'Flexor de cadera', a:['flexor de cadera','flexores de cadera','psoas'], d:'Músculos de la parte delantera de la cadera que se acortan con muchas horas sentado. Acortados, frenan la zancada y cargan la lumbar.' },
+  { k:'couch', c:'movilidad', t:'Couch stretch', a:['couch stretch'], d:'Estiramiento intenso del flexor de cadera y el cuádriceps: rodilla de atrás en el suelo junto a una pared o un sofá, con el empeine apoyado en ella.', h:'Aprieta el glúteo de la pierna de atrás y no arquees la lumbar.' },
+  { k:'dorsiflexion', c:'movilidad', t:'Dorsiflexión', a:['dorsiflexión'], d:'Llevar la rodilla por delante de los dedos del pie sin levantar el talón. Un tobillo rígido sobrecarga gemelo y Aquiles.' },
+  { k:'noventa', c:'movilidad', t:'90/90', a:['90/90'], d:'Sentado en el suelo con las dos piernas dobladas a 90° (una delante y otra al lado). Moviliza la rotación de la cadera.' },
+  { k:'toracica', c:'movilidad', t:'Rotación torácica · Open book', a:['rotación torácica','open book'], d:'Girar la parte alta de la espalda, no la lumbar. Una espalda alta móvil libera hombros y protege la zona baja.' },
+  { k:'figura4', c:'movilidad', t:'Figura 4', a:['figura 4'], d:'Tumbado, con un tobillo cruzado sobre la rodilla contraria, llevas las piernas al pecho. Estira el glúteo profundo (piriforme).' },
+  { k:'wallslide', c:'movilidad', t:'Wall slide', a:['wall slide'], d:'De espaldas a la pared, con los brazos en "W" apoyados, los deslizas hacia arriba sin perder el contacto. Movilidad y control del hombro.' },
+  { k:'catcow', c:'movilidad', t:'Cat-cow', a:['cat-cow'], d:'A cuatro patas, alternas arquear y redondear la espalda despacio. Moviliza la columna vértebra a vértebra.' },
+  { k:'deadbug', c:'movilidad', t:'Dead bug', a:['dead bug'], d:'Boca arriba con brazos y piernas al aire, bajas brazo y pierna contrarios sin despegar la lumbar del suelo. Core que protege la espalda.' },
+  { k:'birddog', c:'movilidad', t:'Bird-dog', a:['bird-dog'], d:'A cuatro patas, estiras brazo y pierna contrarios sin que la cadera gire. Estabilidad de tronco.' },
+  { k:'clamshell', c:'movilidad', t:'Clamshell', a:['clamshell'], d:'De lado con las rodillas dobladas, abres la rodilla de arriba como una almeja sin mover la pelvis. Trabaja el glúteo medio.' },
+  { k:'respiracion', c:'movilidad', t:'Respiración diafragmática', a:['respiración diafragmática'], d:'Respirar llevando el aire a la tripa, no al pecho. Baja pulsaciones y activa la recuperación.' },
+  { k:'rodillo', c:'movilidad', t:'Rodillo (foam roller)', a:['rodillo','foam roller'], d:'Cilindro de espuma sobre el que apoyas un músculo para "masajearlo". Opcional: alivia sensaciones, pero no sustituye estirar ni fortalecer.', h:'Lento, 30-60" por zona, parándote en los puntos cargados. Nunca sobre huesos o articulaciones.' },
+  { k:'isquio', c:'movilidad', t:'Isquiotibiales', a:['isquiotibiales','isquios','isquio'], d:'Músculos de la parte de atrás del muslo. Junto al glúteo, te impulsan al correr.' },
+  { k:'glmedio', c:'movilidad', t:'Glúteo medio', a:['glúteo medio'], d:'Músculo lateral de la cadera que la mantiene nivelada cuando apoyas una sola pierna. Si es débil, aparecen dolores de rodilla o de cadera al correr.' },
+  { k:'aquiles', c:'movilidad', t:'Tendón de Aquiles', a:['aquiles'], d:'Une gemelo y sóleo al talón y va muy cargado al correr. Se protege subiendo el volumen poco a poco y fortaleciendo la pantorrilla.' },
+  { k:'periostitis', c:'movilidad', t:'Periostitis tibial', a:['periostitis'], d:'Dolor en la cara interna de la tibia, típico al empezar o al subir volumen demasiado rápido. Si aparece, avisa y bajamos carga.' },
+  // Planificación
+  { k:'fases', c:'plan', t:'Fases', a:[], d:'El plan va por bloques: <b>Base</b> (motor aeróbico), <b>Desarrollo</b> (aparece la calidad), <b>Específico</b> (ritmo de carrera) y <b>Afine</b> (bajar carga para llegar fresco).' },
+  { k:'descarga', c:'plan', t:'Descarga', a:['descarga','descargas'], d:'Semana con un 25-30% menos de volumen para que el cuerpo asimile lo entrenado. Es parte del plan: no se salta.', h:'En el gym esa semana: una serie menos por ejercicio y un 10-15% menos de peso.' },
+  { k:'afine', c:'plan', t:'Afine (taper)', a:['afine','taper'], d:'Las 3 últimas semanas: bajas el volumen y mantienes toques de ritmo para llegar fresco a la carrera.' },
+  { k:'supercomp', c:'plan', t:'Supercompensación', a:['supercompensación'], d:'Tras descansar de una carga, el cuerpo vuelve algo más fuerte que antes. Por eso funcionan las descargas y el afine.' },
+  { k:'volumen', c:'plan', t:'Volumen', a:['volumen'], d:'Cantidad total de entrenamiento (minutos o km por semana). Sube poco a poco: tendones y huesos tardan más que el corazón en adaptarse.' },
+  { k:'regladolor', c:'plan', t:'Regla del dolor', a:['regla del dolor'], d:'Molestia de 0-3/10 que no empeora: sigue. Más de 3, que va a más, que te hace cojear o que sigue al día siguiente: para y avisa.' },
+  { k:'ensayo', c:'plan', t:'Ensayo general', a:['ensayo general'], d:'La tirada de la semana 20 haciéndolo todo como el día de la carrera: hora, desayuno, ropa, zapatillas y gel.' },
+  { k:'negative', c:'plan', t:'Negative split', a:['negative split'], d:'Correr la segunda mitad más rápida que la primera. Empezar contenido es la estrategia que mejor funciona.' },
+  { k:'avituallamiento', c:'plan', t:'Avituallamiento', a:['avituallamiento','avituallamientos'], d:'Puntos de la carrera con agua (y a veces comida). Bebe aunque sea un poco en cada uno.' },
+];
+const GL_BY_KEY = Object.fromEntries(GLOSSARY.map(g=>[g.k,g]));
+const GL_ALIAS = new Map();
+GLOSSARY.forEach(g => g.a.forEach(a => GL_ALIAS.set(a.toLowerCase(), g.k)));
+const GL_RE = new RegExp('(?<![\\p{L}\\p{N}])(' + [...GL_ALIAS.keys()].sort((x,y)=>y.length-x.length)
+  .map(a=>a.replace(/[.*+?^${}()|[\]\\\/]/g,'\\$&')).join('|') + ')(?![\\p{L}\\p{N}])', 'giu');
+const GL_SKIP = 'button,input,textarea,th,.hero-title,.wod-clk,.wod-rx,.phase-stat b,.sl,.htag,.coll-lbl,.mov-block-title,.gl,.gl-sheet,.guide-list';
+
+// Subraya la primera aparición de cada concepto dentro de `root`.
+function linkGlossary(root) {
+  if (!root) return;
+  const used = new Set();
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => (n.nodeValue.trim() && !n.parentElement.closest(GL_SKIP)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(node => {
+    const text = node.nodeValue;
+    GL_RE.lastIndex = 0;
+    let m, last = 0, frag = null;
+    while ((m = GL_RE.exec(text))) {
+      const key = GL_ALIAS.get(m[1].toLowerCase());
+      if (!key || used.has(key)) continue;
+      used.add(key);
+      frag = frag || document.createDocumentFragment();
+      frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const span = document.createElement('span');
+      span.className = 'gl'; span.dataset.k = key; span.textContent = m[1];
+      frag.appendChild(span);
+      last = m.index + m[1].length;
+    }
+    if (frag) { frag.appendChild(document.createTextNode(text.slice(last))); node.parentNode.replaceChild(frag, node); }
+  });
+}
+
+function openGlossary(key) {
+  const g = GL_BY_KEY[key]; if (!g) return;
+  const cat = (GLOSSARY_CATS.find(c=>c[0]===g.c)||['',''])[1];
+  document.getElementById('gl-body').innerHTML = `
+    <div class="gl-cat">${cat}</div>
+    <div class="gl-term">${g.t}</div>
+    <div class="gl-text">${g.d}</div>
+    ${g.h ? `<div class="gl-how"><b>Cómo:</b> ${g.h}</div>` : ''}`;
+  document.getElementById('gl-sheet').classList.add('open');
+}
+function closeGlossary() { document.getElementById('gl-sheet').classList.remove('open'); }
+document.addEventListener('click', e => {
+  const el = e.target.closest('.gl');
+  if (el) { e.preventDefault(); e.stopPropagation(); openGlossary(el.dataset.k); }
+}, true);
+
+let guideQuery = '';
+function renderGuide() {
+  const q = guideQuery.trim().toLowerCase();
+  const match = g => !q || (g.t + ' ' + g.d + ' ' + (g.h||'')).toLowerCase().includes(q);
+  const sections = GLOSSARY_CATS.map(([c, label]) => {
+    const items = GLOSSARY.filter(g => g.c === c && match(g));
+    if (!items.length) return '';
+    return `<div class="sl">${label}</div>` + items.map(g => `
+      <div class="guide-item">
+        <div class="guide-term">${g.t}</div>
+        <div class="guide-text">${g.d}</div>
+        ${g.h ? `<div class="guide-how"><b>Cómo:</b> ${g.h}</div>` : ''}
+      </div>`).join('');
+  }).join('');
+  document.getElementById('guide-list').innerHTML = sections || '<div class="empty-log">Nada con ese nombre. Prueba otra palabra.</div>';
+}
+function renderGuidePage() {
+  document.getElementById('guide-page').innerHTML = `
+    <div class="mov-hero">
+      <div class="hero-eyebrow">Para empezar desde cero</div>
+      <div class="hero-title" id="guide-hero-title" style="color:var(--sab)">GUÍA</div>
+      <div class="hero-sub">Todo lo que sale en el plan, explicado en una o dos frases. Dentro de las sesiones, lo subrayado también se puede tocar.</div>
+    </div>
+    <input class="log-input guide-search" type="search" placeholder="Buscar: fartlek, Z2, rumano…" value="${guideQuery.replace(/"/g,'&quot;')}"
+      oninput="guideQuery=this.value; renderGuide()">
+    <div id="guide-list" class="guide-list"></div>`;
+  renderGuide();
+  requestAnimationFrame(() => fitTitleEl('guide-hero-title'));
+}
 
 // ══════════════════════════════════════════════════════════════ INIT
 (function(){
@@ -1168,7 +1432,7 @@ renderTabs();
 renderPage();
 requestAnimationFrame(fitHeroTitle);
 // La fuente web llega después del primer pintado y ensancha el título: reajustar cuando esté lista.
-function refitTitles() { fitHeroTitle(); fitTitleEl('mov-hero-title'); }
+function refitTitles() { fitHeroTitle(); fitTitleEl('mov-hero-title'); fitTitleEl('guide-hero-title'); }
 window.addEventListener('load', refitTitles);
 window.addEventListener('resize', refitTitles);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(refitTitles);
