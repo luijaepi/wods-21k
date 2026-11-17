@@ -70,24 +70,25 @@ body {
 .nav-pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
 /* ── PHASE PILLS ── */
-.phase-row { display: flex; gap: 6px; padding: 10px 18px 10px; overflow-x: auto; scrollbar-width: none; }
+.phase-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin: 14px 18px 0; padding: 3px; background: var(--s1); border: 1px solid var(--border); border-radius: 11px; }
 .phase-row::-webkit-scrollbar { display: none; }
 .phase-pill {
-  font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.09em; padding: 0 13px;
-  min-height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--s2); color: var(--muted2);
-  cursor: pointer; white-space: nowrap; transition: all 0.15s; display: flex; align-items: center; gap: 6px;
+  font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; padding: 0 4px;
+  min-height: 32px; border-radius: 8px; border: 1px solid transparent; background: transparent; color: var(--muted2);
+  cursor: pointer; white-space: nowrap; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 5px;
 }
 .phase-pill .pdot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .5; }
 .phase-pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 .phase-pill.active .pdot { background: var(--bg); opacity: 1; }
-.phase-pill.iscurrent:not(.active) { border-color: var(--sab); color: var(--sab); }
+.phase-pill.iscurrent:not(.active) { color: var(--sab); }
+.phase-pill.iscurrent:not(.active) .pdot { opacity: 1; }
 
 /* ── TABS ── */
 .tabs { display: flex; overflow-x: auto; scrollbar-width: none; gap: 0; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
   flex: 1; min-width: 0; font-family: 'Syne', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em;
-  min-height: 38px; padding: 0 2px; border: none; background: transparent; color: var(--muted); cursor: pointer;
+  min-height: 40px; padding: 0 2px; border: none; background: transparent; color: var(--muted); cursor: pointer;
   border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; text-align: center;
   display: flex; align-items: center; justify-content: center;
 }
@@ -96,11 +97,11 @@ body {
 .view { display: none; }
 .view.active { display: block; animation: up 0.18s ease both; }
 @keyframes up { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
-.page { padding: 0 18px 150px; }
-.log-page { padding: 0 18px 150px; }
+.page, .log-page { padding: 0 18px calc(96px + var(--sib)); }
+body.no-timer .page, body.no-timer .log-page { padding-bottom: calc(40px + var(--sib)); }
 
 /* ── DAY HERO ── */
-.hero { padding: 20px 0 16px; border-bottom: 1px solid var(--border); }
+.hero { padding: 18px 0 4px; }
 .hero-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.45; margin-bottom: 6px; }
 .hero-title { font-size: 46px; font-weight: 800; letter-spacing: -0.03em; line-height: 0.92; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
 .hero-sub { font-size: 12px; color: var(--muted2); margin-top: 8px; font-weight: 600; letter-spacing: 0.04em; line-height: 1.4; }
@@ -191,8 +192,14 @@ body {
 .log-week-hd { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); }
 .log-week-title { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; }
 .log-week-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); }
-.log-day-row { padding: 13px 16px; border-bottom: 1px solid var(--border); }
-.log-day-row:last-child { border-bottom: none; }
+.log-week { margin-top: 10px; }
+.log-day { border-bottom: 1px solid var(--border); }
+.log-day:last-child { border-bottom: none; }
+.log-day-sum { list-style: none; display: flex; align-items: center; gap: 10px; padding: 0 16px; min-height: 52px; cursor: pointer; }
+.log-day-sum::-webkit-details-marker { display: none; }
+.log-day-title { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.log-day[open] .dz-ico { transform: rotate(45deg); }
+.log-day-row { padding: 4px 16px 14px; }
 .log-day-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .log-day-name { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; }
 .log-feel { display: flex; gap: 4px; }
@@ -203,10 +210,10 @@ body {
 .chk-btn.on { background: var(--s3); }
 .log-inputs { display: flex; flex-direction: column; gap: 6px; }
 .log-input-row { display: flex; align-items: center; gap: 8px; }
-.log-input-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted2); min-width: 78px; text-transform: uppercase; }
-.log-input { flex: 1; background: var(--s3); border: 1px solid var(--border); border-radius: 7px; padding: 7px 10px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px; outline: none; }
+.log-input-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted2); min-width: 44px; text-transform: uppercase; }
+.log-input { flex: 1; min-width: 0; font-size: 16px; background: var(--s3); border: 1px solid var(--border); border-radius: 7px; padding: 7px 10px; color: var(--text); font-family: 'DM Mono', monospace; outline: none; }
 .log-input:focus { border-color: var(--muted2); }
-.log-textarea { width: 100%; background: var(--s3); border: 1px solid var(--border); border-radius: 7px; padding: 9px 10px; color: var(--text); font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 400; outline: none; resize: none; line-height: 1.5; min-height: 50px; }
+.log-textarea { width: 100%; background: var(--s3); border: 1px solid var(--border); border-radius: 7px; padding: 9px 10px; color: var(--text); font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 400; outline: none; resize: none; line-height: 1.5; min-height: 50px; }
 .log-textarea:focus { border-color: var(--muted2); }
 .log-week-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; }
 .log-sleep-row { display: flex; gap: 8px; align-items: center; flex: 1; flex-wrap: wrap; }
@@ -267,9 +274,11 @@ body {
 .gl-actions { display: flex; gap: 8px; margin-top: 18px; }
 .gl-btn { flex: 1; min-height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--s3); color: var(--muted2); font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .06em; cursor: pointer; }
 .gl-btn-main { background: var(--sab); color: #090909; border-color: var(--sab); }
-.guide-search { width: 100%; margin: 16px 0 4px; font-size: 16px; padding: 11px 12px; }
+.guide-search { width: 100%; margin: 14px 0 0; padding: 11px 12px; -webkit-appearance: none; appearance: none; }
 .guide-item { background: var(--s1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
-.guide-term { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+details.guide-item > summary { list-style: none; cursor: pointer; }
+details.guide-item > summary::-webkit-details-marker { display: none; }
+.guide-term { font-size: 14px; font-weight: 800; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
 .guide-text { font-size: 13px; line-height: 1.55; color: var(--muted2); }
 .guide-text b, .guide-how b { color: #ccc; }
 .guide-how { font-size: 12.5px; line-height: 1.55; color: var(--muted2); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
@@ -281,23 +290,78 @@ body {
 .mov-insight { margin: 0 18px 14px; padding: 12px 14px; background: rgba(255,159,71,0.07); border: 1px solid rgba(255,159,71,0.2); border-radius: 10px; font-size: 12px; color: var(--muted2); line-height: 1.65; }
 .mov-insight b { color: var(--mov); font-weight: 600; }
 
+
+/* ── DISCLOSURE (detalles bajo demanda) ── */
+details.dz { background: var(--s1); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 8px; overflow: hidden; }
+details.dz > summary { list-style: none; display: flex; align-items: center; gap: 10px; padding: 0 16px; min-height: 50px; cursor: pointer; user-select: none; -webkit-user-select: none; font-size: 13px; font-weight: 700; letter-spacing: .03em; }
+details.dz > summary::-webkit-details-marker { display: none; }
+.dz-meta { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--muted2); white-space: nowrap; }
+.dz-ico { color: var(--muted2); font-size: 18px; line-height: 1; transition: transform .2s; flex-shrink: 0; }
+.dz-meta + .dz-ico { margin-left: 0; }
+summary > .dz-ico:first-child { margin-left: auto; }
+details[open] > summary .dz-ico { transform: rotate(45deg); }
+.dz-bd { border-top: 1px solid var(--border); padding: 6px 16px 14px; }
+.dz-bd.flush { padding: 0; }
+.dz-group { margin-top: 18px; }
+.dz-group-lbl { font-size: 10px; font-weight: 700; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; margin: 0 2px 8px; }
+
+/* ── HOY: lo que tienes que hacer, sin buscarlo ── */
+.today { margin: 14px 0 4px; padding: 14px 16px 13px; border-radius: 14px; border: 1px solid; }
+.today-lbl { font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.today-val { font-size: 28px; font-weight: 800; letter-spacing: -.02em; line-height: 1.08; margin-top: 5px; }
+.today-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); margin-top: 7px; line-height: 1.5; }
+.today-note { font-size: 12.5px; color: var(--muted2); line-height: 1.55; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06); }
+.today-note b { color: #ccc; }
+.banner { margin: 8px 0; padding: 10px 13px; border-radius: 10px; font-size: 12.5px; line-height: 1.55; }
+.banner.ok { background: rgba(110,231,183,0.07); border: 1px solid rgba(110,231,183,0.3); color: #a7f3d0; }
+.banner.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); color: #f0b656; }
+.rules p { font-size: 12.5px; color: var(--muted2); line-height: 1.6; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.rules p:last-child { border-bottom: none; }
+.rules b { color: var(--text); }
+
+/* ── tarjeta de ejercicio plegable ── */
+details.ex > summary { list-style: none; cursor: pointer; }
+details.ex > summary::-webkit-details-marker { display: none; }
+.ex-more { margin-left: auto; font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .06em; color: var(--muted2); display: flex; align-items: center; gap: 4px; }
+.ex-more::after { content: '+'; font-size: 15px; line-height: 1; transition: transform .2s; }
+details[open] .ex-more::after { transform: rotate(45deg); }
+details.ex .ex-chips { margin-bottom: 0; align-items: center; }
+details.ex[open] .ex-chips { margin-bottom: 9px; }
+details.ex .mov-ex-chips { margin-bottom: 0; }
+details.ex[open] .mov-ex-chips { margin-bottom: 7px; }
+.wod-why { margin: 0 16px 14px; }
+.wod-why > summary { font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--muted2); min-height: 32px; display: flex; align-items: center; gap: 6px; list-style: none; cursor: pointer; }
+.wod-why > summary::-webkit-details-marker { display: none; }
+.wod-why > summary::after { content: '+'; font-size: 15px; transition: transform .2s; }
+.wod-why[open] > summary::after { transform: rotate(45deg); }
+.wod-why .wod-tip { margin: 4px 0 0; }
+
+/* ── segmented / chips de filtro ── */
+.seg-row { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 12px -18px 4px; padding: 0 18px; }
+.seg-row::-webkit-scrollbar { display: none; }
+.seg { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .06em; padding: 0 13px; min-height: 34px; border-radius: 17px; border: 1px solid var(--border); background: var(--s2); color: var(--muted2); white-space: nowrap; cursor: pointer; display: flex; align-items: center; }
+.seg.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.seg.istoday::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--sab); margin-left: 6px; }
+.seg-row.mov .seg.active { background: var(--mov); border-color: var(--mov); color: #111; }
+.log-status { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); margin-left: auto; white-space: nowrap; }
+.log-status.done { color: var(--lun); }
+
 /* ── TIMER BAR ── */
-.tbar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(9,9,9,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); padding-top: 10px; padding-left: max(18px, var(--sil)); padding-right: max(18px, var(--sir)); padding-bottom: max(14px, calc(var(--sib) + 6px)); z-index: 100; }
-.tbar-inner { display: flex; gap: 10px; align-items: center; }
-.tbar-left { flex-shrink: 0; }
-.tnum { font-family: 'DM Mono', monospace; font-size: 30px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--text); transition: color 0.2s; min-width: 68px; }
+.tbar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(9,9,9,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); padding-top: 8px; padding-left: max(18px, var(--sil)); padding-right: max(18px, var(--sir)); padding-bottom: max(10px, calc(var(--sib) + 2px)); z-index: 100; }
+.tbar-inner { display: flex; gap: 6px; align-items: center; }
+body.no-timer .tbar { display: none; }
+.tnum { font-family: 'DM Mono', monospace; font-size: 26px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; color: var(--text); transition: color 0.2s; min-width: 62px; margin-right: 2px; font-variant-numeric: tabular-nums; }
 .tnum.go { color: var(--sab); }
 .tnum.warn { color: var(--mar); }
-.tpres { display: flex; gap: 4px; margin-top: 5px; }
-.tpre { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; min-height: 30px; padding: 0 8px; border-radius: 7px; border: 1px solid var(--border); background: var(--s2); color: var(--muted2); cursor: pointer; transition: all 0.1s; display: flex; align-items: center; }
+.tpres { display: flex; gap: 4px; }
+.tpre { font-family: 'DM Mono', monospace; font-size: 10.5px; font-weight: 500; min-height: 40px; min-width: 34px; justify-content: center; padding: 0 6px; border-radius: 7px; border: 1px solid var(--border); background: var(--s2); color: var(--muted2); cursor: pointer; transition: all 0.1s; display: flex; align-items: center; }
 .tpre:active { opacity: 0.7; transform: scale(0.95); }
 .tpre.sel { background: var(--s3); color: var(--text); border-color: var(--muted2); }
-.tbtns { display: flex; flex-direction: column; gap: 4px; flex: 1; }
-.tbtn { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; min-height: 36px; border-radius: 10px; border: none; cursor: pointer; width: 100%; transition: transform 0.08s, opacity 0.1s; display: flex; align-items: center; justify-content: center; }
+.tbtn { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; min-height: 40px; border-radius: 10px; border: none; cursor: pointer; flex: 1; min-width: 0; transition: transform 0.08s, opacity 0.1s; display: flex; align-items: center; justify-content: center; }
 .tbtn:active { transform: scale(0.97); opacity: 0.85; }
 .t-go   { background: var(--sab); color: #090909; }
 .t-stop { background: var(--mar); color: #090909; }
-.t-rst  { background: var(--s2); color: var(--muted2); border: 1px solid var(--border); }
+.t-rst  { background: var(--s2); color: var(--muted2); border: 1px solid var(--border); flex: 0 0 40px; font-size: 17px; }
 </style>
 </head>
 <body>
@@ -314,11 +378,10 @@ body {
       </div>
     </div>
   </div>
-  <div class="phase-row" id="phase-row"></div>
   <div class="tabs" id="tabs"></div>
 </div>
 
-<div class="view active" id="view-train"><div class="page" id="page"></div></div>
+<div class="view active" id="view-train"><div class="phase-row" id="phase-row"></div><div class="page" id="page"></div></div>
 <div class="view" id="view-mov"><div class="page" id="mov-page"></div></div>
 <div class="view" id="view-log"><div class="log-page" id="log-page"></div></div>
 <div class="view" id="view-guia"><div class="page" id="guide-page"></div></div>
@@ -336,19 +399,15 @@ body {
 
 <div class="tbar">
   <div class="tbar-inner">
-    <div class="tbar-left">
-      <div class="tnum" id="tnum">0:00</div>
-      <div class="tpres">
-        <button class="tpre" onclick="tSet(60,this)">1'</button>
-        <button class="tpre" onclick="tSet(90,this)">1'30</button>
-        <button class="tpre" onclick="tSet(120,this)">2'</button>
-        <button class="tpre" onclick="tSet(240,this)">4'</button>
-      </div>
+    <div class="tnum" id="tnum">0:00</div>
+    <div class="tpres">
+      <button class="tpre" onclick="tSet(45,this)">45"</button>
+      <button class="tpre" onclick="tSet(60,this)">1'</button>
+      <button class="tpre" onclick="tSet(90,this)">1'30</button>
+      <button class="tpre" onclick="tSet(120,this)">2'</button>
     </div>
-    <div class="tbtns">
-      <button class="tbtn t-go" id="tgo" onclick="tToggle()">INICIAR</button>
-      <button class="tbtn t-rst" onclick="tReset()">RESET</button>
-    </div>
+    <button class="tbtn t-rst" onclick="tReset()" aria-label="Reiniciar">↺</button>
+    <button class="tbtn t-go" id="tgo" onclick="tToggle()">INICIAR</button>
   </div>
 </div>
 
@@ -685,20 +744,24 @@ function switchView(v) {
   document.getElementById('view-' + v).classList.add('active');
   document.querySelectorAll('.nav-pill').forEach(el => el.classList.remove('active'));
   document.getElementById('pill-' + v).classList.add('active');
-  const noPlanNav = v === 'mov' || v === 'guia';
-  document.getElementById('tabs').style.display = noPlanNav ? 'none' : '';
-  document.getElementById('phase-row').style.display = noPlanNav ? 'none' : '';
+  document.getElementById('tabs').style.display = v === 'train' ? '' : 'none';
   if (v === 'log') renderLog();
   if (v === 'mov') renderMov();
   if (v === 'guia') renderGuidePage();
+  updateTimerVisibility();
   window.scrollTo({top:0,behavior:'instant'});
+}
+// El cronómetro solo sale donde se usa (descansos del gym y estiramientos), salvo que esté corriendo.
+function updateTimerVisibility() {
+  const show = tRun || (curView === 'train' && curDay.kind === 'fuerza') || curView === 'mov';
+  document.body.classList.toggle('no-timer', !show);
 }
 
 // ══════════════════════════════════════════════════════════════ PHASE PILLS + TABS
 function renderPhasePills() {
   document.getElementById('phase-row').innerHTML = PHASES.map(p => `
     <button class="phase-pill ${p.id===curPhase.id?'active':''} ${p.id===CURRENT_PHASE_ID?'iscurrent':''}" onclick="selPhase('${p.id}')">
-      <span class="pdot"></span>${p.short}
+      <span class="pdot"></span>${p.short.replace('FASE ','')} · ${({base:'BASE',desarrollo:'DESARR.',especifico:'ESPECÍF.',afine:'AFINE'})[p.id]}
     </button>`).join('');
 }
 function renderTabs() {
@@ -747,136 +810,153 @@ function gymSessionForThisWeek(day) {
 }
 
 // ══════════════════════════════════════════════════════════════ RENDER PAGE
+// Criterio: arriba solo lo que hay que hacer hoy; el porqué, la técnica y el plan completo
+// quedan a un toque (desplegables), nunca de golpe.
+function dz(label, body, opts) {
+  const o = opts || {};
+  return `<details class="dz"${o.open?' open':''}${o.id?` id="${o.id}"`:''}>
+    <summary>${label}${o.meta?`<span class="dz-meta">${o.meta}</span>`:''}<span class="dz-ico">+</span></summary>
+    <div class="dz-bd${o.flush?' flush':''}">${body}</div></details>`;
+}
+const ciList = (arr, col) => arr.map(w=>`<div class="ci"><div class="ci-dot" style="background:${col}"></div><div>${w}</div></div>`).join('');
+
+// "35 → 40 min" en "Sem 1-2" → semana 1: 35 min, semana 2: 40 min.
+function cellForWeek(cell, r, wk) {
+  const span = r.we - r.ws + 1, idx = wk - r.ws, parts = cell.split(/\s*→\s*/);
+  if (parts.length < 2 || idx < 0 || idx >= span) return cell;
+  let pick;
+  if (parts.length === span) pick = parts[idx];
+  else if (parts.length === 2 && /^\d+$/.test(parts[0]) && /^\d+/.test(parts[1])) {
+    const a = +parts[0], b = parseInt(parts[1], 10);
+    pick = String(Math.round((a + (b - a) * idx / (span - 1)) / 5) * 5);
+  } else return cell;
+  if (/^[\d,.\-]+$/.test(pick)) pick += parts[parts.length - 1].replace(/^[\d,.\-]+/, '');
+  return pick;
+}
+function planWeekNow() { return weeksSincePhaseStart(PHASES[0]) + 1; }
+function rowForWeek(p, wk) { return p.progression.find(r => r.ws != null && wk >= r.ws && wk <= r.we); }
+
 function renderPage() {
   const d = curDay;
   const p = curPhase;
   let col = d.color;
-  let wod = d.wod, strength = d.strength || [], caution = '';
-  let title = d.titleShort || d.title, sub = d.sub;
+  let wod = d.wod, strength = d.strength || [];
+  let title = d.titleShort || d.title;
+  const wkNow = planWeekNow();
+  const live = p.id === CURRENT_PHASE_ID;
+  const nowRow = live ? rowForWeek(p, wkNow) : null;
+  const metaLine = d.tags.join(' · ');
 
-  let pickHTML = '';
+  // ── Bloque HOY
+  let todayHTML = '', rulesHTML = '';
   if (d.gym) {
     const session = gymSessionForThisWeek(d);
     col = session.color;
-    wod = session.wod; strength = session.strength; caution = session.caution;
+    wod = session.wod; strength = session.strength;
     title = session.label;
-    const wkNow = weeksSincePhaseStart(PHASES[0]) + 1;
-    const live = p.id === CURRENT_PHASE_ID;
-    const notice = !live ? '' :
-      (p.id === 'base' && wkNow <= 2) ? '<div class="gym-note">🌱 <b>Semanas 1-2 · adaptación:</b> haz 2 series de cada ejercicio en vez de 3. Tendones y agujetas primero; los kilos ya llegarán.</div>' :
-      DELOAD_WEEKS.includes(wkNow) ? '<div class="gym-note">🔋 <b>Semana de descarga:</b> una serie menos en cada ejercicio y un 10-15% menos de peso. Asimilar también es entrenar.</div>' : '';
-    pickHTML = `
-      <div class="wod-pick-lbl">Hoy toca</div>
-      <div class="wod-pick-row"><span class="wod-rx" style="background:${session.color}">${session.label}</span></div>
-      ${notice}
-      ${caution ? `<div class="wod-caution">⚠️ ${caution}</div>` : ''}
-      ${session.prog ? `<div class="gym-prog">📈 ${session.prog}</div>` : ''}`;
+    const notice =
+      !live ? '' :
+      (p.id === 'base' && wkNow <= 2) ? '<div class="banner ok">🌱 <b>Semanas 1-2:</b> 2 series por ejercicio en vez de 3. Tendones primero; los kilos ya llegarán.</div>' :
+      DELOAD_WEEKS.includes(wkNow) ? '<div class="banner ok">🔋 <b>Descarga:</b> una serie menos y un 10-15% menos de peso.</div>' : '';
+    const other = session === d.gym.A ? 'B' : 'A';
+    todayHTML = `
+      <div class="today" style="border-color:${col}44;background:${col}0d">
+        <div class="today-lbl" style="color:${col}">${live ? `Esta semana · Sem ${wkNow}` : 'Sesión tipo'}</div>
+        <div class="today-val">${strength.length} ejercicios</div>
+        <div class="today-meta">${d.tags[0].toLowerCase()} · activación → ejercicios → estirar · próxima semana: Gym ${other}</div>
+      </div>${notice}`;
+    rulesHTML = dz('📏 Reglas de carga', `<div class="rules">
+        ${session.prog ? `<p>📈 ${session.prog}</p>` : ''}
+        ${session.caution ? `<p>⚠️ ${session.caution}</p>` : ''}
+        <p>🧭 <b>RPE</b> = lo duro que se siente del 1 al 10. RPE 7 = te quedan unas 3 repeticiones en la recámara.</p></div>`);
+  } else if (d.kind === 'run') {
+    const val = nowRow ? cellForWeek(nowRow[d.id] || '', nowRow, wkNow) : (d.tags[0] || '');
+    todayHTML = `
+      <div class="today" style="border-color:${col}44;background:${col}0d">
+        <div class="today-lbl" style="color:${col}">${nowRow ? `Esta semana · Sem ${wkNow} de 23` : 'Rango de la fase'}</div>
+        <div class="today-val">${val}</div>
+        <div class="today-meta">${metaLine}</div>
+        ${nowRow ? `<div class="today-note">${nowRow.nota}</div>` : ''}
+      </div>`;
+  } else {
+    todayHTML = `<div class="today" style="border-color:${col}44;background:${col}0d">
+        <div class="today-lbl" style="color:${col}">${d.kind==='race' ? 'Domingo 25 abril 2027' : 'Hoy'}</div>
+        <div class="today-val">${d.kind==='race' ? '15 km' : title}</div>
+        <div class="today-meta">${metaLine}</div></div>`;
   }
 
-  const planWeekNow = weeksSincePhaseStart(PHASES[0]) + 1;
-  const isCurPhaseNow = p.id === CURRENT_PHASE_ID;
-  const progHTML = `
-    <div class="sl">📈 Progresión — ${p.label}</div>
-    <div class="prog-wrap">
-      <table class="prog-table">
-        <thead><tr><th>Semanas</th><th>Lun</th><th>Mié</th><th>Vie · Larga</th></tr></thead>
-        <tbody>
-          ${p.progression.map(r=>{
-            const isNow = isCurPhaseNow && r.ws!=null && planWeekNow>=r.ws && planWeekNow<=r.we;
-            return `
-            <tr class="${isNow?'prog-now':''}"><td class="prog-wk">${r.wk}${isNow?' <span class="prog-now-tag">AHORA</span>':''}</td><td class="prog-km">${r.lun}</td><td class="prog-km">${r.mie}</td><td class="prog-km">${r.vie}</td></tr>
-            <tr class="${isNow?'prog-now':''}"><td colspan="4" class="prog-note" style="padding-top:0">${r.nota}</td></tr>`;
-          }).join('')}
-        </tbody>
-      </table>
-    </div>`;
+  // ── Sesión
+  const wodHTML = wod ? `
+    <div class="wod" style="border-color:${col}44;background:${col}09;margin-top:10px">
+      <div class="wod-top">
+        <div><div class="wod-fmt" style="color:${col}">${wod.fmt}</div><div class="wod-nm">${wod.nm}</div></div>
+        ${/^\d+'$/.test(wod.clk||'') ? `<div class="wod-clk">${wod.clk}</div>` : ''}
+      </div>
+      <div class="wod-div"></div>
+      <div class="wod-moves">${wod.moves.map((m,i)=>`<div class="wod-mv"><div class="wod-n">${String(i+1).padStart(2,'0')}</div><div>${m.replace(/según la tabla[^,;:.]*/i, 'según la tarjeta de arriba')}</div></div>`).join('')}</div>
+      ${wod.tip ? `<details class="wod-why"><summary>💡 POR QUÉ</summary><div class="wod-tip">${wod.tip}</div></details>` : ''}
+    </div>` : '';
 
-  const phaseObjHTML = `
-    <div class="phase-info">
-      <div class="phase-info-title">${p.label} <span style="color:var(--muted2);font-weight:600">— ${p.short}</span></div>
+  // ── Ejercicios: nombre, kilos y series a la vista; la técnica al tocar
+  const exHTML = (arr) => arr.map(ex=>`
+    <details class="ex">
+      <summary>
+        <div class="ex-bar" style="background:${col}"></div>
+        <div class="ex-r1"><div class="ex-nm">${ex.nm}</div><div class="ex-kg" style="color:${col}">${ex.kg}</div></div>
+        <div class="ex-chips"><span class="chip">${ex.sets}</span><span class="chip">RPE ${ex.rpe}</span><span class="chip">⏱ ${ex.rest}</span><span class="ex-more">CÓMO</span></div>
+      </summary>
+      <div class="ex-note ${ex.warn?'warn':''}">${ex.note}</div>
+    </details>`).join('');
+  const mandatory = strength.filter(e=>!e.opt), optional = strength.filter(e=>e.opt);
+  const strHTML = (mandatory.length ? `<div class="dz-group"><div class="dz-group-lbl">💪 Ejercicios · toca para ver la técnica</div>${exHTML(mandatory)}</div>` : '')
+    + (optional.length ? `<div class="dz-group"><div class="dz-group-lbl">🎯 Si queda tiempo</div>${exHTML(optional)}</div>` : '');
+
+  // ── Antes / después
+  const warmHTML = [
+    (d.rest||[]).length ? dz('🛌 Notas del día', ciList(d.rest, col), { open: true }) : '',
+    (d.warmup||[]).length ? dz(d.warmLabel || '🔆 Calentamiento', ciList(d.warmup, col), { meta: d.kind==='run' ? '5-10\'' : '' }) : '',
+  ].join('');
+  const coolHTML = (d.cooldown||[]).length ? dz(d.coolLabel || '🧊 Vuelta a la calma', ciList(d.cooldown, col)) : '';
+
+  // ── Contexto: plan de la fase y notas largas, plegados al final
+  const progTable = `
+    <table class="prog-table">
+      <thead><tr><th>Semanas</th><th>Lun</th><th>Mié</th><th>Vie · Larga</th></tr></thead>
+      <tbody>${p.progression.map(r=>{
+        const isNow = nowRow === r;
+        return `<tr class="${isNow?'prog-now':''}"><td class="prog-wk">${r.wk}${isNow?' <span class="prog-now-tag">AHORA</span>':''}</td><td class="prog-km">${r.lun}</td><td class="prog-km">${r.mie}</td><td class="prog-km">${r.vie}</td></tr>
+          <tr class="${isNow?'prog-now':''}"><td colspan="4" class="prog-note" style="padding-top:0">${r.nota}</td></tr>`;
+      }).join('')}</tbody>
+    </table>`;
+  const phaseBody = `
+    <div style="padding:12px 16px 4px">
       <div class="phase-info-range">${p.range}</div>
       <div class="phase-info-obj">${p.objetivo}</div>
-      <div class="phase-stats">
+      <div class="phase-stats" style="margin-bottom:12px">
         <div class="phase-stat"><b>Volumen</b><span>${p.volKm}</span></div>
         <div class="phase-stat"><b>Sesión clave</b><span>${p.longKm}</span></div>
         <div class="phase-stat"><b>Zona</b><span>${p.zona}</span></div>
       </div>
-    </div>`;
-  const showObj = d.id==='lun' || d.kind==='race';
-  const showProg = showObj || d.kind==='run';
-
-  const notesHTML = d.notes ? `
-    <div class="sl">${d.notes.label}</div>
-    <div class="coll">
-      <div class="coll-hd" onclick="tog('n')"><div class="coll-lbl">Ver detalle</div><div class="coll-ico" id="icn">+</div></div>
-      <div class="coll-bd" id="bdn">${d.notes.items.map(w=>`<div class="ci"><div class="ci-dot" style="background:${col}"></div><div>${w}</div></div>`).join('')}</div>
-    </div>` : '';
-
-  const warmHTML = (d.warmup||[]).map(w=>`<div class="ci"><div class="ci-dot" style="background:${col}"></div><div>${w}</div></div>`).join('');
-  const coolHTML = (d.cooldown||[]).map(w=>`<div class="ci"><div class="ci-dot" style="background:${col}"></div><div>${w}</div></div>`).join('');
-  const restHTML = (d.rest||[]).map(w=>`<div class="ci"><div class="ci-dot" style="background:${col}"></div><div>${w}</div></div>`).join('');
-
-  const mandatory = strength.filter(e=>!e.opt);
-  const optional  = strength.filter(e=>e.opt);
-  const exHTML = (arr) => arr.map(ex=>`
-    <div class="ex">
-      <div class="ex-bar" style="background:${col}"></div>
-      <div class="ex-r1"><div class="ex-nm">${ex.nm}</div><div class="ex-kg" style="color:${col}">${ex.kg}</div></div>
-      <div class="ex-chips"><span class="chip">${ex.sets}</span><span class="chip">RPE ${ex.rpe}</span><span class="chip">⏱ ${ex.rest}</span></div>
-      <div class="ex-note ${ex.warn?'warn':''}">${ex.note}</div>
-    </div>`).join('');
-
-  const wodHTML = wod ? `
-    <div class="sl">⚡ ${d.kind==='race'?'Estrategia de ritmo':'Sesión'} — ${wod.clk}</div>
-    <div class="wod" style="border-color:${col}44;background:${col}09">
-      <div class="wod-top">
-        <div><div class="wod-fmt" style="color:${col}">${wod.fmt}</div><div class="wod-nm">${wod.nm}</div></div>
-        <div class="wod-clk">${wod.clk}</div>
-      </div>
-      <div class="wod-div"></div>
-      <div class="wod-moves">${wod.moves.map((m,i)=>`<div class="wod-mv"><div class="wod-n">${String(i+1).padStart(2,'0')}</div><div>${m}</div></div>`).join('')}</div>
-      <div class="wod-tip">💡 ${wod.tip}</div>
-    </div>` : '';
-
-  const optHTML = optional.length ? `<div class="sl">🎯 Accesorio — si queda tiempo</div>${exHTML(optional)}` : '';
-  const mandHTML = mandatory.length ? `<div class="sl">💪 ${d.kind==='fuerza'?'Fuerza obligatoria':'Fuerza'}</div>${exHTML(mandatory)}` : '';
-
-  const warmLbl = d.warmLabel || '🔆 Calentamiento';
-  const coolLbl = d.coolLabel || '🧊 Cooldown';
-  const warmBlock = (d.warmup||[]).length ? `
-    <div class="sl">${warmLbl}</div>
-    <div class="coll"><div class="coll-hd" onclick="tog('w')"><div class="coll-lbl">${d.kind==='race'?'Checklist':'Warm-up'}</div><div class="coll-ico" id="icw">+</div></div>
-    <div class="coll-bd" id="bdw">${warmHTML}</div></div>` : '';
-  const coolBlock = (d.cooldown||[]).length ? `
-    <div class="sl">${coolLbl}</div>
-    <div class="coll"><div class="coll-hd" onclick="tog('c')"><div class="coll-lbl">${d.kind==='race'?'Después de meta':'Cool-down'}</div><div class="coll-ico" id="icc">+</div></div>
-    <div class="coll-bd" id="bdc">${coolHTML}</div></div>` : '';
-  const restBlock = (d.rest||[]).length ? `
-    <div class="sl">🛌 Notas del día</div>
-    <div class="coll"><div class="coll-hd" onclick="tog('r')"><div class="coll-lbl">Qué hacer hoy</div><div class="coll-ico" id="icr">+</div></div>
-    <div class="coll-bd" id="bdr">${restHTML}</div></div>` : '';
-
-  const tagsHTML = d.tags.map(t=>`<span class="htag" style="color:${col};border-color:${col}44">${t}</span>`).join('');
+    </div>
+    <div style="border-top:1px solid var(--border)">${progTable}</div>`;
+  const ctx = [dz(`🗺 ${p.short} · ${p.label.toLowerCase().replace(/^./, c=>c.toUpperCase())}`, phaseBody, { flush: true, meta: live ? `sem ${wkNow}` : '' })];
+  if (d.notes) ctx.push(dz(d.notes.label, ciList(d.notes.items, col)));
 
   document.getElementById('page').innerHTML = `
     <div class="hero">
       <div class="hero-eyebrow">${d.eyebrow}</div>
       <div class="hero-title" id="hero-title" style="color:${col}">${title}</div>
-      <div class="hero-sub">${sub}</div>
-      <div class="hero-tags">${tagsHTML}</div>
+      <div class="hero-sub">${d.sub}</div>
     </div>
-    ${showObj ? phaseObjHTML : ''}
-    ${showProg ? progHTML : ''}
-    ${notesHTML}
-    ${warmBlock}
-    ${pickHTML}
+    ${todayHTML}
+    <div class="dz-group">${rulesHTML}${warmHTML}</div>
     ${wodHTML}
-    ${mandHTML}
-    ${optHTML}
-    ${restBlock}
-    ${coolBlock}
+    ${strHTML}
+    ${coolHTML ? `<div class="dz-group">${coolHTML}</div>` : ''}
+    <div class="dz-group"><div class="dz-group-lbl">Contexto</div>${ctx.join('')}</div>
   `;
   linkGlossary(document.getElementById('page'));
+  updateTimerVisibility();
 }
 
 // ══════════════════════════════════════════════════════════════ LOG
@@ -925,24 +1005,32 @@ function renderLog() {
     const runInputs = isRun ? `
       <div class="log-input-row">
         <div class="log-input-lbl">Km</div>
-        <input class="log-input" type="text" placeholder="ej: 6.2" value="${dc.km||''}" oninput="setField('${wk}','${dk}','km',this.value)">
+        <input class="log-input" type="text" inputmode="decimal" placeholder="6.2" value="${dc.km||''}" oninput="setField('${wk}','${dk}','km',this.value)">
         <div class="log-input-lbl">Ritmo</div>
-        <input class="log-input" type="text" placeholder="ej: 7'20&quot;" value="${dc.ritmo||''}" oninput="setField('${wk}','${dk}','ritmo',this.value)">
+        <input class="log-input" type="text" placeholder="7'20&quot;" value="${dc.ritmo||''}" oninput="setField('${wk}','${dk}','ritmo',this.value)">
       </div>
       <div class="log-input-row">
-        <div class="log-input-lbl">FC media</div>
-        <input class="log-input" type="text" placeholder="ej: 135" value="${dc.fc||''}" oninput="setField('${wk}','${dk}','fc',this.value)">
+        <div class="log-input-lbl">FC</div>
+        <input class="log-input" type="text" inputmode="numeric" placeholder="135 lpm" value="${dc.fc||''}" oninput="setField('${wk}','${dk}','fc',this.value)">
       </div>` : '';
     const fuerzaInputs = d.kind==='fuerza' ? `
       <div class="log-input-row">
         <div class="log-input-lbl">Sesión</div>
-        <input class="log-input" type="text" placeholder="ej: Gym A" value="${dc.sesion||''}" oninput="setField('${wk}','${dk}','sesion',this.value)">
+        <input class="log-input" type="text" placeholder="Gym A / B" value="${dc.sesion||''}" oninput="setField('${wk}','${dk}','sesion',this.value)">
       </div>` : '';
 
+    const todayId = ({1:'lun',3:'mie',5:'vie',6:'sab',0:'race'})[new Date().getDay()];
     return `
+      <details class="log-day" ${dk===todayId?'open':''}>
+        <summary class="log-day-sum">
+          <span class="log-day-name" style="color:${d.color}">${d.tab}</span>
+          <span class="log-day-title">${d.titleShort || d.title}</span>
+          <span class="log-status ${dc.done?'done':''}" id="ls-${dk}">${logStatus(dc)}</span>
+          <span class="dz-ico">+</span>
+        </summary>
       <div class="log-day-row">
         <div class="log-day-hd">
-          <div class="log-day-name" style="color:${d.color}">${d.tab} — ${d.title}</div>
+          <div class="sleep-lbl">Sensación 1-5</div>
           <div class="log-feel">${feelBtns}</div>
         </div>
         <div class="log-checks">${checks}</div>
@@ -953,7 +1041,7 @@ function renderLog() {
             <textarea class="log-textarea" placeholder="libre..." oninput="setField('${wk}','${dk}','nota',this.value)">${dc.nota||''}</textarea>
           </div>
         </div>
-      </div>`;
+      </div></details>`;
   }).join('');
 
   const saved = Object.entries(allLog)
@@ -982,45 +1070,63 @@ function renderLog() {
         </div>`;
     }).join('');
 
+  const doneN = days.filter(d => (cur[d.id]||{}).done).length;
   document.getElementById('log-page').innerHTML = `
-    <div class="log-baseline">
-      🎯 <b>Objetivo:</b> 15K Valencia Abierta al Mar · domingo 25 abril 2027.<br>
-      📍 <b>Punto de partida (16 nov 2026):</b> 3,74 km · 33:02 · 8'49"/km · FC media 144 · cadencia 156 spm · esfuerzo Apple 4.<br>
-      Antes: 28 oct 9'09"/km a FC 151 · 24 ago 7'42"/km a FC 158 (esfuerzo alto). De octubre a noviembre: más rápido con 7 pulsaciones menos — el aeróbico responde. Próximo test: 5K en la semana 14 (17 feb).
-      <div class="zone-legend">
-        <span class="zone-chip">Z1 &lt;134</span><span class="zone-chip">Z2 134-145</span><span class="zone-chip">Z3 146-156</span><span class="zone-chip">Z4 157-166</span><span class="zone-chip">Z5 167+</span>
-      </div>
+    <div class="hero">
+      <div class="hero-eyebrow">${nowPhase.short} · Sem ${planWeekNow()} de 23 · ${wk}</div>
+      <div class="hero-title" id="log-hero-title" style="color:var(--text)">REGISTRO</div>
     </div>
-    <div class="sl">📋 Semana actual — ${wk} · ${nowPhase.label}</div>
-    <div class="log-week">
-      <div class="log-week-hd"><div class="log-week-title">Registro semanal</div><div class="log-week-num">${wk}</div></div>
-      ${dayRows}
-      <div class="log-week-footer">
-        <div class="log-sleep-row">
-          <div class="sleep-lbl">Km semana</div>
-          <input class="log-input" type="number" min="0" step="0.5" placeholder="0" style="max-width:70px" value="${cur.km_semana||''}" oninput="setRootField('${wk}','km_semana',this.value)">
-          <div class="sleep-lbl">Sueño (h)</div>
-          <input class="log-input" type="number" min="3" max="12" step="0.5" placeholder="7.5" style="max-width:70px" value="${cur.sueño||''}" oninput="setRootField('${wk}','sueño',this.value)">
+    <div class="today" style="border-color:var(--border);background:var(--s1)">
+      <div class="today-lbl" style="color:var(--muted2)">Esta semana</div>
+      <div class="today-val"><span id="log-done-n">${doneN}</span> / ${days.length} sesiones</div>
+      <div class="today-meta">Toca un día para apuntar sensación, km, ritmo y FC</div>
+    </div>
+    <div class="log-week">${dayRows}</div>
+    <div class="dz-group">
+      ${dz('🌙 Resumen de la semana', `
+        <div class="log-sleep-row" style="padding:8px 0">
+          <div class="sleep-lbl">Km</div>
+          <input class="log-input" type="number" inputmode="decimal" min="0" step="0.5" placeholder="0" style="max-width:64px" value="${cur.km_semana||''}" oninput="setRootField('${wk}','km_semana',this.value)">
+          <div class="sleep-lbl">Sueño h</div>
+          <input class="log-input" type="number" inputmode="decimal" min="3" max="12" step="0.5" placeholder="7.5" style="max-width:64px" value="${cur.sueño||''}" oninput="setRootField('${wk}','sueño',this.value)">
           <div class="sleep-lbl">Energía</div>
-          <input class="log-input" type="number" min="1" max="5" placeholder="3" style="max-width:55px" value="${cur.energia||''}" oninput="setRootField('${wk}','energia',this.value)">
+          <input class="log-input" type="number" inputmode="numeric" min="1" max="5" placeholder="3" style="max-width:52px" value="${cur.energia||''}" oninput="setRootField('${wk}','energia',this.value)">
         </div>
-      </div>
-      <div style="padding:0 16px 14px">
-        <textarea class="log-textarea" placeholder="Nota de la semana — lo que sea..." oninput="setRootField('${wk}','nota_semana',this.value)">${cur.nota_semana||''}</textarea>
-      </div>
+        <textarea class="log-textarea" placeholder="Nota de la semana…" oninput="setRootField('${wk}','nota_semana',this.value)">${cur.nota_semana||''}</textarea>`)}
+      ${dz('📍 Punto de partida y zonas', `<div class="rules">
+        <p>🎯 <b>15K Valencia Abierta al Mar</b> · domingo 25 abril 2027.</p>
+        <p><b>16 nov 2026:</b> 3,74 km · 33:02 · 8'49"/km · FC 144 · cadencia 156.</p>
+        <p>Antes: 28 oct 9'09"/km a FC 151 · 24 ago 7'42"/km a FC 158. Más rápido con 7 pulsaciones menos: el aeróbico responde. Próximo test: 5K en la semana 14 (17 feb).</p>
+        <div class="zone-legend" style="padding:8px 0"><span class="zone-chip">Z1 &lt;134</span><span class="zone-chip">Z2 134-145</span><span class="zone-chip">Z3 146-156</span><span class="zone-chip">Z4 157-166</span><span class="zone-chip">Z5 167+</span></div></div>`)}
     </div>
-    <div class="saved-weeks">
-      <div class="sl">🗂 Historial</div>
-      ${saved || '<div class="empty-log">Aquí aparecerán tus semanas anteriores.<br>Empieza a registrar hoy.</div>'}
+    <div class="dz-group">
+      <div class="dz-group-lbl">🗂 Historial</div>
+      ${saved || '<div class="empty-log">Aquí aparecerán tus semanas anteriores.</div>'}
     </div>
   `;
+  requestAnimationFrame(() => fitTitleEl('log-hero-title'));
+}
+function logStatus(dc) {
+  const parts = [];
+  if (dc.km) parts.push(dc.km + ' km');
+  if (dc.feel) parts.push('😊' + dc.feel);
+  if (dc.done) parts.push('✓');
+  return parts.join(' · ');
+}
+function refreshLogStatus(wk, dk) {
+  const el = document.getElementById('ls-' + dk); if (!el) return;
+  const all = loadLog(), dc = (all[wk]||{})[dk] || {};
+  el.textContent = logStatus(dc); el.classList.toggle('done', !!dc.done);
+  const nowPhase = PHASES.find(x=>x.id===CURRENT_PHASE_ID) || curPhase;
+  const n = document.getElementById('log-done-n');
+  if (n) n.textContent = nowPhase.days.filter(d => ((all[wk]||{})[d.id]||{}).done).length;
 }
 function setFeel(wk, dk, n, btn, col) {
   const log = loadLog();
   if(!log[wk]) log[wk]={};
   if(!log[wk][dk]) log[wk][dk]={};
   log[wk][dk].feel = n;
-  saveLog(log);
+  saveLog(log); refreshLogStatus(wk, dk);
   btn.closest('.log-feel').querySelectorAll('.feel-btn').forEach((b,i)=>{
     const v = i+1;
     if(v===n){ b.classList.add('sel'); b.style.color=col; b.style.background=col+'22'; }
@@ -1032,7 +1138,7 @@ function toggleChk(wk, dk, field, btn, col) {
   if(!log[wk]) log[wk]={};
   if(!log[wk][dk]) log[wk][dk]={};
   log[wk][dk][field] = !log[wk][dk][field];
-  saveLog(log);
+  saveLog(log); refreshLogStatus(wk, dk);
   const on = log[wk][dk][field];
   btn.classList.toggle('on', on);
   btn.style.color = on ? col : '';
@@ -1043,7 +1149,7 @@ function setField(wk, dk, field, val) {
   if(!log[wk]) log[wk]={};
   if(!log[wk][dk]) log[wk][dk]={};
   log[wk][dk][field] = val;
-  saveLog(log);
+  saveLog(log); refreshLogStatus(wk, dk);
 }
 function setRootField(wk, field, val) {
   const log = loadLog();
@@ -1117,7 +1223,7 @@ function tToggle(){
   tRun=true; setGoBtn(true);
   if(tDown) tEndAt=Date.now()+tSec*1000; else tStartAt=Date.now()-tSec*1000;
   tIv=setInterval(tTick,250);
-  updT();
+  updT(); updateTimerVisibility();
 }
 function tReset(){
   clearInterval(tIv); tRun=false; tDown=false; tSec=0;
@@ -1210,27 +1316,34 @@ const MOV_DAYS = [
 let curMovDay = MOV_DAYS[0];
 function renderMov() {
   const d = curMovDay;
-  const tabsHTML = MOV_DAYS.map(md=>`<button class="mov-dtab ${md.id===d.id?'active':''}" onclick="selMovDay('${md.id}')">${md.label}</button>`).join('');
-  const blocksHTML = d.blocks.map((bl,bi)=>{
-    const bid = 'mb'+d.id+bi;
+  const today = ['dom','lun','mar','mie','jue','vie','sab'][new Date().getDay()];
+  const tabsHTML = MOV_DAYS.map(md=>`<button class="seg ${md.id===d.id?'active':''} ${md.id===today?'istoday':''}" onclick="selMovDay('${md.id}')">${md.label}</button>`).join('');
+  const blocksHTML = d.blocks.map(bl=>{
     const exsHTML = bl.exs.map(ex=>`
-      <div class="mov-ex"><div class="mov-ex-bar"></div><div class="mov-ex-name">${ex.nm}</div>
-        <div class="mov-ex-chips"><span class="chip">${ex.dur}</span>${ex.sets!=='—'?`<span class="chip">${ex.sets}</span>`:''}${ex.key?'<span class="chip mov-key">CLAVE</span>':''}</div>
-        <div class="mov-ex-note">${ex.note}</div></div>`).join('');
-    return `<div class="mov-block"><div class="mov-block-hd" onclick="togMovBlock('${bid}','${bid}ico')">
-        <div class="mov-block-title">${bl.emoji} ${bl.title}</div>
-        <div style="display:flex;gap:10px;align-items:center"><div class="mov-block-meta">${bl.duration}</div><div class="coll-ico open" id="${bid}ico">+</div></div></div>
-      <div class="mov-block-body open" id="${bid}">${exsHTML}</div></div>`;
+      <details class="ex mov-ex-card">
+        <summary>
+          <div class="ex-bar" style="background:var(--mov)"></div>
+          <div class="ex-r1" style="margin-bottom:7px"><div class="ex-nm" style="font-size:14px">${ex.nm}</div>${ex.key?'<span class="chip mov-key">CLAVE</span>':''}</div>
+          <div class="ex-chips mov-ex-chips"><span class="chip">${ex.dur}</span>${ex.sets!=='—'?`<span class="chip">${ex.sets}</span>`:''}<span class="ex-more">CÓMO</span></div>
+        </summary>
+        <div class="ex-note">${ex.note}</div>
+      </details>`).join('');
+    return `<div class="dz-group"><div class="dz-group-lbl">${bl.emoji} ${bl.title} · ${bl.duration}</div>${exsHTML}</div>`;
   }).join('');
+  const keys = d.blocks.flatMap(b=>b.exs).filter(e=>e.key).length;
   document.getElementById('mov-page').innerHTML = `
-    <div class="mov-hero">
-      <div class="hero-eyebrow">${d.sublabel} · ${d.total}</div>
+    <div class="hero">
+      <div class="hero-eyebrow">${d.sublabel}</div>
       <div class="hero-title" id="mov-hero-title" style="color:var(--mov)">MOVILIDAD</div>
-      <div class="hero-sub">${d.focus}</div>
-      <div class="mov-day-tabs">${tabsHTML}</div>
     </div>
-    <div class="mov-insight">${d.insight}</div>
+    <div class="seg-row mov">${tabsHTML}</div>
+    <div class="today" style="border-color:#ff9f4744;background:#ff9f470d">
+      <div class="today-lbl" style="color:var(--mov)">${d.label} · ${d.total}</div>
+      <div class="today-val" style="font-size:17px;line-height:1.25">${d.focus}</div>
+      ${keys ? `<div class="today-meta">Con prisa: solo los ${keys} marcados CLAVE</div>` : ''}
+    </div>
     ${blocksHTML}
+    <div class="dz-group">${dz('💡 Por qué esta rutina', `<div class="rules"><p>${d.insight}</p></div>`)}</div>
   `;
   linkGlossary(document.getElementById('mov-page'));
   requestAnimationFrame(() => fitTitleEl('mov-hero-title'));
@@ -1343,7 +1456,7 @@ const GL_ALIAS = new Map();
 GLOSSARY.forEach(g => g.a.forEach(a => GL_ALIAS.set(a.toLowerCase(), g.k)));
 const GL_RE = new RegExp('(?<![\\p{L}\\p{N}])(' + [...GL_ALIAS.keys()].sort((x,y)=>y.length-x.length)
   .map(a=>a.replace(/[.*+?^${}()|[\]\\\/]/g,'\\$&')).join('|') + ')(?![\\p{L}\\p{N}])', 'giu');
-const GL_SKIP = 'button,input,textarea,th,.hero-title,.wod-clk,.wod-rx,.phase-stat b,.sl,.htag,.coll-lbl,.mov-block-title,.gl,.gl-sheet,.guide-list';
+const GL_SKIP = 'summary,button,input,textarea,th,.today-lbl,.today-val,.dz-group-lbl,.hero-title,.wod-clk,.wod-rx,.phase-stat b,.sl,.htag,.coll-lbl,.mov-block-title,.gl,.gl-sheet,.guide-list';
 
 // Subraya la primera aparición de cada concepto dentro de `root`.
 function linkGlossary(root) {
@@ -1389,31 +1502,37 @@ document.addEventListener('click', e => {
   if (el) { e.preventDefault(); e.stopPropagation(); openGlossary(el.dataset.k); }
 }, true);
 
-let guideQuery = '';
+let guideQuery = '', guideCat = '';
 function renderGuide() {
   const q = guideQuery.trim().toLowerCase();
-  const match = g => !q || (g.t + ' ' + g.d + ' ' + (g.h||'')).toLowerCase().includes(q);
+  const match = g => (!guideCat || g.c === guideCat) && (!q || (g.t + ' ' + g.d + ' ' + (g.h||'')).toLowerCase().includes(q));
   const sections = GLOSSARY_CATS.map(([c, label]) => {
     const items = GLOSSARY.filter(g => g.c === c && match(g));
     if (!items.length) return '';
-    return `<div class="sl">${label}</div>` + items.map(g => `
-      <div class="guide-item">
-        <div class="guide-term">${g.t}</div>
-        <div class="guide-text">${g.d}</div>
-        ${g.h ? `<div class="guide-how"><b>Cómo:</b> ${g.h}</div>` : ''}
-      </div>`).join('');
+    return `<div class="dz-group"><div class="dz-group-lbl">${label}</div>` + items.map(g => g.h ? `
+      <details class="guide-item">
+        <summary><div class="guide-term">${g.t}<span class="ex-more">CÓMO</span></div><div class="guide-text">${g.d}</div></summary>
+        <div class="guide-how">${g.h}</div>
+      </details>` : `
+      <div class="guide-item"><div class="guide-term">${g.t}</div><div class="guide-text">${g.d}</div></div>`).join('') + '</div>';
   }).join('');
   document.getElementById('guide-list').innerHTML = sections || '<div class="empty-log">Nada con ese nombre. Prueba otra palabra.</div>';
 }
+function selGuideCat(c) {
+  guideCat = guideCat === c ? '' : c;
+  document.querySelectorAll('#guide-cats .seg').forEach(b => b.classList.toggle('active', b.dataset.c === guideCat));
+  renderGuide();
+}
 function renderGuidePage() {
+  const cats = [['', 'Todo']].concat(GLOSSARY_CATS.map(([c, l]) => [c, l.replace(/^\S+\s/, '')]));
   document.getElementById('guide-page').innerHTML = `
-    <div class="mov-hero">
-      <div class="hero-eyebrow">Para empezar desde cero</div>
+    <div class="hero">
+      <div class="hero-eyebrow">${GLOSSARY.length} conceptos explicados</div>
       <div class="hero-title" id="guide-hero-title" style="color:var(--sab)">GUÍA</div>
-      <div class="hero-sub">Todo lo que sale en el plan, explicado en una o dos frases. Dentro de las sesiones, lo subrayado también se puede tocar.</div>
     </div>
-    <input class="log-input guide-search" type="search" placeholder="Buscar: fartlek, Z2, rumano…" value="${guideQuery.replace(/"/g,'&quot;')}"
+    <input class="log-input guide-search" type="search" enterkeyhint="search" placeholder="Buscar: fartlek, Z2, rumano…" value="${guideQuery.replace(/"/g,'&quot;')}"
       oninput="guideQuery=this.value; renderGuide()">
+    <div class="seg-row" id="guide-cats">${cats.map(([c,l]) => `<button class="seg ${c===guideCat?'active':''}" data-c="${c}" onclick="selGuideCat('${c}')">${l}</button>`).join('')}</div>
     <div id="guide-list" class="guide-list"></div>`;
   renderGuide();
   requestAnimationFrame(() => fitTitleEl('guide-hero-title'));
@@ -1432,7 +1551,7 @@ renderTabs();
 renderPage();
 requestAnimationFrame(fitHeroTitle);
 // La fuente web llega después del primer pintado y ensancha el título: reajustar cuando esté lista.
-function refitTitles() { fitHeroTitle(); fitTitleEl('mov-hero-title'); fitTitleEl('guide-hero-title'); }
+function refitTitles() { fitHeroTitle(); fitTitleEl('mov-hero-title'); fitTitleEl('guide-hero-title'); fitTitleEl('log-hero-title'); }
 window.addEventListener('load', refitTitles);
 window.addEventListener('resize', refitTitles);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(refitTitles);
